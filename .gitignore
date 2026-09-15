@@ -18,7 +18,12 @@ test/**/.clangd
 # 日志文件
 **/*.log
 
+# 文件存储运行时数据
+filestore/data_node*/
+downloads/
+
 # 其他
 .claude/
-docs/
+docs/*
+!docs/filestore/
 CLAUDE.md

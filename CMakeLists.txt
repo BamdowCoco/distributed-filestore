@@ -30,3 +30,5 @@ link_directories(
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 # example 包含了mprpc框架使用的示例代码
 add_subdirectory(${PROJECT_SOURCE_DIR}/example)
+# filestore 分布式文件存储系统（框架应用场景）
+add_subdirectory(${PROJECT_SOURCE_DIR}/filestore)

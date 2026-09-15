@@ -65,43 +65,50 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
         return;
     }
 
-    // 向zk获取对应服务下方法节点的 ip 和 端口
-    ZKClient zkClient;
-    zkClient.start();
-    std::string methodPath = '/' + serviceName + '/' + methodName; 
-    /* 旧版本: 一个方法只能由一个服务器提供 */ 
-    // std::string hostStr = zkClient.getData(methodPath);
-    // if (hostStr.empty()) {
-    //     controller->SetFailed("method:" + methodPath + " doesn't exist!");
-    //     return;
-    // }
-
-    /* 新版本: 一个方法能由多个服务器提供 */ 
-    std::vector<std::string> hostStrVec = zkClient.getChildren(methodPath);
+    // 获取目标节点的 ip 和 端口
     std::string ip;
     uint16_t port;
     bool isConnSuccess = false;
-    for(std::string& hostStr : hostStrVec){
-        size_t colonIdx = hostStr.find(':');
-        if(colonIdx == std::string::npos) {
-            controller->SetFailed("method:" + methodPath + " address invalid!");
-            continue;
-        }
-        ip = hostStr.substr(0, colonIdx);
-        port = std::stoi(hostStr.substr(colonIdx+1));
+
+    if (m_useDirectConn) {
+        // 直连模式：跳过 ZooKeeper 服务发现，直接连接指定节点
+        ip = m_targetIp;
+        port = m_targetPort;
 
         struct sockaddr_in rpcServerAddr;
         rpcServerAddr.sin_family = AF_INET;
         rpcServerAddr.sin_port = htons(port);
         inet_pton(AF_INET, ip.c_str(), &rpcServerAddr.sin_addr.s_addr);
-        // rpcServerAddr.sin_port = htons(std::stoi(MprpcApplication::getConfig().load("rpc_server_port")));
-        // inet_pton(AF_INET, MprpcApplication::getConfig().load("rpc_server_ip").c_str(), &rpcServerAddr.sin_addr.s_addr);
-        // rpcServerAddr.sin_addr.s_addr
-        
-        if(0 == connect(fd, (struct sockaddr*)&rpcServerAddr, sizeof(rpcServerAddr))) {
-            // 连接成功 退出循环
+
+        if (0 == connect(fd, (struct sockaddr*)&rpcServerAddr, sizeof(rpcServerAddr))) {
             isConnSuccess = true;
-            break;
+        }
+    } else {
+        // 服务发现模式：向 zk 获取对应服务下方法节点的 ip 和 端口
+        ZKClient zkClient;
+        zkClient.start();
+        std::string methodPath = '/' + serviceName + '/' + methodName;
+        /* 一个方法能由多个服务器提供 */
+        std::vector<std::string> hostStrVec = zkClient.getChildren(methodPath);
+        for (std::string& hostStr : hostStrVec) {
+            size_t colonIdx = hostStr.find(':');
+            if (colonIdx == std::string::npos) {
+                controller->SetFailed("method:" + methodPath + " address invalid!");
+                continue;
+            }
+            ip = hostStr.substr(0, colonIdx);
+            port = std::stoi(hostStr.substr(colonIdx + 1));
+
+            struct sockaddr_in rpcServerAddr;
+            rpcServerAddr.sin_family = AF_INET;
+            rpcServerAddr.sin_port = htons(port);
+            inet_pton(AF_INET, ip.c_str(), &rpcServerAddr.sin_addr.s_addr);
+
+            if (0 == connect(fd, (struct sockaddr*)&rpcServerAddr, sizeof(rpcServerAddr))) {
+                // 连接成功 退出循环
+                isConnSuccess = true;
+                break;
+            }
         }
     }
 
@@ -125,26 +132,29 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
         return;
     }
 
-    // 接收rpc响应
-    char responseBuf[1024] = {0};
+    // 接收rpc响应（循环读取直到连接关闭，支持任意大小的响应）
+    std::string responseStr;
+    char buf[1024] = {0};
     int recvSize = 0;
-    if(0 >=(recvSize = recv(fd, responseBuf, sizeof(responseBuf), 0)))
-    {
-        std::string reason = "failed to receive rpc response! errno: " + std::to_string(errno);
-        LOG_ERROR("%s", reason.c_str());
-        controller->SetFailed(reason);
-        close(fd);
-        return;
+    while ((recvSize = recv(fd, buf, sizeof(buf), 0)) > 0) {
+        responseStr.append(buf, recvSize);
     }
 
     // 断开连接
     close(fd);
 
-    LOG_INFO("recvSize:%d", recvSize);
-    
+    if (responseStr.empty()) {
+        std::string reason = "failed to receive rpc response! errno: " + std::to_string(errno);
+        LOG_ERROR("%s", reason.c_str());
+        controller->SetFailed(reason);
+        return;
+    }
+
+    LOG_INFO("recvSize:%zu", responseStr.size());
+
     // rpc响应反序列化
-    if(!response->ParseFromArray(responseBuf, recvSize)) {
-        std::string reason = "failed to parseFromString rpc response! content:" + std::string(responseBuf, recvSize);
+    if (!response->ParseFromString(responseStr)) {
+        std::string reason = "failed to parseFromString rpc response! size:" + std::to_string(responseStr.size());
         LOG_ERROR("%s", reason.c_str());
         controller->SetFailed(reason);
         return;

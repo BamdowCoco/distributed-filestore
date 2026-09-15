@@ -1,0 +1,15 @@
+[rpc_server]
+# rpc节点ip地址
+rpc_server_ip=127.0.0.1
+# rpc节点端口号
+rpc_server_port=8003
+
+[zookeeper]
+# zookeeper的ip地址
+zookeeper_ip=127.0.0.1
+# zookeeper的端口号
+zookeeper_port=2181
+
+[storage_nodes]
+# 存储节点列表，逗号分隔 ip:port
+storage_nodes=127.0.0.1:8001,127.0.0.1:8002
