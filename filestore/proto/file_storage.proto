@@ -16,6 +16,7 @@ message ChunkLocation
     int32 chunk_index = 1;
     string ip = 2;
     int32 port = 3;
+    string checksum = 4;   // 块 MD5 校验和（上传完成后登记，下载时比对）
 }
 
 // ===== 元数据服务：文件索引 =====
@@ -56,9 +57,35 @@ message DeleteFileResponse
     ResultCode result = 1;
 }
 
+// 上传完成确认：块全部落盘后，把文件状态从 PENDING 置为 COMPLETE，
+// 并登记每块校验和（chunk_index + checksum）
+message CommitUploadRequest
+{
+    string filename = 1;
+    repeated ChunkLocation chunks = 2;   // 每块的 chunk_index + checksum
+}
+
+message CommitUploadResponse
+{
+    ResultCode result = 1;
+}
+
+// 上传失败回滚：删除 PENDING 状态的元数据记录
+message CancelUploadRequest
+{
+    string filename = 1;
+}
+
+message CancelUploadResponse
+{
+    ResultCode result = 1;
+}
+
 service MetaServiceRpc
 {
     rpc UploadFile(UploadFileRequest) returns(UploadFileResponse);
+    rpc CommitUpload(CommitUploadRequest) returns(CommitUploadResponse);
+    rpc CancelUpload(CancelUploadRequest) returns(CancelUploadResponse);
     rpc QueryFile(QueryFileRequest) returns(QueryFileResponse);
     rpc DeleteFile(DeleteFileRequest) returns(DeleteFileResponse);
 }
@@ -75,6 +102,7 @@ message PutChunkRequest
 message PutChunkResponse
 {
     ResultCode result = 1;
+    string checksum = 2;   // 存储端计算返回的块 MD5
 }
 
 message GetChunkRequest

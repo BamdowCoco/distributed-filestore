@@ -7,9 +7,27 @@
 #include "mprpc_application.h"
 #include "mprpc_provider.h"
 #include "logger.h"
+#include "common/common.h"
 
-// 文件分块大小（与客户端保持一致）
-constexpr int CHUNK_SIZE = 1024;
+// 校验文件名合法性：拒绝空、路径分隔符、相对/绝对路径穿越
+static bool isValidFilename(const std::string& name)
+{
+    if (name.empty()) {
+        return false;
+    }
+    if (name == "." || name == "..") {
+        return false;
+    }
+    // 绝对路径
+    if (name[0] == '/') {
+        return false;
+    }
+    // 含路径分隔符（不允许多级路径 / 穿越）
+    if (name.find('/') != std::string::npos || name.find('\\') != std::string::npos) {
+        return false;
+    }
+    return true;
+}
 
 // 存储服务：负责文件块的落盘、读取与删除
 class StorageService : public filestore::StorageServiceRpc
@@ -28,6 +46,13 @@ public:
                   ::filestore::PutChunkResponse* response,
                   ::google::protobuf::Closure* done) override
     {
+        if (!isValidFilename(request->filename())) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("invalid filename");
+            done->Run();
+            return;
+        }
+
         std::string path = m_dataDir + "/" + request->filename();
 
         FILE* fp = fopen(path.c_str(), "r+b");
@@ -49,8 +74,10 @@ public:
 
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
-        LOG_INFO("put chunk file:%s idx:%d size:%zu",
-                 request->filename().c_str(), request->chunk_index(), nwrite);
+        response->set_checksum(md5Hex(request->data()));
+        LOG_INFO("put chunk file:%s idx:%d size:%zu checksum:%s",
+                 request->filename().c_str(), request->chunk_index(), nwrite,
+                 response->checksum().c_str());
 
         done->Run();
     }
@@ -61,6 +88,13 @@ public:
                   ::filestore::GetChunkResponse* response,
                   ::google::protobuf::Closure* done) override
     {
+        if (!isValidFilename(request->filename())) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("invalid filename");
+            done->Run();
+            return;
+        }
+
         std::string path = m_dataDir + "/" + request->filename();
 
         FILE* fp = fopen(path.c_str(), "rb");
@@ -93,6 +127,13 @@ public:
                     ::filestore::DeleteFileResponse* response,
                     ::google::protobuf::Closure* done) override
     {
+        if (!isValidFilename(request->filename())) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("invalid filename");
+            done->Run();
+            return;
+        }
+
         std::string path = m_dataDir + "/" + request->filename();
         if (std::remove(path.c_str()) == 0) {
             response->mutable_result()->set_errcode(0);

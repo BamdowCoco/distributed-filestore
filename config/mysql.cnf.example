@@ -1,0 +1,18 @@
+# 数据库连接配置示例
+# 使用方式：复制本文件为 config/mysql.cnf，填入真实的数据库账号密码
+# config/mysql.cnf 已被 .gitignore 忽略，不会提交到仓库
+
+[database]
+ip=localhost
+port=3306
+username=root
+password=your_password
+dbname=filestore
+
+[pool]
+init_size=10
+max_size=50
+# 最大空闲时间 单位:s
+max_idle_time=300
+# 连接超时时间 单位:ms
+connection_timeout=3000

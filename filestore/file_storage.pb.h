@@ -55,6 +55,22 @@ extern "C" {
 extern const ::google::protobuf::internal::DescriptorTable descriptor_table_file_5fstorage_2eproto;
 }  // extern "C"
 namespace filestore {
+class CancelUploadRequest;
+struct CancelUploadRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern CancelUploadRequestGlobalsTypeInternal CancelUploadRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull CancelUploadRequest_class_data_;
+#else
+extern const CancelUploadRequestGlobalsTypeInternal CancelUploadRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class CancelUploadResponse;
+struct CancelUploadResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern CancelUploadResponseGlobalsTypeInternal CancelUploadResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull CancelUploadResponse_class_data_;
+#else
+extern const CancelUploadResponseGlobalsTypeInternal CancelUploadResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
 class ChunkLocation;
 struct ChunkLocationGlobalsTypeInternal;
 #ifndef PROTOBUF_MESSAGE_GLOBALS
@@ -62,6 +78,22 @@ extern ChunkLocationGlobalsTypeInternal ChunkLocation_globals_;
 extern const ::google::protobuf::internal::ClassDataFull ChunkLocation_class_data_;
 #else
 extern const ChunkLocationGlobalsTypeInternal ChunkLocation_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class CommitUploadRequest;
+struct CommitUploadRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern CommitUploadRequestGlobalsTypeInternal CommitUploadRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull CommitUploadRequest_class_data_;
+#else
+extern const CommitUploadRequestGlobalsTypeInternal CommitUploadRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class CommitUploadResponse;
+struct CommitUploadResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern CommitUploadResponseGlobalsTypeInternal CommitUploadResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull CommitUploadResponse_class_data_;
+#else
+extern const CommitUploadResponseGlobalsTypeInternal CommitUploadResponse_globals_;
 #endif  // PROTOBUF_MESSAGE_GLOBALS
 class DeleteFileRequest;
 struct DeleteFileRequestGlobalsTypeInternal;
@@ -874,7 +906,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
   [[nodiscard]] static const PutChunkRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<PutChunkRequest>(&PutChunkRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(PutChunkRequest& a, PutChunkRequest& b) { a.Swap(&b); }
   inline void Swap(PutChunkRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1109,7 +1141,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
   [[nodiscard]] static const GetChunkRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunkRequest>(&GetChunkRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(GetChunkRequest& a, GetChunkRequest& b) { a.Swap(&b); }
   inline void Swap(GetChunkRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1638,6 +1670,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ChunkLocation final : public ::goog
   // accessors -------------------------------------------------------
   enum : int {
     kIpFieldNumber = 2,
+    kChecksumFieldNumber = 4,
     kChunkIndexFieldNumber = 1,
     kPortFieldNumber = 3,
   };
@@ -1654,6 +1687,21 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ChunkLocation final : public ::goog
   const ::std::string& _internal_ip() const;
   PROTOBUF_ALWAYS_INLINE void _internal_set_ip(const ::std::string& value);
   ::std::string* PROTOBUF_NONNULL _internal_mutable_ip();
+
+  public:
+  // string checksum = 4;
+  void clear_checksum() ;
+  [[nodiscard]] const ::std::string& checksum() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_checksum(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_checksum();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_checksum();
+  void set_allocated_checksum(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_checksum() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_checksum(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_checksum();
 
   public:
   // int32 chunk_index = 1;
@@ -1680,8 +1728,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ChunkLocation final : public ::goog
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<2, 3,
-                          0, 34,
+      ::google::protobuf::internal::TcParseTable<2, 4,
+                          0, 42,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -1710,8 +1758,215 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ChunkLocation final : public ::goog
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr ip_;
+    ::google::protobuf::internal::ArenaStringPtr checksum_;
     ::int32_t chunk_index_;
     ::int32_t port_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.CancelUploadRequest) */ {
+ public:
+  inline CancelUploadRequest() : CancelUploadRequest(nullptr) {}
+  ~CancelUploadRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CancelUploadRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelUploadRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr CancelUploadRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline CancelUploadRequest(const CancelUploadRequest& from) : CancelUploadRequest(nullptr, from) {}
+  inline CancelUploadRequest(CancelUploadRequest&& from) noexcept : CancelUploadRequest(nullptr, ::std::move(from)) {}
+  inline CancelUploadRequest& operator=(const CancelUploadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelUploadRequest& operator=(CancelUploadRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const CancelUploadRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CancelUploadRequest>(&CancelUploadRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(CancelUploadRequest& a, CancelUploadRequest& b) { a.Swap(&b); }
+  inline void Swap(CancelUploadRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CancelUploadRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] CancelUploadRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CancelUploadRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CancelUploadRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CancelUploadRequest& from) { CancelUploadRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CancelUploadRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.CancelUploadRequest"; }
+
+  explicit CancelUploadRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CancelUploadRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CancelUploadRequest& from);
+  CancelUploadRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CancelUploadRequest&& from) noexcept
+      : CancelUploadRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFilenameFieldNumber = 1,
+  };
+  // string filename = 1;
+  void clear_filename() ;
+  [[nodiscard]] const ::std::string& filename() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_filename(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_filename();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
+  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_filename() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.CancelUploadRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          0, 46,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CancelUploadRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr filename_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2255,7 +2510,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkResponse final : public ::g
   [[nodiscard]] static const PutChunkResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<PutChunkResponse>(&PutChunkResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(PutChunkResponse& a, PutChunkResponse& b) { a.Swap(&b); }
   inline void Swap(PutChunkResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2347,8 +2602,24 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkResponse final : public ::g
 
   // accessors -------------------------------------------------------
   enum : int {
+    kChecksumFieldNumber = 2,
     kResultFieldNumber = 1,
   };
+  // string checksum = 2;
+  void clear_checksum() ;
+  [[nodiscard]] const ::std::string& checksum() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_checksum(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_checksum();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_checksum();
+  void set_allocated_checksum(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_checksum() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_checksum(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_checksum();
+
+  public:
   // .filestore.ResultCode result = 1;
   [[nodiscard]] bool has_result() const;
   void clear_result() ;
@@ -2368,8 +2639,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkResponse final : public ::g
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 1,
-                          1, 0,
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          1, 43,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -2397,6 +2668,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkResponse final : public ::g
         const PutChunkResponse& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr checksum_;
     ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2461,7 +2733,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkResponse final : public ::g
   [[nodiscard]] static const GetChunkResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunkResponse>(&GetChunkResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(GetChunkResponse& a, GetChunkResponse& b) { a.Swap(&b); }
   inline void Swap(GetChunkResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2832,6 +3104,646 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DeleteFileResponse final : public :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_file_5fstorage_2eproto;
 };
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.CommitUploadResponse) */ {
+ public:
+  inline CommitUploadResponse() : CommitUploadResponse(nullptr) {}
+  ~CommitUploadResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CommitUploadResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CommitUploadResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr CommitUploadResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline CommitUploadResponse(const CommitUploadResponse& from) : CommitUploadResponse(nullptr, from) {}
+  inline CommitUploadResponse(CommitUploadResponse&& from) noexcept : CommitUploadResponse(nullptr, ::std::move(from)) {}
+  inline CommitUploadResponse& operator=(const CommitUploadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CommitUploadResponse& operator=(CommitUploadResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const CommitUploadResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CommitUploadResponse>(&CommitUploadResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(CommitUploadResponse& a, CommitUploadResponse& b) { a.Swap(&b); }
+  inline void Swap(CommitUploadResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CommitUploadResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] CommitUploadResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CommitUploadResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CommitUploadResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CommitUploadResponse& from) { CommitUploadResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CommitUploadResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.CommitUploadResponse"; }
+
+  explicit CommitUploadResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CommitUploadResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CommitUploadResponse& from);
+  CommitUploadResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CommitUploadResponse&& from) noexcept
+      : CommitUploadResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.CommitUploadResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CommitUploadResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.CommitUploadRequest) */ {
+ public:
+  inline CommitUploadRequest() : CommitUploadRequest(nullptr) {}
+  ~CommitUploadRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CommitUploadRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CommitUploadRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr CommitUploadRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline CommitUploadRequest(const CommitUploadRequest& from) : CommitUploadRequest(nullptr, from) {}
+  inline CommitUploadRequest(CommitUploadRequest&& from) noexcept : CommitUploadRequest(nullptr, ::std::move(from)) {}
+  inline CommitUploadRequest& operator=(const CommitUploadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CommitUploadRequest& operator=(CommitUploadRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const CommitUploadRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CommitUploadRequest>(&CommitUploadRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(CommitUploadRequest& a, CommitUploadRequest& b) { a.Swap(&b); }
+  inline void Swap(CommitUploadRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CommitUploadRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] CommitUploadRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CommitUploadRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CommitUploadRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CommitUploadRequest& from) { CommitUploadRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CommitUploadRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.CommitUploadRequest"; }
+
+  explicit CommitUploadRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CommitUploadRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CommitUploadRequest& from);
+  CommitUploadRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CommitUploadRequest&& from) noexcept
+      : CommitUploadRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kChunksFieldNumber = 2,
+    kFilenameFieldNumber = 1,
+  };
+  // repeated .filestore.ChunkLocation chunks = 2;
+  [[nodiscard]] int chunks_size() const;
+  private:
+  int _internal_chunks_size() const;
+
+  public:
+  void clear_chunks() ;
+  [[nodiscard]] const ::filestore::ChunkLocation& chunks(int index) const;
+  [[nodiscard]] ::filestore::ChunkLocation* PROTOBUF_NONNULL mutable_chunks(int index);
+  ::filestore::ChunkLocation* PROTOBUF_NONNULL add_chunks();
+  [[nodiscard]] const ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>&
+  chunks() const;
+  [[nodiscard]] ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>* PROTOBUF_NONNULL
+  mutable_chunks();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>& _internal_chunks() const;
+  ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>* PROTOBUF_NONNULL _internal_mutable_chunks();
+
+  public:
+  // string filename = 1;
+  void clear_filename() ;
+  [[nodiscard]] const ::std::string& filename() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_filename(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_filename();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
+  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_filename() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.CommitUploadRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          1, 46,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CommitUploadRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::filestore::ChunkLocation > chunks_;
+    ::google::protobuf::internal::ArenaStringPtr filename_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.CancelUploadResponse) */ {
+ public:
+  inline CancelUploadResponse() : CancelUploadResponse(nullptr) {}
+  ~CancelUploadResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CancelUploadResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelUploadResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr CancelUploadResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline CancelUploadResponse(const CancelUploadResponse& from) : CancelUploadResponse(nullptr, from) {}
+  inline CancelUploadResponse(CancelUploadResponse&& from) noexcept : CancelUploadResponse(nullptr, ::std::move(from)) {}
+  inline CancelUploadResponse& operator=(const CancelUploadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelUploadResponse& operator=(CancelUploadResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const CancelUploadResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CancelUploadResponse>(&CancelUploadResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(CancelUploadResponse& a, CancelUploadResponse& b) { a.Swap(&b); }
+  inline void Swap(CancelUploadResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CancelUploadResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] CancelUploadResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CancelUploadResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CancelUploadResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CancelUploadResponse& from) { CancelUploadResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CancelUploadResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.CancelUploadResponse"; }
+
+  explicit CancelUploadResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CancelUploadResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CancelUploadResponse& from);
+  CancelUploadResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CancelUploadResponse&& from) noexcept
+      : CancelUploadResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.CancelUploadResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CancelUploadResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
 
 // ===================================================================
 
@@ -2855,6 +3767,14 @@ class MetaServiceRpc : public ::google::protobuf::Service {
   virtual void UploadFile(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::UploadFileRequest* PROTOBUF_NONNULL request,
                         ::filestore::UploadFileResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void CommitUpload(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::CommitUploadRequest* PROTOBUF_NONNULL request,
+                        ::filestore::CommitUploadResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void CancelUpload(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::CancelUploadRequest* PROTOBUF_NONNULL request,
+                        ::filestore::CancelUploadResponse* PROTOBUF_NONNULL response,
                         ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
   virtual void QueryFile(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::QueryFileRequest* PROTOBUF_NONNULL request,
@@ -2899,6 +3819,14 @@ class MetaServiceRpc_Stub final : public MetaServiceRpc {
   void UploadFile(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::UploadFileRequest* PROTOBUF_NONNULL request,
                         ::filestore::UploadFileResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void CommitUpload(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::CommitUploadRequest* PROTOBUF_NONNULL request,
+                        ::filestore::CommitUploadResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void CancelUpload(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::CancelUploadRequest* PROTOBUF_NONNULL request,
+                        ::filestore::CancelUploadResponse* PROTOBUF_NONNULL response,
                         ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
   void QueryFile(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::QueryFileRequest* PROTOBUF_NONNULL request,
@@ -3101,7 +4029,7 @@ inline void ResultCode::set_allocated_errmsg(::std::string* PROTOBUF_NULLABLE va
 inline void ChunkLocation::clear_chunk_index() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.chunk_index_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
 }
 inline ::int32_t ChunkLocation::chunk_index() const {
   // @@protoc_insertion_point(field_get:filestore.ChunkLocation.chunk_index)
@@ -3109,7 +4037,7 @@ inline ::int32_t ChunkLocation::chunk_index() const {
 }
 inline void ChunkLocation::set_chunk_index(::int32_t value) {
   _internal_set_chunk_index(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   // @@protoc_insertion_point(field_set:filestore.ChunkLocation.chunk_index)
 }
 inline ::int32_t ChunkLocation::_internal_chunk_index() const {
@@ -3189,7 +4117,7 @@ inline void ChunkLocation::set_allocated_ip(::std::string* PROTOBUF_NULLABLE val
 inline void ChunkLocation::clear_port() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.port_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
 }
 inline ::int32_t ChunkLocation::port() const {
   // @@protoc_insertion_point(field_get:filestore.ChunkLocation.port)
@@ -3197,7 +4125,7 @@ inline ::int32_t ChunkLocation::port() const {
 }
 inline void ChunkLocation::set_port(::int32_t value) {
   _internal_set_port(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   // @@protoc_insertion_point(field_set:filestore.ChunkLocation.port)
 }
 inline ::int32_t ChunkLocation::_internal_port() const {
@@ -3207,6 +4135,70 @@ inline ::int32_t ChunkLocation::_internal_port() const {
 inline void ChunkLocation::_internal_set_port(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.port_ = value;
+}
+
+// string checksum = 4;
+inline void ChunkLocation::clear_checksum() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.checksum_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& ChunkLocation::checksum() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.ChunkLocation.checksum)
+  return _internal_checksum();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void ChunkLocation::set_checksum(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.checksum_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.ChunkLocation.checksum)
+}
+inline ::std::string* PROTOBUF_NONNULL ChunkLocation::mutable_checksum()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_checksum();
+  // @@protoc_insertion_point(field_mutable:filestore.ChunkLocation.checksum)
+  return _s;
+}
+inline const ::std::string& ChunkLocation::_internal_checksum() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.checksum_.Get();
+}
+inline void ChunkLocation::_internal_set_checksum(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.checksum_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL ChunkLocation::_internal_mutable_checksum() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.checksum_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE ChunkLocation::release_checksum() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.ChunkLocation.checksum)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.checksum_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.checksum_.Set("", GetArena());
+  }
+  return released;
+}
+inline void ChunkLocation::set_allocated_checksum(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.checksum_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.checksum_.IsDefault()) {
+    _impl_.checksum_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.ChunkLocation.checksum)
 }
 
 // -------------------------------------------------------------------
@@ -3927,6 +4919,401 @@ inline void DeleteFileResponse::set_allocated_result(::filestore::ResultCode* PR
 
 // -------------------------------------------------------------------
 
+// CommitUploadRequest
+
+// string filename = 1;
+inline void CommitUploadRequest::clear_filename() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.filename_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& CommitUploadRequest::filename() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.CommitUploadRequest.filename)
+  return _internal_filename();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CommitUploadRequest::set_filename(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.CommitUploadRequest.filename)
+}
+inline ::std::string* PROTOBUF_NONNULL CommitUploadRequest::mutable_filename()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_filename();
+  // @@protoc_insertion_point(field_mutable:filestore.CommitUploadRequest.filename)
+  return _s;
+}
+inline const ::std::string& CommitUploadRequest::_internal_filename() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.filename_.Get();
+}
+inline void CommitUploadRequest::_internal_set_filename(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.filename_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CommitUploadRequest::_internal_mutable_filename() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.filename_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CommitUploadRequest::release_filename() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.CommitUploadRequest.filename)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.filename_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.filename_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CommitUploadRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.filename_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
+    _impl_.filename_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.CommitUploadRequest.filename)
+}
+
+// repeated .filestore.ChunkLocation chunks = 2;
+inline int CommitUploadRequest::_internal_chunks_size() const {
+  return _internal_chunks().size();
+}
+inline int CommitUploadRequest::chunks_size() const {
+  return _internal_chunks_size();
+}
+inline void CommitUploadRequest::clear_chunks() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.chunks_.Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ChunkLocation& CommitUploadRequest::chunks(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.CommitUploadRequest.chunks)
+  return _internal_chunks().Get(index);
+}
+inline ::filestore::ChunkLocation* PROTOBUF_NONNULL CommitUploadRequest::mutable_chunks(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:filestore.CommitUploadRequest.chunks)
+  return _internal_mutable_chunks()->Mutable(index);
+}
+inline ::filestore::ChunkLocation* PROTOBUF_NONNULL CommitUploadRequest::add_chunks()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::filestore::ChunkLocation* _add =
+      _internal_mutable_chunks()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:filestore.CommitUploadRequest.chunks)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>& CommitUploadRequest::chunks() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:filestore.CommitUploadRequest.chunks)
+  return _internal_chunks();
+}
+inline ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>* PROTOBUF_NONNULL
+CommitUploadRequest::mutable_chunks() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:filestore.CommitUploadRequest.chunks)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_chunks();
+}
+inline const ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>&
+CommitUploadRequest::_internal_chunks() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.chunks_;
+}
+inline ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>* PROTOBUF_NONNULL
+CommitUploadRequest::_internal_mutable_chunks() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.chunks_;
+}
+
+// -------------------------------------------------------------------
+
+// CommitUploadResponse
+
+// .filestore.ResultCode result = 1;
+inline bool CommitUploadResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void CommitUploadResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& CommitUploadResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& CommitUploadResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.CommitUploadResponse.result)
+  return _internal_result();
+}
+inline void CommitUploadResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.CommitUploadResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE CommitUploadResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE CommitUploadResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.CommitUploadResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL CommitUploadResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL CommitUploadResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.CommitUploadResponse.result)
+  return _msg;
+}
+inline void CommitUploadResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.CommitUploadResponse.result)
+}
+
+// -------------------------------------------------------------------
+
+// CancelUploadRequest
+
+// string filename = 1;
+inline void CancelUploadRequest::clear_filename() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.filename_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& CancelUploadRequest::filename() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.CancelUploadRequest.filename)
+  return _internal_filename();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CancelUploadRequest::set_filename(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.CancelUploadRequest.filename)
+}
+inline ::std::string* PROTOBUF_NONNULL CancelUploadRequest::mutable_filename()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_filename();
+  // @@protoc_insertion_point(field_mutable:filestore.CancelUploadRequest.filename)
+  return _s;
+}
+inline const ::std::string& CancelUploadRequest::_internal_filename() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.filename_.Get();
+}
+inline void CancelUploadRequest::_internal_set_filename(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.filename_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CancelUploadRequest::_internal_mutable_filename() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.filename_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CancelUploadRequest::release_filename() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.CancelUploadRequest.filename)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.filename_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.filename_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CancelUploadRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.filename_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
+    _impl_.filename_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.CancelUploadRequest.filename)
+}
+
+// -------------------------------------------------------------------
+
+// CancelUploadResponse
+
+// .filestore.ResultCode result = 1;
+inline bool CancelUploadResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void CancelUploadResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& CancelUploadResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& CancelUploadResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.CancelUploadResponse.result)
+  return _internal_result();
+}
+inline void CancelUploadResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.CancelUploadResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE CancelUploadResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE CancelUploadResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.CancelUploadResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL CancelUploadResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL CancelUploadResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.CancelUploadResponse.result)
+  return _msg;
+}
+inline void CancelUploadResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.CancelUploadResponse.result)
+}
+
+// -------------------------------------------------------------------
+
 // PutChunkRequest
 
 // string filename = 1;
@@ -4087,14 +5474,14 @@ inline void PutChunkRequest::set_allocated_data(::std::string* PROTOBUF_NULLABLE
 
 // .filestore.ResultCode result = 1;
 inline bool PutChunkResponse::has_result() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
   PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
   return value;
 }
 inline void PutChunkResponse::clear_result() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.result_ != nullptr) _impl_.result_->Clear();
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
 }
 inline const ::filestore::ResultCode& PutChunkResponse::_internal_result() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -4113,16 +5500,16 @@ inline void PutChunkResponse::unsafe_arena_set_allocated_result(
   }
   _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.PutChunkResponse.result)
 }
 inline ::filestore::ResultCode* PROTOBUF_NULLABLE PutChunkResponse::release_result() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   ::filestore::ResultCode* released = _impl_.result_;
   _impl_.result_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -4142,7 +5529,7 @@ inline ::filestore::ResultCode* PROTOBUF_NULLABLE PutChunkResponse::unsafe_arena
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:filestore.PutChunkResponse.result)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   ::filestore::ResultCode* temp = _impl_.result_;
   _impl_.result_ = nullptr;
   return temp;
@@ -4157,7 +5544,7 @@ inline ::filestore::ResultCode* PROTOBUF_NONNULL PutChunkResponse::_internal_mut
 }
 inline ::filestore::ResultCode* PROTOBUF_NONNULL PutChunkResponse::mutable_result()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   ::filestore::ResultCode* _msg = _internal_mutable_result();
   // @@protoc_insertion_point(field_mutable:filestore.PutChunkResponse.result)
   return _msg;
@@ -4174,13 +5561,77 @@ inline void PutChunkResponse::set_allocated_result(::filestore::ResultCode* PROT
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   }
 
   _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
   // @@protoc_insertion_point(field_set_allocated:filestore.PutChunkResponse.result)
+}
+
+// string checksum = 2;
+inline void PutChunkResponse::clear_checksum() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.checksum_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& PutChunkResponse::checksum() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.PutChunkResponse.checksum)
+  return _internal_checksum();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void PutChunkResponse::set_checksum(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.checksum_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.PutChunkResponse.checksum)
+}
+inline ::std::string* PROTOBUF_NONNULL PutChunkResponse::mutable_checksum()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_checksum();
+  // @@protoc_insertion_point(field_mutable:filestore.PutChunkResponse.checksum)
+  return _s;
+}
+inline const ::std::string& PutChunkResponse::_internal_checksum() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.checksum_.Get();
+}
+inline void PutChunkResponse::_internal_set_checksum(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.checksum_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL PutChunkResponse::_internal_mutable_checksum() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.checksum_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE PutChunkResponse::release_checksum() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.PutChunkResponse.checksum)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.checksum_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.checksum_.Set("", GetArena());
+  }
+  return released;
+}
+inline void PutChunkResponse::set_allocated_checksum(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.checksum_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.checksum_.IsDefault()) {
+    _impl_.checksum_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.PutChunkResponse.checksum)
 }
 
 // -------------------------------------------------------------------
