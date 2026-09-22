@@ -10,7 +10,10 @@ add_executable(meta_callee
     callee/database/CommonConnectionPool.cc
     file_storage.pb.cc
 )
-target_link_libraries(meta_callee mprpc protobuf::libprotobuf mysqlclient)
+# meta_callee 通过一致性哈希用到 md5Hex（OpenSSL MD5）。mysqlclient 编译时依赖
+# /usr/local/lib 的 libssl（启用 IDEA），而系统 /usr/lib 的 libcrypto 禁用了 IDEA，
+# 二者符号不匹配（EVP_idea_cbc）。故显式链接 /usr/local/lib 的完整版 libcrypto。
+target_link_libraries(meta_callee mprpc protobuf::libprotobuf mysqlclient /usr/local/lib/libcrypto.so.1.1)
 
 # 存储服务端（文件块落盘）
 add_executable(storage_callee

@@ -3,6 +3,7 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
@@ -27,34 +28,29 @@ static std::string basename(const std::string& path)
     return (pos == std::string::npos) ? path : path.substr(pos + 1);
 }
 
-// 上传单个块，失败对同一节点重试；成功返回 true 并输出校验和
-static bool putChunkWithRetry(const filestore::ChunkLocation& loc,
-                              const std::string& filename, int chunkIndex,
-                              const std::string& data, std::string& outChecksum)
+// 批量上传同一节点的多个块（复用一条连接），失败重试；成功返回 true
+static bool putChunksBatchWithRetry(const std::string& ip, uint16_t port,
+                                    const filestore::PutChunksBatchRequest& breq,
+                                    filestore::PutChunksBatchResponse& bresp)
 {
+    MprpcChannel channel(ip, port);
+    channel.connectOnce();   // 建立连接，单次上传内复用（长连接复用）
+    filestore::StorageServiceRpc_Stub stub(&channel);
+
     for (int attempt = 1; attempt <= MAX_RETRY; ++attempt) {
-        MprpcChannel channel(loc.ip(), static_cast<uint16_t>(loc.port()));
-        filestore::StorageServiceRpc_Stub stub(&channel);
-
-        filestore::PutChunkRequest req;
-        req.set_filename(filename);
-        req.set_chunk_index(chunkIndex);
-        req.set_data(data);
-
-        filestore::PutChunkResponse resp;
+        bresp.Clear();
         MprpcController ctl;
-        stub.PutChunk(&ctl, &req, &resp, nullptr);
-        if (!ctl.Failed() && resp.result().errcode() == 0) {
-            outChecksum = resp.checksum();
+        stub.PutChunksBatch(&ctl, &breq, &bresp, nullptr);
+        if (!ctl.Failed() && bresp.result().errcode() == 0) {
             return true;
         }
 
-        std::cerr << "put chunk " << chunkIndex << " attempt " << attempt
-                  << "/" << MAX_RETRY << " failed";
+        std::cerr << "put chunks batch to " << ip << ":" << port << " attempt "
+                  << attempt << "/" << MAX_RETRY << " failed";
         if (ctl.Failed()) {
             std::cerr << ": " << ctl.ErrorText();
         } else {
-            std::cerr << ": " << resp.result().errmsg();
+            std::cerr << ": " << bresp.result().errmsg();
         }
         std::cerr << std::endl;
         if (attempt < MAX_RETRY) {
@@ -64,10 +60,10 @@ static bool putChunkWithRetry(const filestore::ChunkLocation& loc,
     return false;
 }
 
-// 下载单个块，失败对同一节点重试；成功返回 true 并输出块数据
+// 下载单个块（按紧凑存储的 offset/size 读），失败对同一节点重试
 static bool getChunkWithRetry(const filestore::ChunkLocation& loc,
                               const std::string& filename, int chunkIndex,
-                              int chunkSize, std::string& outData)
+                              std::string& outData)
 {
     for (int attempt = 1; attempt <= MAX_RETRY; ++attempt) {
         MprpcChannel channel(loc.ip(), static_cast<uint16_t>(loc.port()));
@@ -76,7 +72,8 @@ static bool getChunkWithRetry(const filestore::ChunkLocation& loc,
         filestore::GetChunkRequest req;
         req.set_filename(filename);
         req.set_chunk_index(chunkIndex);
-        req.set_chunk_size(chunkSize);
+        req.set_offset(loc.offset());
+        req.set_size(loc.size());
 
         filestore::GetChunkResponse resp;
         MprpcController ctl;
@@ -177,33 +174,65 @@ static void doUpload(const std::string& localFile)
         involvedNodes.insert(loc.ip() + ":" + std::to_string(loc.port()));
     }
 
-    // 收集每块校验和（CommitUpload 时登记到元数据）
+    // 每块结果：offset / size / checksum（CommitUpload 时登记）
+    std::vector<int64_t> offsets(chunkCount, 0);
+    std::vector<int32_t> sizes(chunkCount, 0);
     std::vector<std::string> checksums(chunkCount);
 
-    // 2. 逐块流式读取 + 直连上传
-    std::vector<char> buf(CHUNK_SIZE);
+    // 2. 按「目标节点」分组块，同一节点一次批量上传（复用一条连接）
+    std::map<std::string, std::vector<int>> nodeToChunks;
     for (int i = 0; i < chunkCount; ++i) {
         const filestore::ChunkLocation& loc = response.chunks(i);
-        int offset = i * CHUNK_SIZE;
-        int len = static_cast<int>(std::min<int64_t>(CHUNK_SIZE, filesize - offset));
-        in.read(buf.data(), len);
-        std::string chunk(buf.data(), len);
+        nodeToChunks[loc.ip() + ":" + std::to_string(loc.port())].push_back(i);
+    }
 
-        if (!putChunkWithRetry(loc, remoteName, i, chunk, checksums[i])) {
-            std::cerr << "put chunk " << i << " failed, rolling back..." << std::endl;
+    for (const auto& entry : nodeToChunks) {
+        const std::string& node = entry.first;
+        const std::vector<int>& chunkIdxs = entry.second;
+
+        size_t colon = node.find(':');
+        std::string ip = node.substr(0, colon);
+        uint16_t port = static_cast<uint16_t>(std::stoi(node.substr(colon + 1)));
+
+        // 组合同节点所有块的批量请求
+        filestore::PutChunksBatchRequest breq;
+        breq.set_filename(remoteName);
+        for (int idx : chunkIdxs) {
+            int64_t fileOffset = static_cast<int64_t>(idx) * CHUNK_SIZE;
+            int len = static_cast<int>(std::min<int64_t>(CHUNK_SIZE, filesize - fileOffset));
+            std::vector<char> buf(len);
+            in.seekg(fileOffset, std::ios::beg);
+            in.read(buf.data(), len);
+
+            filestore::ChunkData* cd = breq.add_chunks();
+            cd->set_chunk_index(idx);
+            cd->set_data(std::string(buf.data(), len));
+        }
+
+        filestore::PutChunksBatchResponse bresp;
+        if (!putChunksBatchWithRetry(ip, port, breq, bresp)) {
+            std::cerr << "put chunks batch to " << node << " failed, rolling back..." << std::endl;
             rollbackUpload(remoteName, involvedNodes, metaStub);
             return;
         }
-        std::cout << "uploaded chunk " << i << "/" << chunkCount
-                  << " -> " << loc.ip() << ":" << loc.port() << std::endl;
+
+        // 收集该节点每块结果
+        for (const auto& r : bresp.chunks()) {
+            offsets[r.chunk_index()] = r.offset();
+            sizes[r.chunk_index()] = r.size();
+            checksums[r.chunk_index()] = r.checksum();
+        }
+        std::cout << "uploaded " << chunkIdxs.size() << " chunk(s) -> " << node << std::endl;
     }
 
-    // 3. 全部块成功，提交（PENDING -> COMPLETE + 登记校验和）
+    // 3. 全部块成功，提交（PENDING -> COMPLETE + 登记 offset/size/checksum）
     filestore::CommitUploadRequest commitReq;
     commitReq.set_filename(remoteName);
     for (int i = 0; i < chunkCount; ++i) {
         filestore::ChunkLocation* c = commitReq.add_chunks();
         c->set_chunk_index(i);
+        c->set_offset(offsets[i]);
+        c->set_size(sizes[i]);
         c->set_checksum(checksums[i]);
     }
 
@@ -240,7 +269,6 @@ static void doDownload(const std::string& remoteFile)
         return;
     }
 
-    int64_t filesize = response.filesize();
     int chunkCount = response.chunk_count();
 
     mkdir("downloads", 0755);
@@ -254,13 +282,9 @@ static void doDownload(const std::string& remoteFile)
     int64_t written = 0;
     for (int i = 0; i < chunkCount; ++i) {
         const filestore::ChunkLocation& loc = response.chunks(i);
-        int chunkSize = CHUNK_SIZE;
-        if (i == chunkCount - 1) {
-            chunkSize = static_cast<int>(filesize - static_cast<int64_t>(i) * CHUNK_SIZE);
-        }
 
         std::string data;
-        if (!getChunkWithRetry(loc, remoteFile, i, chunkSize, data)) {
+        if (!getChunkWithRetry(loc, remoteFile, i, data)) {
             std::cerr << "get chunk " << i << " failed" << std::endl;
             return;
         }

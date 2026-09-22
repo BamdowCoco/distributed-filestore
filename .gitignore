@@ -9,6 +9,7 @@ bin/**
 !bin/.gitkeep
 
 test/**/*.out
+test/build/
 
 
 # 配置文件

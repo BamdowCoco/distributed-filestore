@@ -3,18 +3,16 @@
 #include <vector>
 #include <sstream>
 #include <cstdint>
+#include <thread>
+#include <mutex>
+#include <chrono>
 
 #include "file_storage.pb.h"
 #include "mprpc_application.h"
 #include "mprpc_provider.h"
+#include "zk_client_util.h"
+#include "common/consistent_hash.h"
 #include "database/CommonConnectionPool.hpp"
-
-// 存储节点地址
-struct StorageNode
-{
-    std::string ip;
-    int port;
-};
 
 // 解析 "ip1:port1,ip2:port2" 形式的存储节点列表
 static std::vector<StorageNode> parseStorageNodes(const std::string& str)
@@ -43,19 +41,52 @@ static std::string escapeSql(MYSQL* conn, const std::string& s)
     return std::string(buf.data(), len);
 }
 
+// 检测表是否存在指定列（查询失败时保守返回 true，跳过 ALTER）
+static bool columnExists(Connection* conn, const std::string& table, const std::string& column)
+{
+    std::string sql =
+        "SELECT COUNT(*) FROM information_schema.COLUMNS "
+        "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '" + table +
+        "' AND COLUMN_NAME = '" + column + "'";
+    MYSQL_RES* res = conn->query(sql);
+    if (res == nullptr) {
+        return true;
+    }
+    MYSQL_ROW row = mysql_fetch_row(res);
+    bool exists = (row != nullptr && row[0] != nullptr && std::string(row[0]) != "0");
+    mysql_free_result(res);
+    return exists;
+}
+
+// 旧表缺列则 ALTER 补齐（幂等迁移）
+static void addColumnIfMissing(Connection* conn, const std::string& table,
+                               const std::string& column, const std::string& definition)
+{
+    if (!columnExists(conn, table, column)) {
+        conn->update("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition);
+    }
+}
+
 // 元数据服务：基于 MySQL 维护 文件名 -> 文件元数据（块位置）的索引
 class MetaService : public filestore::MetaServiceRpc
 {
 public:
     MetaService()
     {
-        std::string nodesStr = MprpcApplication::getConfig().load("storage_nodes");
-        m_nodes = parseStorageNodes(nodesStr);
-
         // 初始化连接池（加载配置、预创建连接、启动生产/回收线程）
         ConnectionPool::getInstance();
         // 确保表存在
         createTablesIfNotExist();
+
+        // 用静态配置作为初始种子（ZK 尚未发现节点时的兜底）
+        std::string nodesStr = MprpcApplication::getConfig().load("storage_nodes");
+        std::vector<StorageNode> seedNodes = parseStorageNodes(nodesStr);
+        if (!seedNodes.empty()) {
+            m_ring.build(seedNodes);
+        }
+
+        // 启动后台轮询线程：动态发现活跃存储节点（P11 动态扩缩容）
+        std::thread([this]() { nodeWatchLoop(); }).detach();
     }
 
     // 上传登记：事务内查重 -> 插入 PENDING 状态索引，返回块分配方案
@@ -64,9 +95,14 @@ public:
                     ::filestore::UploadFileResponse* response,
                     ::google::protobuf::Closure* done) override
     {
-        if (m_nodes.empty()) {
+        bool noNode = false;
+        {
+            std::lock_guard<std::mutex> lock(m_ringMutex);
+            noNode = m_ring.empty();
+        }
+        if (noNode) {
             response->mutable_result()->set_errcode(1);
-            response->mutable_result()->set_errmsg("no storage node configured");
+            response->mutable_result()->set_errmsg("no active storage node");
             done->Run();
             return;
         }
@@ -102,16 +138,19 @@ public:
             return;
         }
 
-        // 计算块分配方案（按块序号取模）
+        // 计算块分配方案（一致性哈希：按 filename#chunk_index 落环）
         std::vector<filestore::ChunkLocation> chunks;
-        for (int i = 0; i < request->chunk_count(); ++i) {
-            const StorageNode& node = m_nodes[i % m_nodes.size()];
+        {
+            std::lock_guard<std::mutex> lock(m_ringMutex);
+            for (int i = 0; i < request->chunk_count(); ++i) {
+                StorageNode node = m_ring.locate(request->filename() + "#" + std::to_string(i));
 
-            filestore::ChunkLocation loc;
-            loc.set_chunk_index(i);
-            loc.set_ip(node.ip);
-            loc.set_port(node.port);
-            chunks.push_back(loc);
+                filestore::ChunkLocation loc;
+                loc.set_chunk_index(i);
+                loc.set_ip(node.ip);
+                loc.set_port(node.port);
+                chunks.push_back(loc);
+            }
         }
 
         // 插入文件主记录（status=0 表示 PENDING）
@@ -178,13 +217,15 @@ public:
         conn->update("START TRANSACTION");
         bool ok = conn->update(
             "UPDATE file_meta SET status=1 WHERE filename='" + filename + "' AND status=0");
-        // 逐块登记校验和
+        // 逐块登记校验和 + 紧凑存储偏移/大小
         for (int i = 0; i < request->chunks_size() && ok; ++i) {
             const auto& c = request->chunks(i);
             std::string checksum = escapeSql(conn->getConn(), c.checksum());
             ok = conn->update(
                 "UPDATE file_chunk SET checksum='" + checksum +
-                "' WHERE filename='" + filename + "' AND chunk_index=" +
+                "', offset=" + std::to_string(c.offset()) +
+                ", size=" + std::to_string(c.size()) +
+                " WHERE filename='" + filename + "' AND chunk_index=" +
                 std::to_string(c.chunk_index()));
         }
 
@@ -260,7 +301,7 @@ public:
         mysql_free_result(res);
 
         MYSQL_RES* chunkRes = conn->query(
-            "SELECT chunk_index, ip, port, checksum FROM file_chunk WHERE filename='" + filename + "' ORDER BY chunk_index");
+            "SELECT chunk_index, ip, port, checksum, offset, size FROM file_chunk WHERE filename='" + filename + "' ORDER BY chunk_index");
         if (chunkRes == nullptr) {
             response->mutable_result()->set_errcode(1);
             response->mutable_result()->set_errmsg("query file_chunk failed");
@@ -280,6 +321,8 @@ public:
             loc->set_ip(crow[1]);
             loc->set_port(std::stoi(crow[2]));
             loc->set_checksum(crow[3]);
+            loc->set_offset(std::stoll(crow[4]));
+            loc->set_size(std::stoi(crow[5]));
         }
         mysql_free_result(chunkRes);
 
@@ -341,12 +384,58 @@ private:
             "ip VARCHAR(64) NOT NULL, "
             "port INT NOT NULL, "
             "checksum VARCHAR(32) NOT NULL DEFAULT '', "
+            "offset BIGINT NOT NULL DEFAULT 0, "
+            "size INT NOT NULL DEFAULT 0, "
             "PRIMARY KEY (filename, chunk_index)"
             ") ENGINE=InnoDB");
+
+        // 旧库迁移：CREATE TABLE IF NOT EXISTS 不会给已存在的旧表补新列，
+        // 这里对 file_chunk 的 checksum/offset/size 列做幂等补齐（缺哪个加哪个）。
+        addColumnIfMissing(conn.get(), "file_chunk", "checksum", "VARCHAR(32) NOT NULL DEFAULT ''");
+        addColumnIfMissing(conn.get(), "file_chunk", "offset", "BIGINT NOT NULL DEFAULT 0");
+        addColumnIfMissing(conn.get(), "file_chunk", "size", "INT NOT NULL DEFAULT 0");
     }
 
 private:
-    std::vector<StorageNode> m_nodes;
+    std::mutex m_ringMutex;    // 保护 m_ring（轮询线程写、UploadFile 读）
+    ConsistentHash m_ring;     // 一致性哈希环，由 ZK 轮询线程动态重建
+
+    // 后台线程：轮询 ZK 临时节点，动态维护活跃存储节点集合（P11 动态扩缩容）
+    void nodeWatchLoop()
+    {
+        ZKClient zk;
+        zk.start();   // 阻塞等待连接（最多 3s）
+
+        std::string serviceName(filestore::StorageServiceRpc::descriptor()->name());
+        std::string nodePath = "/" + serviceName + "/PutChunk";
+
+        while (true) {
+            std::vector<std::string> children = zk.getChildren(nodePath);
+            if (children.empty()) {
+                // 防御 ZK 抖动：空结果保留旧环，不轻易清空节点集合
+                std::cerr << "[meta] no storage node from ZK, keep current ring" << std::endl;
+            } else {
+                std::vector<StorageNode> nodes;
+                nodes.reserve(children.size());
+                for (const std::string& host : children) {
+                    size_t colon = host.find(':');
+                    if (colon == std::string::npos) {
+                        continue;
+                    }
+                    StorageNode node;
+                    node.ip = host.substr(0, colon);
+                    node.port = std::stoi(host.substr(colon + 1));
+                    nodes.push_back(node);
+                }
+                if (!nodes.empty()) {
+                    std::lock_guard<std::mutex> lock(m_ringMutex);
+                    m_ring.build(nodes);
+                    std::cerr << "[meta] refreshed storage nodes, count:" << nodes.size() << std::endl;
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(3));
+        }
+    }
 };
 
 int main(int argc, char** argv)

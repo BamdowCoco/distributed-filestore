@@ -40,7 +40,7 @@ public:
         mkdir(m_dataDir.c_str(), 0755);
     }
 
-    // 上传一个文件块：写到 data_dir/<filename> 的 chunk_index*CHUNK_SIZE 偏移处
+    // 上传一个文件块：紧凑追加写到 data_dir/<filename> 末尾，返回 (offset, size)
     void PutChunk(::google::protobuf::RpcController* controller,
                   const ::filestore::PutChunkRequest* request,
                   ::filestore::PutChunkResponse* response,
@@ -67,22 +67,26 @@ public:
             return;
         }
 
-        long offset = static_cast<long>(request->chunk_index()) * CHUNK_SIZE;
-        fseek(fp, offset, SEEK_SET);
-        size_t nwrite = fwrite(request->data().data(), 1, request->data().size(), fp);
+        // 定位到文件末尾，紧凑追加写
+        fseek(fp, 0, SEEK_END);
+        int64_t offset = static_cast<int64_t>(ftell(fp));
+        int32_t size = static_cast<int32_t>(request->data().size());
+        fwrite(request->data().data(), 1, request->data().size(), fp);
         fclose(fp);
 
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
         response->set_checksum(md5Hex(request->data()));
-        LOG_INFO("put chunk file:%s idx:%d size:%zu checksum:%s",
-                 request->filename().c_str(), request->chunk_index(), nwrite,
-                 response->checksum().c_str());
+        response->set_offset(offset);
+        response->set_size(size);
+        LOG_INFO("put chunk file:%s idx:%d offset:%lld size:%d checksum:%s",
+                 request->filename().c_str(), request->chunk_index(),
+                 static_cast<long long>(offset), size, response->checksum().c_str());
 
         done->Run();
     }
 
-    // 下载一个文件块：从 data_dir/<filename> 的 chunk_index*CHUNK_SIZE 偏移处读取
+    // 下载一个文件块：按紧凑存储记录的 (offset, size) 读取
     void GetChunk(::google::protobuf::RpcController* controller,
                   const ::filestore::GetChunkRequest* request,
                   ::filestore::GetChunkResponse* response,
@@ -105,18 +109,67 @@ public:
             return;
         }
 
-        long offset = static_cast<long>(request->chunk_index()) * CHUNK_SIZE;
-        fseek(fp, offset, SEEK_SET);
-        std::string buf(request->chunk_size(), '\0');
-        size_t nread = fread(&buf[0], 1, request->chunk_size(), fp);
+        fseek(fp, static_cast<long>(request->offset()), SEEK_SET);
+        std::string buf(request->size(), '\0');
+        size_t nread = fread(&buf[0], 1, request->size(), fp);
         buf.resize(nread);
         fclose(fp);
 
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
         response->set_data(buf);
-        LOG_INFO("get chunk file:%s idx:%d size:%zu",
-                 request->filename().c_str(), request->chunk_index(), nread);
+        LOG_INFO("get chunk file:%s idx:%d offset:%lld size:%zu",
+                 request->filename().c_str(), request->chunk_index(),
+                 static_cast<long long>(request->offset()), nread);
+
+        done->Run();
+    }
+
+    // 批量上传：一次请求写入同一节点的多个块（紧凑追加写，减少往返）
+    void PutChunksBatch(::google::protobuf::RpcController* controller,
+                        const ::filestore::PutChunksBatchRequest* request,
+                        ::filestore::PutChunksBatchResponse* response,
+                        ::google::protobuf::Closure* done) override
+    {
+        if (!isValidFilename(request->filename())) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("invalid filename");
+            done->Run();
+            return;
+        }
+
+        std::string path = m_dataDir + "/" + request->filename();
+
+        FILE* fp = fopen(path.c_str(), "r+b");
+        if (fp == nullptr) {
+            fp = fopen(path.c_str(), "wb");
+        }
+        if (fp == nullptr) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("failed to open file for write");
+            done->Run();
+            return;
+        }
+
+        // 顺序紧凑追加写，逐块返回 (offset, size, checksum)
+        fseek(fp, 0, SEEK_END);
+        for (int i = 0; i < request->chunks_size(); ++i) {
+            const auto& chunk = request->chunks(i);
+            int64_t offset = static_cast<int64_t>(ftell(fp));
+            int32_t size = static_cast<int32_t>(chunk.data().size());
+            fwrite(chunk.data().data(), 1, chunk.data().size(), fp);
+
+            filestore::ChunkResult* r = response->add_chunks();
+            r->set_chunk_index(chunk.chunk_index());
+            r->set_offset(offset);
+            r->set_size(size);
+            r->set_checksum(md5Hex(chunk.data()));
+        }
+        fclose(fp);
+
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+        LOG_INFO("put chunks batch file:%s count:%d", request->filename().c_str(), request->chunks_size());
 
         done->Run();
     }

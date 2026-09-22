@@ -1,0 +1,15 @@
+[rpc_server]
+# rpc节点ip地址
+rpc_server_ip=127.0.0.1
+# rpc节点端口号
+rpc_server_port=8004
+
+[zookeeper]
+# zookeeper的ip地址
+zookeeper_ip=127.0.0.1
+# zookeeper的端口号
+zookeeper_port=2181
+
+[storage]
+# 本存储节点的数据落盘目录
+data_dir=filestore/data_node3

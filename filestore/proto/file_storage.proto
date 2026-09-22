@@ -17,6 +17,8 @@ message ChunkLocation
     string ip = 2;
     int32 port = 3;
     string checksum = 4;   // 块 MD5 校验和（上传完成后登记，下载时比对）
+    int64 offset = 5;      // 块在数据文件内的紧凑存储偏移（上传完成后登记）
+    int32 size = 6;        // 块实际大小（字节）
 }
 
 // ===== 元数据服务：文件索引 =====
@@ -103,13 +105,17 @@ message PutChunkResponse
 {
     ResultCode result = 1;
     string checksum = 2;   // 存储端计算返回的块 MD5
+    int64 offset = 3;      // 紧凑追加写后本块的偏移
+    int32 size = 4;        // 本块实际大小
 }
 
 message GetChunkRequest
 {
     string filename = 1;
-    int32 chunk_index = 2;
-    int32 chunk_size = 3;
+    int32 chunk_index = 2;   // 保留：日志/调试用
+    int32 chunk_size = 3;    // 兼容旧字段
+    int64 offset = 4;        // 块在数据文件内的偏移（紧凑存储）
+    int32 size = 5;          // 块实际大小（按此长度读取）
 }
 
 message GetChunkResponse
@@ -118,9 +124,37 @@ message GetChunkResponse
     bytes data = 2;
 }
 
+// 批量上传：一次请求携带同一节点的多个块（减少往返）
+message ChunkData
+{
+    int32 chunk_index = 1;
+    bytes data = 2;
+}
+
+message ChunkResult
+{
+    int32 chunk_index = 1;
+    int64 offset = 2;    // 紧凑追加写后本块偏移
+    int32 size = 3;      // 本块实际大小
+    string checksum = 4; // 本块 MD5
+}
+
+message PutChunksBatchRequest
+{
+    string filename = 1;
+    repeated ChunkData chunks = 2;
+}
+
+message PutChunksBatchResponse
+{
+    ResultCode result = 1;
+    repeated ChunkResult chunks = 2;
+}
+
 service StorageServiceRpc
 {
     rpc PutChunk(PutChunkRequest) returns(PutChunkResponse);
+    rpc PutChunksBatch(PutChunksBatchRequest) returns(PutChunksBatchResponse);
     rpc GetChunk(GetChunkRequest) returns(GetChunkResponse);
     rpc DeleteFile(DeleteFileRequest) returns(DeleteFileResponse);
 }
