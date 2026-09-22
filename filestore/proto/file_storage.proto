@@ -151,10 +151,37 @@ message PutChunksBatchResponse
     repeated ChunkResult chunks = 2;
 }
 
+// 批量下载：一次请求获取同一节点的多个块（按 offset/size 定位，减少往返）
+message GetChunkSpec
+{
+    int32 chunk_index = 1;
+    int64 offset = 2;    // 块在数据文件内的偏移（紧凑存储）
+    int32 size = 3;      // 块实际大小（按此长度读取）
+}
+
+message GetChunksBatchRequest
+{
+    string filename = 1;
+    repeated GetChunkSpec chunks = 2;
+}
+
+message GetChunkData
+{
+    int32 chunk_index = 1;
+    bytes data = 2;
+}
+
+message GetChunksBatchResponse
+{
+    ResultCode result = 1;
+    repeated GetChunkData chunks = 2;
+}
+
 service StorageServiceRpc
 {
     rpc PutChunk(PutChunkRequest) returns(PutChunkResponse);
     rpc PutChunksBatch(PutChunksBatchRequest) returns(PutChunksBatchResponse);
     rpc GetChunk(GetChunkRequest) returns(GetChunkResponse);
+    rpc GetChunksBatch(GetChunksBatchRequest) returns(GetChunksBatchResponse);
     rpc DeleteFile(DeleteFileRequest) returns(DeleteFileResponse);
 }

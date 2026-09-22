@@ -174,6 +174,50 @@ public:
         done->Run();
     }
 
+    // 批量下载：一次请求读取同一节点的多个块（按 offset/size 定位）
+    void GetChunksBatch(::google::protobuf::RpcController* controller,
+                        const ::filestore::GetChunksBatchRequest* request,
+                        ::filestore::GetChunksBatchResponse* response,
+                        ::google::protobuf::Closure* done) override
+    {
+        if (!isValidFilename(request->filename())) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("invalid filename");
+            done->Run();
+            return;
+        }
+
+        std::string path = m_dataDir + "/" + request->filename();
+
+        FILE* fp = fopen(path.c_str(), "rb");
+        if (fp == nullptr) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("file not found");
+            done->Run();
+            return;
+        }
+
+        // 逐块按 (offset, size) 定位读取
+        for (int i = 0; i < request->chunks_size(); ++i) {
+            const auto& spec = request->chunks(i);
+            fseek(fp, static_cast<long>(spec.offset()), SEEK_SET);
+            std::string buf(spec.size(), '\0');
+            size_t nread = fread(&buf[0], 1, spec.size(), fp);
+            buf.resize(nread);
+
+            filestore::GetChunkData* d = response->add_chunks();
+            d->set_chunk_index(spec.chunk_index());
+            d->set_data(buf);
+        }
+        fclose(fp);
+
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+        LOG_INFO("get chunks batch file:%s count:%d", request->filename().c_str(), request->chunks_size());
+
+        done->Run();
+    }
+
     // 删除本节点存储的文件数据
     void DeleteFile(::google::protobuf::RpcController* controller,
                     const ::filestore::DeleteFileRequest* request,
