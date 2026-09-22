@@ -88,6 +88,10 @@ void ZKClient::create(const std::string path, const std::string data, bool isEph
         &ZOO_OPEN_ACL_UNSAFE, (isEphemeral) ? 1 : 0, path_buffer, path_buffer_len);
         if(ZOK == flag) {
             LOG_INFO("create node success! path:%s", path.c_str());
+        } else if(ZNODEEXISTS == flag) {
+            // 竞态：zoo_exists 与 zoo_create 之间非原子，另一进程可能已创建该节点，
+            // 此时视为「节点已存在、目的已达成」继续，而不是 exit
+            LOG_INFO("node already created by peer! path:%s", path.c_str());
         } else {
             LOG_ERROR("failed to create node! path:%s flag:%d", path.c_str(), flag);
             exit(EXIT_FAILURE);
