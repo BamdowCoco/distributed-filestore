@@ -1,4 +1,4 @@
-// 指标3：连接开销（长连接复用 vs 每块新建连接）
+// 指标3：连接开销（复用一条连接 vs 每块新建连接）
 // 本地回环 TCP，对比「每消息新建连接」与「复用一条连接」的 connect 次数与总耗时。
 #include <iostream>
 #include <string>
@@ -129,7 +129,7 @@ int main()
         }
         auto end = std::chrono::steady_clock::now();
         double ms = std::chrono::duration<double, std::milli>(end - start).count();
-        std::cout << "[优化后 长连接复用]   connect 次数 = " << connects
+        std::cout << "[优化后 复用一条连接] connect 次数 = " << connects
                   << "，总耗时 = " << ms << " ms" << std::endl;
         std::cout << "connect 次数降低 = " << (100.0 * (M - 1) / M)
                   << "%（" << M << " -> 1）" << std::endl;

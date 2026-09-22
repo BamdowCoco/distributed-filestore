@@ -34,7 +34,6 @@ static bool putChunksBatchWithRetry(const std::string& ip, uint16_t port,
                                     filestore::PutChunksBatchResponse& bresp)
 {
     MprpcChannel channel(ip, port);
-    channel.connectOnce();   // 建立连接，单次上传内复用（长连接复用）
     filestore::StorageServiceRpc_Stub stub(&channel);
 
     for (int attempt = 1; attempt <= MAX_RETRY; ++attempt) {

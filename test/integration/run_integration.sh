@@ -87,11 +87,11 @@ if command -v strace >/dev/null 2>&1; then
         "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" upload "$TEST_DIR/strace.bin" \
         > "$LOG_DIR/upload_strace.out" 2>&1 || true
 
-    # 统计连到存储节点(8001/8002)的 connect 次数（长连接复用，每节点 1 次）
+    # 统计连到存储节点(8001/8002)的 connect 次数（批量聚合，每节点 1 次）
     STORAGE_CONNECTS=$(grep -cE 'sin_port=htons\((8001|8002)\)' "$STRACE_OUT" || true)
     STORAGE_CONNECTS=${STORAGE_CONNECTS:-0}
 
-    echo "优化后：连到存储节点的 connect 次数 = $STORAGE_CONNECTS（长连接复用，每节点 1 次）"
+    echo "优化后：连到存储节点的 connect 次数 = $STORAGE_CONNECTS（批量聚合，每节点 1 次）"
     echo "优化前（理论）：每块新建连接 = $CHUNKS 次"
     awk -v a="$CHUNKS" -v b="$STORAGE_CONNECTS" \
         'BEGIN { if (a > 0) printf "连接开销降低 = %.1f%%（%d -> %d）\n", 100.0*(a-b)/a, a, b }'

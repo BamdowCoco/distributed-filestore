@@ -49,37 +49,6 @@ static int tcpConnect(const std::string& ip, uint16_t port)
     return fd;
 }
 
-MprpcChannel::~MprpcChannel()
-{
-    closeConn();
-}
-
-// 直连模式：建立（或复用）连接
-bool MprpcChannel::connectOnce()
-{
-    if (m_fd != -1) {
-        return true;   // 已连接，复用
-    }
-    if (!m_useDirectConn) {
-        return false;  // 服务发现模式不支持复用连接
-    }
-    m_fd = tcpConnect(m_targetIp, m_targetPort);
-    if (m_fd == -1) {
-        LOG_ERROR("failed to connect! ip:%s port:%d", m_targetIp.c_str(), m_targetPort);
-        return false;
-    }
-    LOG_INFO("connect success! ip:%s port:%d", m_targetIp.c_str(), m_targetPort);
-    return true;
-}
-
-void MprpcChannel::closeConn()
-{
-    if (m_fd != -1) {
-        close(m_fd);
-        m_fd = -1;
-    }
-}
-
 // 发送请求并按 4 字节长度前缀接收响应
 bool MprpcChannel::sendRecv(int fd, const std::string& sendRpcStr, std::string& responseStr,
                             google::protobuf::RpcController* controller)
@@ -155,20 +124,20 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     std::string responseStr;
 
     if (m_useDirectConn) {
-        // 直连模式：复用连接（长连接复用）
-        if (!connectOnce()) {
+        // 直连模式：短连接，每次 CallMethod 新建连接、发完即关
+        int fd = tcpConnect(m_targetIp, m_targetPort);
+        if (fd == -1) {
             std::string reason = "failed to connect rpc server! ip:" + m_targetIp +
                                  " port:" + std::to_string(m_targetPort);
             LOG_ERROR("%s", reason.c_str());
             controller->SetFailed(reason);
             return;
         }
-        if (!sendRecv(m_fd, sendRpcStr, responseStr, controller)) {
-            // 发送/接收失败：连接可能已失效，关闭以便下次重连
-            closeConn();
+        if (!sendRecv(fd, sendRpcStr, responseStr, controller)) {
+            close(fd);
             return;
         }
-        // 成功后保持连接，供复用；不 close
+        close(fd);  // 短连接：发完即关
     } else {
         // 服务发现模式：向 zk 获取服务方法节点，逐个尝试连接（短连接）
         ZKClient zkClient;

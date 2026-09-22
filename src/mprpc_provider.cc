@@ -129,9 +129,8 @@ void RpcProvider::onMessage(const muduo::net::TcpConnectionPtr& conn,
                muduo::net::Buffer* buffer,
                muduo::Timestamp)
 {
-    // TCP 是字节流，大请求（如 PutChunksBatch 批量上传）可能被拆成多次 onMessage 回调（半包）；
-    // 一个连接上也允许连续到达多个请求（长连接复用）。故逐帧解析：
-    // 先用 peek 判断「header_size(4B) + header + args」是否收全，收全才取走处理，否则等下次回调。
+    // TCP 是字节流，大请求（如 PutChunksBatch 批量上传）可能被拆成多次 onMessage 回调（半包），
+    // 故逐帧解析：先用 peek 判断「header_size(4B) + header + args」是否收全，收全才取走处理，否则等下次回调。
     while (buffer->readableBytes() >= 4) {
         // 读取header_size（前4字节，主机字节序，与客户端 append 一致）
         int32_t headerSize = 0;
@@ -239,5 +238,6 @@ void RpcProvider::sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, cons
 
     // 将响应发送到rpc调用端
     conn->send(sendStr);
-    // 不 shutdown：保持连接供客户端复用（长连接复用）
+    // 响应后关闭连接（短连接），避免服务器累积空闲连接
+    conn->shutdown();
 }
