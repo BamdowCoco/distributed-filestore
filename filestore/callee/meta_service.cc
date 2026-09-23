@@ -6,10 +6,13 @@
 #include <thread>
 #include <mutex>
 #include <chrono>
+#include <set>
 
 #include "file_storage.pb.h"
 #include "mprpc_application.h"
 #include "mprpc_provider.h"
+#include "mprpc_channel.h"
+#include "mprpc_controller.h"
 #include "zk_client_util.h"
 #include "common/consistent_hash.h"
 #include "database/CommonConnectionPool.hpp"
@@ -83,10 +86,14 @@ public:
         std::vector<StorageNode> seedNodes = parseStorageNodes(nodesStr);
         if (!seedNodes.empty()) {
             m_ring.build(seedNodes);
+            m_nodes = seedNodes;
         }
 
         // 启动后台轮询线程：动态发现活跃存储节点（P11 动态扩缩容）
         std::thread([this]() { nodeWatchLoop(); }).detach();
+
+        // 启动后台 GC 线程：定期清理孤儿块（P20）
+        std::thread([this]() { gcLoop(); }).detach();
     }
 
     // 上传登记：事务内查重 -> 插入 PENDING 状态索引，返回块分配方案
@@ -436,8 +443,9 @@ private:
     }
 
 private:
-    std::mutex m_ringMutex;    // 保护 m_ring（轮询线程写、UploadFile 读）
+    std::mutex m_ringMutex;    // 保护 m_ring / m_nodes（轮询线程写、UploadFile 读）
     ConsistentHash m_ring;     // 一致性哈希环，由 ZK 轮询线程动态重建
+    std::vector<StorageNode> m_nodes;   // 当前活跃节点列表（P20 GC 扫描用）
 
     // 后台线程：轮询 ZK 临时节点，动态维护活跃存储节点集合（P11 动态扩缩容）
     void nodeWatchLoop()
@@ -469,10 +477,71 @@ private:
                 if (!nodes.empty()) {
                     std::lock_guard<std::mutex> lock(m_ringMutex);
                     m_ring.build(nodes);
+                    m_nodes = nodes;
                     std::cerr << "[meta] refreshed storage nodes, count:" << nodes.size() << std::endl;
                 }
             }
             std::this_thread::sleep_for(std::chrono::seconds(3));
+        }
+    }
+
+    // 后台线程：定期扫描各存储节点，清理无索引对应的孤儿块（P20）
+    void gcLoop()
+    {
+        // 先等节点发现线程跑起来，避免一开始空扫
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+
+        while (true) {
+            // 1. 取当前活跃节点快照
+            std::vector<StorageNode> nodes;
+            {
+                std::lock_guard<std::mutex> lock(m_ringMutex);
+                nodes = m_nodes;
+            }
+
+            // 2. 取全部在册文件名（含 PENDING，防止误删正在上传的文件）
+            std::set<std::string> knownFiles;
+            {
+                auto conn = ConnectionPool::getInstance().getConnection();
+                if (conn) {
+                    MYSQL_RES* res = conn->query("SELECT filename FROM file_meta");
+                    if (res != nullptr) {
+                        MYSQL_ROW row;
+                        while ((row = mysql_fetch_row(res)) != nullptr) {
+                            knownFiles.insert(row[0]);
+                        }
+                        mysql_free_result(res);
+                    }
+                }
+            }
+
+            // 3. 逐节点 ListFiles，删除「节点上有但 file_meta 无」的孤儿文件
+            for (const StorageNode& node : nodes) {
+                MprpcChannel channel(node.ip, static_cast<uint16_t>(node.port));
+                filestore::StorageServiceRpc_Stub stub(&channel);
+
+                filestore::ListFilesRequest lreq;
+                filestore::ListFilesResponse lresp;
+                MprpcController lctl;
+                stub.ListFiles(&lctl, &lreq, &lresp, nullptr);
+                if (lctl.Failed() || lresp.result().errcode() != 0) {
+                    continue;   // 节点不可达，本轮跳过
+                }
+
+                for (const std::string& name : lresp.filenames()) {
+                    if (knownFiles.find(name) == knownFiles.end()) {
+                        filestore::DeleteFileRequest dreq;
+                        dreq.set_filename(name);
+                        filestore::DeleteFileResponse dresp;
+                        MprpcController dctl;
+                        stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);
+                        std::cerr << "[meta] gc remove orphan file:" << name
+                                  << " on " << node.ip << ":" << node.port << std::endl;
+                    }
+                }
+            }
+
+            std::this_thread::sleep_for(std::chrono::seconds(60));
         }
     }
 };

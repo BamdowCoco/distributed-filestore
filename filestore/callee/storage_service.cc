@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <sys/stat.h>
+#include <dirent.h>
 
 #include "file_storage.pb.h"
 #include "mprpc_application.h"
@@ -240,6 +241,36 @@ public:
             response->mutable_result()->set_errcode(1);
             response->mutable_result()->set_errmsg("file not found or remove failed");
         }
+        done->Run();
+    }
+
+    // 列出本节点 data_dir 下的所有文件名（P20 孤儿块 GC 用）
+    void ListFiles(::google::protobuf::RpcController* controller,
+                   const ::filestore::ListFilesRequest* request,
+                   ::filestore::ListFilesResponse* response,
+                   ::google::protobuf::Closure* done) override
+    {
+        DIR* dir = opendir(m_dataDir.c_str());
+        if (dir == nullptr) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("failed to open data dir");
+            done->Run();
+            return;
+        }
+
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+
+        struct dirent* entry;
+        while ((entry = readdir(dir)) != nullptr) {
+            // 跳过 . / .. / 隐藏文件（数据文件都是普通文件名）
+            if (entry->d_name[0] == '.') {
+                continue;
+            }
+            response->add_filenames(entry->d_name);
+        }
+        closedir(dir);
+
         done->Run();
     }
 

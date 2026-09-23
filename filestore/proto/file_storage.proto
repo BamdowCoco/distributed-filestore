@@ -197,6 +197,17 @@ message GetChunksBatchResponse
     repeated GetChunkData chunks = 2;
 }
 
+// 列出本节点 data_dir 下的所有文件名（P20 孤儿块 GC 用）
+message ListFilesRequest
+{
+}
+
+message ListFilesResponse
+{
+    ResultCode result = 1;
+    repeated string filenames = 2;
+}
+
 service StorageServiceRpc
 {
     rpc PutChunk(PutChunkRequest) returns(PutChunkResponse);
@@ -204,4 +215,5 @@ service StorageServiceRpc
     rpc GetChunk(GetChunkRequest) returns(GetChunkResponse);
     rpc GetChunksBatch(GetChunksBatchRequest) returns(GetChunksBatchResponse);
     rpc DeleteFile(DeleteFileRequest) returns(DeleteFileResponse);
+    rpc ListFiles(ListFilesRequest) returns(ListFilesResponse);
 }
