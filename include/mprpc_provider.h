@@ -6,6 +6,7 @@
 #include <muduo/net/InetAddress.h>
 #include <unordered_map>
 #include <string>
+#include <mutex>
 
 
 // 框架提供的 专门发布rpc服务的网络对象类
@@ -37,8 +38,16 @@ private:
     // 处理读写事件回调函数
     void onMessage(const muduo::net::TcpConnectionPtr& conn,
                    muduo::net::Buffer* buffer,
-                   muduo::Timestamp);
-    
+                   muduo::Timestamp time);
+
     // Closure回调函数 用于序列化rpc响应并发送回客户端
     void sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, const google::protobuf::Message* response);
+
+    // 扫描并关闭空闲超时的连接（P18，由 run() 的定时器周期性触发）
+    void checkIdleConnections();
+
+    // P18 空闲连接追踪：连接名 -> 连接对象 / 最后活跃时间（onMessage 更新，定时器线程扫描）
+    std::mutex m_connMutex;
+    std::unordered_map<std::string, muduo::net::TcpConnectionPtr> m_conns;
+    std::unordered_map<std::string, muduo::Timestamp> m_lastActivity;
 };

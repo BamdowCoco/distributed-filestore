@@ -6,6 +6,13 @@
 
 #include <functional>
 #include <cstring>
+#include <vector>
+#include <muduo/base/Timestamp.h>
+
+// P18 空闲连接超时：超过该时长无请求则关闭（会话式长连接下清理僵尸连接）
+constexpr double kIdleTimeout = 30.0;
+// P18 空闲扫描间隔
+constexpr double kIdleCheckInterval = 5.0;
 
 /*
 service_name => service描述 => Service* 服务对象
@@ -98,6 +105,9 @@ void RpcProvider::run()
 
 
 
+    // 周期性扫描空闲连接，关闭超时僵尸连接（P18）
+    m_eventLoop.runEvery(kIdleCheckInterval, std::bind(&RpcProvider::checkIdleConnections, this));
+
     // 启动网络服务
     server.start();
     m_eventLoop.loop();
@@ -107,8 +117,40 @@ void RpcProvider::run()
 // 处理连接回调函数
 void RpcProvider::onConnection(const muduo::net::TcpConnectionPtr& conn)
 {
-    if (!conn->connected()) {
+    if (conn->connected()) {
+        // 登记连接，记录最后活跃时间（P18 空闲超时追踪）
+        std::lock_guard<std::mutex> lock(m_connMutex);
+        m_conns[conn->name()] = conn;
+        m_lastActivity[conn->name()] = muduo::Timestamp::now();
+    } else {
+        // 移除追踪
+        {
+            std::lock_guard<std::mutex> lock(m_connMutex);
+            m_conns.erase(conn->name());
+            m_lastActivity.erase(conn->name());
+        }
         // 断开与rpc客户端连接
+        conn->shutdown();
+    }
+}
+
+// P18 扫描并关闭空闲超时的连接（由 run() 的定时器周期性触发，运行在 m_eventLoop 线程）
+void RpcProvider::checkIdleConnections()
+{
+    std::vector<muduo::net::TcpConnectionPtr> toShutdown;
+    muduo::Timestamp now = muduo::Timestamp::now();
+    {
+        std::lock_guard<std::mutex> lock(m_connMutex);
+        for (const auto& kv : m_conns) {
+            auto it = m_lastActivity.find(kv.first);
+            if (it != m_lastActivity.end() &&
+                muduo::timeDifference(it->second, now) > kIdleTimeout) {
+                toShutdown.push_back(kv.second);
+            }
+        }
+    }
+    for (const auto& conn : toShutdown) {
+        LOG_INFO("close idle connection: %s", conn->name().c_str());
         conn->shutdown();
     }
 }
@@ -127,8 +169,14 @@ args
 */
 void RpcProvider::onMessage(const muduo::net::TcpConnectionPtr& conn,
                muduo::net::Buffer* buffer,
-               muduo::Timestamp)
+               muduo::Timestamp time)
 {
+    // 更新最后活跃时间（P18 空闲超时追踪）
+    {
+        std::lock_guard<std::mutex> lock(m_connMutex);
+        m_lastActivity[conn->name()] = time;
+    }
+
     // TCP 是字节流，大请求（如 PutChunksBatch 批量上传）可能被拆成多次 onMessage 回调（半包），
     // 故逐帧解析：先用 peek 判断「header_size(4B) + header + args」是否收全，收全才取走处理，否则等下次回调。
     while (buffer->readableBytes() >= 4) {
