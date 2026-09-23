@@ -144,7 +144,7 @@ void RpcProvider::checkIdleConnections()
         for (const auto& kv : m_conns) {
             auto it = m_lastActivity.find(kv.first);
             if (it != m_lastActivity.end() &&
-                muduo::timeDifference(it->second, now) > kIdleTimeout) {
+                muduo::timeDifference(now, it->second) > kIdleTimeout) {
                 toShutdown.push_back(kv.second);
             }
         }
