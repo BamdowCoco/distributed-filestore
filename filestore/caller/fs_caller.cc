@@ -20,6 +20,8 @@
 constexpr int MAX_RETRY = 3;
 // 重试间隔，单位微秒（100ms）
 constexpr useconds_t RETRY_INTERVAL_US = 100 * 1000;
+// 单批最大块数：60MB 载荷 / 每块大小，留 ~4MB 余量避开框架 64MB 请求/响应上限
+constexpr int MAX_BATCH_CHUNKS = (60 * 1024 * 1024) / CHUNK_SIZE;
 
 // 提取路径中的文件名（去掉目录前缀）
 static std::string basename(const std::string& path)
@@ -28,12 +30,12 @@ static std::string basename(const std::string& path)
     return (pos == std::string::npos) ? path : path.substr(pos + 1);
 }
 
-// 批量上传同一节点的多个块（复用一条连接），失败重试；成功返回 true
+// 批量上传同一节点的多个块（复用传入的会话连接），失败重试；成功返回 true
 static bool putChunksBatchWithRetry(const std::string& ip, uint16_t port,
+                                    MprpcChannel& channel,
                                     const filestore::PutChunksBatchRequest& breq,
                                     filestore::PutChunksBatchResponse& bresp)
 {
-    MprpcChannel channel(ip, port);
     filestore::StorageServiceRpc_Stub stub(&channel);
 
     for (int attempt = 1; attempt <= MAX_RETRY; ++attempt) {
@@ -59,12 +61,12 @@ static bool putChunksBatchWithRetry(const std::string& ip, uint16_t port,
     return false;
 }
 
-// 批量下载同一节点的多个块（一次 RPC），失败重试；成功返回 true
+// 批量下载同一节点的多个块（复用传入的会话连接），失败重试；成功返回 true
 static bool getChunksBatchWithRetry(const std::string& ip, uint16_t port,
+                                    MprpcChannel& channel,
                                     const filestore::GetChunksBatchRequest& breq,
                                     filestore::GetChunksBatchResponse& bresp)
 {
-    MprpcChannel channel(ip, port);
     filestore::StorageServiceRpc_Stub stub(&channel);
 
     for (int attempt = 1; attempt <= MAX_RETRY; ++attempt) {
@@ -195,33 +197,42 @@ static void doUpload(const std::string& localFile)
         std::string ip = node.substr(0, colon);
         uint16_t port = static_cast<uint16_t>(std::stoi(node.substr(colon + 1)));
 
-        // 组合同节点所有块的批量请求
-        filestore::PutChunksBatchRequest breq;
-        breq.set_filename(remoteName);
-        for (int idx : chunkIdxs) {
-            int64_t fileOffset = static_cast<int64_t>(idx) * CHUNK_SIZE;
-            int len = static_cast<int>(std::min<int64_t>(CHUNK_SIZE, filesize - fileOffset));
-            std::vector<char> buf(len);
-            in.seekg(fileOffset, std::ios::beg);
-            in.read(buf.data(), len);
+        // 会话式连接：本节点所有子批复用一条连接，循环结束析构自动关闭
+        MprpcChannel channel(ip, port, /*sessionReuse=*/true);
 
-            filestore::ChunkData* cd = breq.add_chunks();
-            cd->set_chunk_index(idx);
-            cd->set_data(std::string(buf.data(), len));
-        }
+        // 按 MAX_BATCH_CHUNKS 拆分子批，避免单请求超 64MB 上限、内存 O(文件/节点数)
+        for (size_t start = 0; start < chunkIdxs.size(); start += MAX_BATCH_CHUNKS) {
+            size_t end = std::min(start + static_cast<size_t>(MAX_BATCH_CHUNKS), chunkIdxs.size());
 
-        filestore::PutChunksBatchResponse bresp;
-        if (!putChunksBatchWithRetry(ip, port, breq, bresp)) {
-            std::cerr << "put chunks batch to " << node << " failed, rolling back..." << std::endl;
-            rollbackUpload(remoteName, involvedNodes, metaStub);
-            return;
-        }
+            // 组合同节点一个子批的批量请求
+            filestore::PutChunksBatchRequest breq;
+            breq.set_filename(remoteName);
+            for (size_t k = start; k < end; ++k) {
+                int idx = chunkIdxs[k];
+                int64_t fileOffset = static_cast<int64_t>(idx) * CHUNK_SIZE;
+                int len = static_cast<int>(std::min<int64_t>(CHUNK_SIZE, filesize - fileOffset));
+                std::vector<char> buf(len);
+                in.seekg(fileOffset, std::ios::beg);
+                in.read(buf.data(), len);
 
-        // 收集该节点每块结果
-        for (const auto& r : bresp.chunks()) {
-            offsets[r.chunk_index()] = r.offset();
-            sizes[r.chunk_index()] = r.size();
-            checksums[r.chunk_index()] = r.checksum();
+                filestore::ChunkData* cd = breq.add_chunks();
+                cd->set_chunk_index(idx);
+                cd->set_data(std::string(buf.data(), len));
+            }
+
+            filestore::PutChunksBatchResponse bresp;
+            if (!putChunksBatchWithRetry(ip, port, channel, breq, bresp)) {
+                std::cerr << "put chunks batch to " << node << " failed, rolling back..." << std::endl;
+                rollbackUpload(remoteName, involvedNodes, metaStub);
+                return;
+            }
+
+            // 收集该子批每块结果
+            for (const auto& r : bresp.chunks()) {
+                offsets[r.chunk_index()] = r.offset();
+                sizes[r.chunk_index()] = r.size();
+                checksums[r.chunk_index()] = r.checksum();
+            }
         }
         std::cout << "uploaded " << chunkIdxs.size() << " chunk(s) -> " << node << std::endl;
     }
@@ -296,34 +307,43 @@ static void doDownload(const std::string& remoteFile)
         std::string ip = node.substr(0, colon);
         uint16_t port = static_cast<uint16_t>(std::stoi(node.substr(colon + 1)));
 
-        // 组合同节点所有块的批量下载请求
-        filestore::GetChunksBatchRequest breq;
-        breq.set_filename(remoteFile);
-        for (int idx : chunkIdxs) {
-            const filestore::ChunkLocation& loc = response.chunks(idx);
-            filestore::GetChunkSpec* spec = breq.add_chunks();
-            spec->set_chunk_index(idx);
-            spec->set_offset(loc.offset());
-            spec->set_size(loc.size());
-        }
+        // 会话式连接：本节点所有子批复用一条连接，循环结束析构自动关闭
+        MprpcChannel channel(ip, port, /*sessionReuse=*/true);
 
-        filestore::GetChunksBatchResponse bresp;
-        if (!getChunksBatchWithRetry(ip, port, breq, bresp)) {
-            std::cerr << "get chunks batch from " << node << " failed" << std::endl;
-            return;
-        }
+        // 按 MAX_BATCH_CHUNKS 拆分子批下载
+        for (size_t start = 0; start < chunkIdxs.size(); start += MAX_BATCH_CHUNKS) {
+            size_t end = std::min(start + static_cast<size_t>(MAX_BATCH_CHUNKS), chunkIdxs.size());
 
-        // 按 chunk_index 回填到文件对应偏移，并做校验和比对
-        for (const auto& d : bresp.chunks()) {
-            int idx = d.chunk_index();
-            const filestore::ChunkLocation& loc = response.chunks(idx);
-            if (!loc.checksum().empty() && md5Hex(d.data()) != loc.checksum()) {
-                std::cerr << "get chunk " << idx << " checksum mismatch" << std::endl;
+            // 组合同节点一个子批的批量下载请求
+            filestore::GetChunksBatchRequest breq;
+            breq.set_filename(remoteFile);
+            for (size_t k = start; k < end; ++k) {
+                int idx = chunkIdxs[k];
+                const filestore::ChunkLocation& loc = response.chunks(idx);
+                filestore::GetChunkSpec* spec = breq.add_chunks();
+                spec->set_chunk_index(idx);
+                spec->set_offset(loc.offset());
+                spec->set_size(loc.size());
+            }
+
+            filestore::GetChunksBatchResponse bresp;
+            if (!getChunksBatchWithRetry(ip, port, channel, breq, bresp)) {
+                std::cerr << "get chunks batch from " << node << " failed" << std::endl;
                 return;
             }
-            out.seekp(static_cast<int64_t>(idx) * CHUNK_SIZE, std::ios::beg);
-            out.write(d.data().data(), d.data().size());
-            written += d.data().size();
+
+            // 按 chunk_index 回填到文件对应偏移，并做校验和比对
+            for (const auto& d : bresp.chunks()) {
+                int idx = d.chunk_index();
+                const filestore::ChunkLocation& loc = response.chunks(idx);
+                if (!loc.checksum().empty() && md5Hex(d.data()) != loc.checksum()) {
+                    std::cerr << "get chunk " << idx << " checksum mismatch" << std::endl;
+                    return;
+                }
+                out.seekp(static_cast<int64_t>(idx) * CHUNK_SIZE, std::ios::beg);
+                out.write(d.data().data(), d.data().size());
+                written += d.data().size();
+            }
         }
     }
     out.close();

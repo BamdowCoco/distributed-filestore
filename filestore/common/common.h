@@ -4,7 +4,7 @@
 #include <openssl/md5.h>
 
 // 文件分块大小（存储服务端与客户端共享，避免两处定义漂移）
-constexpr int CHUNK_SIZE = 1024;
+constexpr int CHUNK_SIZE = 4 * 1024 * 1024;
 
 // 计算数据的 MD5，返回 32 字符小写十六进制
 static inline std::string md5Hex(const std::string& data)
