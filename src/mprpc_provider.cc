@@ -216,6 +216,9 @@ void RpcProvider::onMessage(const muduo::net::TcpConnectionPtr& conn,
 
         // 执行相应的rpc方法
         service->CallMethod(method, nullptr, request, response, done);
+
+        // request 生命周期结束（handler 同步执行完毕），释放，避免大请求（批量上传）泄漏
+        delete request;
     }
 }
 
@@ -227,9 +230,10 @@ void RpcProvider::sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, cons
     if (!response->SerializeToString(&responseStr)) {
         LOG_ERROR("failed to serialize to string ! content:%s", responseStr.c_str());
         conn->shutdown();
+        delete response;   // 序列化失败也需释放
         return;
     }
-    
+
     // 响应加 4 字节长度前缀，客户端按长度读（长连接复用）
     int32_t respSize = responseStr.size();
     std::string sendStr;
@@ -240,4 +244,7 @@ void RpcProvider::sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, cons
     conn->send(sendStr);
     // 响应后关闭连接（短连接），避免服务器累积空闲连接
     conn->shutdown();
+
+    // 释放 response，避免批量大响应（批量下载）泄漏
+    delete response;
 }
