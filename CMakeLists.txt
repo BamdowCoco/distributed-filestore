@@ -32,3 +32,5 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 add_subdirectory(${PROJECT_SOURCE_DIR}/example)
 # filestore 分布式文件存储系统（框架应用场景）
 add_subdirectory(${PROJECT_SOURCE_DIR}/filestore)
+# test 测试工具（bench_rpc_latency 等）
+add_subdirectory(${PROJECT_SOURCE_DIR}/test)

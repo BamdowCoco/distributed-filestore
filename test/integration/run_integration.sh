@@ -71,13 +71,14 @@ if [ "$READY" -ne 3 ]; then
 fi
 echo "8001 / 8002 / 8003 已就绪"
 
-# 生成 1MB 随机内容，复制成两个不同文件名（避免第二次上传「文件已存在」）
-dd if=/dev/urandom of="$TEST_DIR/blob.bin" bs=1024 count=1024 2>/dev/null
+# 生成 16MB 随机内容（4MB 块 × 4 块），复制成两个不同文件名（避免第二次上传「文件已存在」）
+CHUNK_SIZE=$((4 * 1024 * 1024))
+dd if=/dev/urandom of="$TEST_DIR/blob.bin" bs=1M count=16 2>/dev/null
 cp "$TEST_DIR/blob.bin" "$TEST_DIR/strace.bin"
 cp "$TEST_DIR/blob.bin" "$TEST_DIR/time.bin"
 FSIZE=$(stat -c%s "$TEST_DIR/blob.bin")
-CHUNKS=$(( (FSIZE + 1023) / 1024 ))
-echo "测试文件：$FSIZE 字节（$CHUNKS 块，CHUNK_SIZE=1024）"
+CHUNKS=$(( (FSIZE + CHUNK_SIZE - 1) / CHUNK_SIZE ))
+echo "测试文件：$FSIZE 字节（$CHUNKS 块，CHUNK_SIZE=4MB）"
 
 echo
 echo "========== 连接开销（strace 统计 connect） =========="

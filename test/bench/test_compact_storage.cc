@@ -9,6 +9,9 @@
 
 #include "consistent_hash.h"
 
+// 单元块大小：与框架 CHUNK_SIZE 解耦，保持 1KB 以快速模拟稀疏块的空洞占比
+constexpr int BLOCK_SIZE = 1024;
+
 static std::string nodeId(const StorageNode& n)
 {
     return n.ip + ":" + std::to_string(n.port);
@@ -33,17 +36,17 @@ int main()
         }
     }
 
-    std::string data(CHUNK_SIZE, 'a');
+    std::string data(BLOCK_SIZE, 'a');
 
     std::string offsetPath = "test/bench/build/test_offset.dat";
     std::string compactPath = "test/bench/build/test_compact.dat";
 
-    // 固定偏移写：offset = chunk_index * CHUNK_SIZE
+    // 固定偏移写：offset = chunk_index * BLOCK_SIZE
     {
         FILE* fp = fopen(offsetPath.c_str(), "wb");
         for (int idx : indexes) {
-            fseek(fp, static_cast<long>(idx) * CHUNK_SIZE, SEEK_SET);
-            fwrite(data.data(), 1, CHUNK_SIZE, fp);
+            fseek(fp, static_cast<long>(idx) * BLOCK_SIZE, SEEK_SET);
+            fwrite(data.data(), 1, BLOCK_SIZE, fp);
         }
         fclose(fp);
     }
@@ -52,7 +55,7 @@ int main()
     {
         FILE* fp = fopen(compactPath.c_str(), "wb");
         for (size_t k = 0; k < indexes.size(); ++k) {
-            fwrite(data.data(), 1, CHUNK_SIZE, fp);
+            fwrite(data.data(), 1, BLOCK_SIZE, fp);
         }
         fclose(fp);
     }

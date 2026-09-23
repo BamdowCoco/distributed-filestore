@@ -4,13 +4,16 @@
 #include <string>
 #include <chrono>
 
-#include "common.h"   // md5Hex, CHUNK_SIZE
+#include "common.h"   // md5Hex
+
+// 单元块大小：与框架 CHUNK_SIZE 解耦，保持 1KB 以便快速测量 per-byte 成本
+constexpr int BLOCK_SIZE = 1024;
 
 int main()
 {
     // 构造一块 1024 字节的测试数据（模拟文件块）
-    std::string data(CHUNK_SIZE, '\0');
-    for (int i = 0; i < CHUNK_SIZE; ++i) {
+    std::string data(BLOCK_SIZE, '\0');
+    for (int i = 0; i < BLOCK_SIZE; ++i) {
         data[i] = static_cast<char>(i * 31 + 7);
     }
 
@@ -32,7 +35,7 @@ int main()
     double perUs = totalMs * 1000.0 / N;
 
     std::cout << "===== 指标1：单块 MD5 校验耗时 =====" << std::endl;
-    std::cout << "块大小 CHUNK_SIZE = " << CHUNK_SIZE << " 字节" << std::endl;
+    std::cout << "块大小 BLOCK_SIZE = " << BLOCK_SIZE << " 字节" << std::endl;
     std::cout << "循环次数 N = " << N << std::endl;
     std::cout << "总耗时 = " << totalMs << " ms" << std::endl;
     std::cout << "平均每次 md5Hex = " << perUs << " us" << std::endl;
