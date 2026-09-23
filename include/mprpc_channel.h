@@ -8,11 +8,19 @@ class MprpcChannel: public google::protobuf::RpcChannel
 {
 public:
     // 默认构造：服务发现模式，通过 ZooKeeper 自动发现服务端点
-    MprpcChannel() : m_useDirectConn(false), m_targetPort(0) {}
+    MprpcChannel() : m_useDirectConn(false), m_targetPort(0), m_fd(-1), m_sessionReuse(false) {}
 
-    // 直连模式：指定目标节点 ip/port，跳过 ZooKeeper 服务发现
-    MprpcChannel(const std::string& ip, uint16_t port)
-        : m_useDirectConn(true), m_targetIp(ip), m_targetPort(port) {}
+    // 直连模式：指定目标节点 ip/port，跳过 ZooKeeper 服务发现。
+    // sessionReuse 为真时会话内复用同一条连接（客户端主动 close），默认 false 保持短连接。
+    MprpcChannel(const std::string& ip, uint16_t port, bool sessionReuse = false)
+        : m_useDirectConn(true), m_targetIp(ip), m_targetPort(port),
+          m_fd(-1), m_sessionReuse(sessionReuse) {}
+
+    // 析构兜底关闭会话连接
+    ~MprpcChannel();
+
+    // 客户端主动关闭会话内复用的连接（会话结束调用）
+    void closeConnection();
 
     // 重写CallMethod
     // 所有stub代理对象调用rpc方法都会调用该函数
@@ -29,4 +37,6 @@ private:
     bool m_useDirectConn;      // 是否直连模式
     std::string m_targetIp;    // 直连目标 ip
     uint16_t m_targetPort;     // 直连目标端口
+    int m_fd;                  // 会话复用的连接，-1 表示未连接
+    bool m_sessionReuse;       // 是否会话内复用连接（默认 false = 短连接）
 };
