@@ -83,6 +83,25 @@ message CancelUploadResponse
     ResultCode result = 1;
 }
 
+// 存储节点（去重后的 ip/port）
+message StorageNode
+{
+    string ip = 1;
+    int32 port = 2;
+}
+
+// 查询某文件涉及的（去重后的）存储节点列表
+message GetFileNodesRequest
+{
+    string filename = 1;
+}
+
+message GetFileNodesResponse
+{
+    ResultCode result = 1;
+    repeated StorageNode nodes = 2;
+}
+
 service MetaServiceRpc
 {
     rpc UploadFile(UploadFileRequest) returns(UploadFileResponse);
@@ -90,6 +109,7 @@ service MetaServiceRpc
     rpc CancelUpload(CancelUploadRequest) returns(CancelUploadResponse);
     rpc QueryFile(QueryFileRequest) returns(QueryFileResponse);
     rpc DeleteFile(DeleteFileRequest) returns(DeleteFileResponse);
+    rpc GetFileNodes(GetFileNodesRequest) returns(GetFileNodesResponse);
 }
 
 // ===== 存储服务：文件块 =====

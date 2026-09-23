@@ -53,6 +53,12 @@ PROTOBUF_CONSTINIT ::google::protobuf::internal::ReflectionData
         {&::_pbi::kDescriptorMethods, &::descriptor_table_file_5fstorage_2eproto, /* tracker*/ nullptr,},
         // ::filestore::CancelUploadResponse
         {&::_pbi::kDescriptorMethods, &::descriptor_table_file_5fstorage_2eproto, /* tracker*/ nullptr,},
+        // ::filestore::StorageNode
+        {&::_pbi::kDescriptorMethods, &::descriptor_table_file_5fstorage_2eproto, /* tracker*/ nullptr,},
+        // ::filestore::GetFileNodesRequest
+        {&::_pbi::kDescriptorMethods, &::descriptor_table_file_5fstorage_2eproto, /* tracker*/ nullptr,},
+        // ::filestore::GetFileNodesResponse
+        {&::_pbi::kDescriptorMethods, &::descriptor_table_file_5fstorage_2eproto, /* tracker*/ nullptr,},
         // ::filestore::PutChunkRequest
         {&::_pbi::kDescriptorMethods, &::descriptor_table_file_5fstorage_2eproto, /* tracker*/ nullptr,},
         // ::filestore::PutChunkResponse
@@ -237,6 +243,158 @@ const ::_pbi::ClassData* UploadFileRequest_get_class_data() {
   return UploadFileRequest_globals_.GetClassData();
 #else
   return UploadFileRequest_class_data_.base();
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+}
+}  // namespace
+#endif  // PROTOBUF_CUSTOM_VTABLE
+class StorageNode::_Internal {
+ public:
+  using HasBits = decltype(::std::declval<StorageNode>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(StorageNode, _impl_._has_bits_);
+};
+
+constexpr StorageNode::ParseTableT_ StorageNode::InternalGenerateParseTable_(const ::_pbi::ClassData* class_data) {
+  return ParseTableT_{
+    {
+      PROTOBUF_FIELD_OFFSET(StorageNode, _impl_._has_bits_),
+      0, // no _extensions_
+      2, 8,  // max_field_number, fast_idx_mask
+      offsetof(ParseTableT_, field_lookup_table),
+      4294967292,  // skipmap
+      offsetof(ParseTableT_, field_entries),
+      2,  // num_field_entries
+      0,  // num_aux_entries
+      offsetof(ParseTableT_, field_names),  // no aux_entries
+      class_data,
+      nullptr,  // post_loop_handler
+      ::_pbi::TcParser::GenericFallback,  // fallback
+      #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+      ::_pbi::TcParser::GetTable<::filestore::StorageNode>(),  // to_prefetch
+      #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+    }, {{
+      // int32 port = 2;
+      {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(StorageNode, _impl_.port_), 1>(),
+       {16, 1, 0,
+        PROTOBUF_FIELD_OFFSET(StorageNode, _impl_.port_)}},
+      // string ip = 1;
+      {::_pbi::TcParser::FastUS1,
+       {10, 0, 0,
+        PROTOBUF_FIELD_OFFSET(StorageNode, _impl_.ip_)}},
+    }}, {{
+      65535, 65535
+    }}, {{
+      // string ip = 1;
+      {PROTOBUF_FIELD_OFFSET(StorageNode, _impl_.ip_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+      // int32 port = 2;
+      {PROTOBUF_FIELD_OFFSET(StorageNode, _impl_.port_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    }},
+    // no aux_entries
+    {{
+      "\25\2\0\0\0\0\0\0"
+      "filestore.StorageNode"
+      "ip"
+    }},
+  };
+}
+
+
+inline constexpr StorageNode::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    ::_pbi::ConstantInitialized) noexcept
+      : ip_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        port_{0} {}
+
+template <typename>
+constexpr StorageNode::StorageNode(::_pbi::ConstantInitialized,
+                       const ::_pbi::ClassData* PROTOBUF_NONNULL class_data)
+    : ::google::protobuf::Message(
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          class_data
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          ),
+      _impl_(internal_visibility(), ::_pbi::ConstantInitialized()) {
+}
+inline void* PROTOBUF_NONNULL StorageNode::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) StorageNode(arena);
+}
+constexpr auto StorageNode::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(StorageNode), alignof(StorageNode));
+}
+constexpr auto StorageNode::InternalGenerateClassData_(
+    const MessageLite& prototype,
+    const ::google::protobuf::internal::TcParseTableBase* tc_table) {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &prototype,
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+          &_table_.header,
+#else
+          tc_table,
+#endif
+          nullptr,  // IsInitialized
+          &StorageNode::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<StorageNode>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &StorageNode::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<StorageNode>(), &StorageNode::ByteSizeLong,
+              &StorageNode::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(StorageNode, _impl_._cached_size_),
+          false,
+      },
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+      &file_reflection_data[12],
+#else   // !PROTOBUF_MESSAGE_GLOBALS
+      &::_pbi::kDescriptorMethods,
+      &descriptor_table_file_5fstorage_2eproto,
+      nullptr,  // tracker
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+  };
+}
+struct StorageNodeGlobalsTypeInternal : ::_pbi::MessageGlobalsBase {
+  constexpr StorageNodeGlobalsTypeInternal()
+      :
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+        _default(::_pbi::ConstantInitialized{},
+                 StorageNode_class_data_.base())
+#else   // !PROTOBUF_MESSAGE_GLOBALS
+        MessageGlobalsBase(StorageNode::InternalGenerateClassData_(
+            _default, &StorageNode_globals_._table.header)),
+        _default(::_pbi::ConstantInitialized{}, GetClassData()),
+        _table(::_pbi::PrivateAccess::GenerateParseTable<StorageNode>(
+            GetClassData()))
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+  {
+  }
+  ~StorageNodeGlobalsTypeInternal() {}
+  union {
+    alignas(::_pbi::kMaxMessageAlignment) StorageNode _default;
+  };
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+  decltype(::_pbi::PrivateAccess::GenerateParseTable<StorageNode>(
+      ::std::declval<const ::_pbi::ClassData*>())) _table;
+#endif
+};
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+static_assert(PROTOBUF_FIELD_OFFSET(StorageNodeGlobalsTypeInternal, _default) ==
+              ::_pbi::MessageGlobalsBase::OffsetToDefault());
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROTOBUF_MESSAGE_GLOBALS_CONST StorageNodeGlobalsTypeInternal StorageNode_globals_
+        PROTOBUF_MESSAGE_GLOBALS_SECTION(.data.rel.ro);
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+namespace {
+const ::_pbi::ClassData* StorageNode_get_class_data() {
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+  return StorageNode_globals_.GetClassData();
+#else
+  return StorageNode_class_data_.base();
 #endif  // PROTOBUF_MESSAGE_GLOBALS
 }
 }  // namespace
@@ -646,7 +804,7 @@ constexpr auto PutChunkRequest::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[12],
+      &file_reflection_data[15],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -693,6 +851,151 @@ const ::_pbi::ClassData* PutChunkRequest_get_class_data() {
   return PutChunkRequest_globals_.GetClassData();
 #else
   return PutChunkRequest_class_data_.base();
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+}
+}  // namespace
+#endif  // PROTOBUF_CUSTOM_VTABLE
+class GetFileNodesRequest::_Internal {
+ public:
+  using HasBits = decltype(::std::declval<GetFileNodesRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GetFileNodesRequest, _impl_._has_bits_);
+};
+
+constexpr GetFileNodesRequest::ParseTableT_ GetFileNodesRequest::InternalGenerateParseTable_(const ::_pbi::ClassData* class_data) {
+  return ParseTableT_{
+    {
+      PROTOBUF_FIELD_OFFSET(GetFileNodesRequest, _impl_._has_bits_),
+      0, // no _extensions_
+      1, 0,  // max_field_number, fast_idx_mask
+      offsetof(ParseTableT_, field_lookup_table),
+      4294967294,  // skipmap
+      offsetof(ParseTableT_, field_entries),
+      1,  // num_field_entries
+      0,  // num_aux_entries
+      offsetof(ParseTableT_, field_names),  // no aux_entries
+      class_data,
+      nullptr,  // post_loop_handler
+      ::_pbi::TcParser::GenericFallback,  // fallback
+      #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+      ::_pbi::TcParser::GetTable<::filestore::GetFileNodesRequest>(),  // to_prefetch
+      #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+    }, {{
+      // string filename = 1;
+      {::_pbi::TcParser::FastUS1,
+       {10, 0, 0,
+        PROTOBUF_FIELD_OFFSET(GetFileNodesRequest, _impl_.filename_)}},
+    }}, {{
+      65535, 65535
+    }}, {{
+      // string filename = 1;
+      {PROTOBUF_FIELD_OFFSET(GetFileNodesRequest, _impl_.filename_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    }},
+    // no aux_entries
+    {{
+      "\35\10\0\0\0\0\0\0"
+      "filestore.GetFileNodesRequest"
+      "filename"
+    }},
+  };
+}
+
+
+inline constexpr GetFileNodesRequest::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    ::_pbi::ConstantInitialized) noexcept
+      : filename_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+constexpr GetFileNodesRequest::GetFileNodesRequest(::_pbi::ConstantInitialized,
+                       const ::_pbi::ClassData* PROTOBUF_NONNULL class_data)
+    : ::google::protobuf::Message(
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          class_data
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          ),
+      _impl_(internal_visibility(), ::_pbi::ConstantInitialized()) {
+}
+inline void* PROTOBUF_NONNULL GetFileNodesRequest::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) GetFileNodesRequest(arena);
+}
+constexpr auto GetFileNodesRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GetFileNodesRequest), alignof(GetFileNodesRequest));
+}
+constexpr auto GetFileNodesRequest::InternalGenerateClassData_(
+    const MessageLite& prototype,
+    const ::google::protobuf::internal::TcParseTableBase* tc_table) {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &prototype,
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+          &_table_.header,
+#else
+          tc_table,
+#endif
+          nullptr,  // IsInitialized
+          &GetFileNodesRequest::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<GetFileNodesRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &GetFileNodesRequest::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<GetFileNodesRequest>(), &GetFileNodesRequest::ByteSizeLong,
+              &GetFileNodesRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(GetFileNodesRequest, _impl_._cached_size_),
+          false,
+      },
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+      &file_reflection_data[13],
+#else   // !PROTOBUF_MESSAGE_GLOBALS
+      &::_pbi::kDescriptorMethods,
+      &descriptor_table_file_5fstorage_2eproto,
+      nullptr,  // tracker
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+  };
+}
+struct GetFileNodesRequestGlobalsTypeInternal : ::_pbi::MessageGlobalsBase {
+  constexpr GetFileNodesRequestGlobalsTypeInternal()
+      :
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+        _default(::_pbi::ConstantInitialized{},
+                 GetFileNodesRequest_class_data_.base())
+#else   // !PROTOBUF_MESSAGE_GLOBALS
+        MessageGlobalsBase(GetFileNodesRequest::InternalGenerateClassData_(
+            _default, &GetFileNodesRequest_globals_._table.header)),
+        _default(::_pbi::ConstantInitialized{}, GetClassData()),
+        _table(::_pbi::PrivateAccess::GenerateParseTable<GetFileNodesRequest>(
+            GetClassData()))
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+  {
+  }
+  ~GetFileNodesRequestGlobalsTypeInternal() {}
+  union {
+    alignas(::_pbi::kMaxMessageAlignment) GetFileNodesRequest _default;
+  };
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+  decltype(::_pbi::PrivateAccess::GenerateParseTable<GetFileNodesRequest>(
+      ::std::declval<const ::_pbi::ClassData*>())) _table;
+#endif
+};
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+static_assert(PROTOBUF_FIELD_OFFSET(GetFileNodesRequestGlobalsTypeInternal, _default) ==
+              ::_pbi::MessageGlobalsBase::OffsetToDefault());
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROTOBUF_MESSAGE_GLOBALS_CONST GetFileNodesRequestGlobalsTypeInternal GetFileNodesRequest_globals_
+        PROTOBUF_MESSAGE_GLOBALS_SECTION(.data.rel.ro);
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+namespace {
+const ::_pbi::ClassData* GetFileNodesRequest_get_class_data() {
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+  return GetFileNodesRequest_globals_.GetClassData();
+#else
+  return GetFileNodesRequest_class_data_.base();
 #endif  // PROTOBUF_MESSAGE_GLOBALS
 }
 }  // namespace
@@ -801,7 +1104,7 @@ constexpr auto GetChunkSpec::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[20],
+      &file_reflection_data[23],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -977,7 +1280,7 @@ constexpr auto GetChunkRequest::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[14],
+      &file_reflection_data[17],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -1126,7 +1429,7 @@ constexpr auto GetChunkData::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[22],
+      &file_reflection_data[25],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -1437,7 +1740,7 @@ constexpr auto ChunkResult::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[17],
+      &file_reflection_data[20],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -1771,7 +2074,7 @@ constexpr auto ChunkData::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[16],
+      &file_reflection_data[19],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -2416,7 +2719,7 @@ constexpr auto PutChunksBatchResponse::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[19],
+      &file_reflection_data[22],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -2578,7 +2881,7 @@ constexpr auto PutChunksBatchRequest::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[18],
+      &file_reflection_data[21],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -2750,7 +3053,7 @@ constexpr auto PutChunkResponse::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[13],
+      &file_reflection_data[16],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -2797,6 +3100,168 @@ const ::_pbi::ClassData* PutChunkResponse_get_class_data() {
   return PutChunkResponse_globals_.GetClassData();
 #else
   return PutChunkResponse_class_data_.base();
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+}
+}  // namespace
+#endif  // PROTOBUF_CUSTOM_VTABLE
+class GetFileNodesResponse::_Internal {
+ public:
+  using HasBits = decltype(::std::declval<GetFileNodesResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_._has_bits_);
+};
+
+constexpr GetFileNodesResponse::ParseTableT_ GetFileNodesResponse::InternalGenerateParseTable_(const ::_pbi::ClassData* class_data) {
+  return ParseTableT_{
+    {
+      PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_._has_bits_),
+      0, // no _extensions_
+      2, 8,  // max_field_number, fast_idx_mask
+      offsetof(ParseTableT_, field_lookup_table),
+      4294967292,  // skipmap
+      offsetof(ParseTableT_, field_entries),
+      2,  // num_field_entries
+      2,  // num_aux_entries
+      offsetof(ParseTableT_, aux_entries),
+      class_data,
+      nullptr,  // post_loop_handler
+      ::_pbi::TcParser::GenericFallback,  // fallback
+      #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+      ::_pbi::TcParser::GetTable<::filestore::GetFileNodesResponse>(),  // to_prefetch
+      #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+    }, {{
+      // repeated .filestore.StorageNode nodes = 2;
+      {::_pbi::TcParser::FastMtR1,
+       {18, 0, 1,
+        PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_.nodes_)}},
+      // .filestore.ResultCode result = 1;
+      {::_pbi::TcParser::FastMtS1,
+       {10, 1, 0,
+        PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_.result_)}},
+    }}, {{
+      65535, 65535
+    }}, {{
+      // .filestore.ResultCode result = 1;
+      {PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_.result_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+      // repeated .filestore.StorageNode nodes = 2;
+      {PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_.nodes_), _Internal::kHasBitsOffset + 0, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    }},
+    {{
+        #ifndef PROTOBUF_MESSAGE_GLOBALS
+        {::_pbi::TcParser::GetTable<::filestore::ResultCode>()},
+        #else
+        {::_pbi::FieldAuxMessageGlobals(), &::filestore::ResultCode_globals_},
+        #endif
+        #ifndef PROTOBUF_MESSAGE_GLOBALS
+        {::_pbi::TcParser::GetTable<::filestore::StorageNode>()},
+        #else
+        {::_pbi::FieldAuxMessageGlobals(), &::filestore::StorageNode_globals_},
+        #endif
+    }},
+    {{
+    }},
+  };
+}
+
+
+inline constexpr GetFileNodesResponse::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    ::_pbi::ConstantInitialized) noexcept
+      : nodes_ { visibility, ::_pbi::InternalMetadataOffset::Build<
+            ::filestore::GetFileNodesResponse,
+            PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesResponse, _impl_.nodes_)>()
+         }
+        ,
+        result_{nullptr} {}
+
+template <typename>
+constexpr GetFileNodesResponse::GetFileNodesResponse(::_pbi::ConstantInitialized,
+                       const ::_pbi::ClassData* PROTOBUF_NONNULL class_data)
+    : ::google::protobuf::Message(
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          class_data
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          ),
+      _impl_(internal_visibility(), ::_pbi::ConstantInitialized()) {
+}
+inline void* PROTOBUF_NONNULL GetFileNodesResponse::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) GetFileNodesResponse(arena);
+}
+constexpr auto GetFileNodesResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GetFileNodesResponse), alignof(GetFileNodesResponse));
+}
+constexpr auto GetFileNodesResponse::InternalGenerateClassData_(
+    const MessageLite& prototype,
+    const ::google::protobuf::internal::TcParseTableBase* tc_table) {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &prototype,
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+          &_table_.header,
+#else
+          tc_table,
+#endif
+          nullptr,  // IsInitialized
+          &GetFileNodesResponse::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<GetFileNodesResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &GetFileNodesResponse::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<GetFileNodesResponse>(), &GetFileNodesResponse::ByteSizeLong,
+              &GetFileNodesResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(GetFileNodesResponse, _impl_._cached_size_),
+          false,
+      },
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+      &file_reflection_data[14],
+#else   // !PROTOBUF_MESSAGE_GLOBALS
+      &::_pbi::kDescriptorMethods,
+      &descriptor_table_file_5fstorage_2eproto,
+      nullptr,  // tracker
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+  };
+}
+struct GetFileNodesResponseGlobalsTypeInternal : ::_pbi::MessageGlobalsBase {
+  constexpr GetFileNodesResponseGlobalsTypeInternal()
+      :
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+        _default(::_pbi::ConstantInitialized{},
+                 GetFileNodesResponse_class_data_.base())
+#else   // !PROTOBUF_MESSAGE_GLOBALS
+        MessageGlobalsBase(GetFileNodesResponse::InternalGenerateClassData_(
+            _default, &GetFileNodesResponse_globals_._table.header)),
+        _default(::_pbi::ConstantInitialized{}, GetClassData()),
+        _table(::_pbi::PrivateAccess::GenerateParseTable<GetFileNodesResponse>(
+            GetClassData()))
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+  {
+  }
+  ~GetFileNodesResponseGlobalsTypeInternal() {}
+  union {
+    alignas(::_pbi::kMaxMessageAlignment) GetFileNodesResponse _default;
+  };
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+  decltype(::_pbi::PrivateAccess::GenerateParseTable<GetFileNodesResponse>(
+      ::std::declval<const ::_pbi::ClassData*>())) _table;
+#endif
+};
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+static_assert(PROTOBUF_FIELD_OFFSET(GetFileNodesResponseGlobalsTypeInternal, _default) ==
+              ::_pbi::MessageGlobalsBase::OffsetToDefault());
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROTOBUF_MESSAGE_GLOBALS_CONST GetFileNodesResponseGlobalsTypeInternal GetFileNodesResponse_globals_
+        PROTOBUF_MESSAGE_GLOBALS_SECTION(.data.rel.ro);
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+namespace {
+const ::_pbi::ClassData* GetFileNodesResponse_get_class_data() {
+#ifdef PROTOBUF_MESSAGE_GLOBALS
+  return GetFileNodesResponse_globals_.GetClassData();
+#else
+  return GetFileNodesResponse_class_data_.base();
 #endif  // PROTOBUF_MESSAGE_GLOBALS
 }
 }  // namespace
@@ -2912,7 +3377,7 @@ constexpr auto GetChunksBatchResponse::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[23],
+      &file_reflection_data[26],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -3074,7 +3539,7 @@ constexpr auto GetChunksBatchRequest::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[21],
+      &file_reflection_data[24],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -3229,7 +3694,7 @@ constexpr auto GetChunkResponse::InternalGenerateClassData_(
           false,
       },
 #ifdef PROTOBUF_MESSAGE_GLOBALS
-      &file_reflection_data[15],
+      &file_reflection_data[18],
 #else   // !PROTOBUF_MESSAGE_GLOBALS
       &::_pbi::kDescriptorMethods,
       &descriptor_table_file_5fstorage_2eproto,
@@ -3975,6 +4440,25 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::filestore::CancelUploadResponse, _impl_.result_),
         0,
         0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::filestore::StorageNode, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::filestore::StorageNode, _impl_.ip_),
+        PROTOBUF_FIELD_OFFSET(::filestore::StorageNode, _impl_.port_),
+        0,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesRequest, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesRequest, _impl_.filename_),
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesResponse, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesResponse, _impl_.result_),
+        PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesResponse, _impl_.nodes_),
+        1,
+        0,
+        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::filestore::PutChunkRequest, _impl_._has_bits_),
         6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::filestore::PutChunkRequest, _impl_.filename_),
@@ -4092,18 +4576,21 @@ static const ::_pbi::MigrationSchema
         {71, sizeof(::filestore::CommitUploadResponse)},
         {76, sizeof(::filestore::CancelUploadRequest)},
         {81, sizeof(::filestore::CancelUploadResponse)},
-        {86, sizeof(::filestore::PutChunkRequest)},
-        {95, sizeof(::filestore::PutChunkResponse)},
-        {106, sizeof(::filestore::GetChunkRequest)},
-        {119, sizeof(::filestore::GetChunkResponse)},
-        {126, sizeof(::filestore::ChunkData)},
-        {133, sizeof(::filestore::ChunkResult)},
-        {144, sizeof(::filestore::PutChunksBatchRequest)},
-        {151, sizeof(::filestore::PutChunksBatchResponse)},
-        {158, sizeof(::filestore::GetChunkSpec)},
-        {167, sizeof(::filestore::GetChunksBatchRequest)},
-        {174, sizeof(::filestore::GetChunkData)},
-        {181, sizeof(::filestore::GetChunksBatchResponse)},
+        {86, sizeof(::filestore::StorageNode)},
+        {93, sizeof(::filestore::GetFileNodesRequest)},
+        {98, sizeof(::filestore::GetFileNodesResponse)},
+        {105, sizeof(::filestore::PutChunkRequest)},
+        {114, sizeof(::filestore::PutChunkResponse)},
+        {125, sizeof(::filestore::GetChunkRequest)},
+        {138, sizeof(::filestore::GetChunkResponse)},
+        {145, sizeof(::filestore::ChunkData)},
+        {152, sizeof(::filestore::ChunkResult)},
+        {163, sizeof(::filestore::PutChunksBatchRequest)},
+        {170, sizeof(::filestore::PutChunksBatchResponse)},
+        {177, sizeof(::filestore::GetChunkSpec)},
+        {186, sizeof(::filestore::GetChunksBatchRequest)},
+        {193, sizeof(::filestore::GetChunkData)},
+        {200, sizeof(::filestore::GetChunksBatchResponse)},
 };
 static const ::_pbi::MessageGlobalsBase* PROTOBUF_NONNULL const
     file_message_globals[] = {
@@ -4119,6 +4606,9 @@ static const ::_pbi::MessageGlobalsBase* PROTOBUF_NONNULL const
         &::filestore::CommitUploadResponse_globals_,
         &::filestore::CancelUploadRequest_globals_,
         &::filestore::CancelUploadResponse_globals_,
+        &::filestore::StorageNode_globals_,
+        &::filestore::GetFileNodesRequest_globals_,
+        &::filestore::GetFileNodesResponse_globals_,
         &::filestore::PutChunkRequest_globals_,
         &::filestore::PutChunkResponse_globals_,
         &::filestore::GetChunkRequest_globals_,
@@ -4156,64 +4646,71 @@ const char descriptor_table_protodef_file_5fstorage_2eproto[] ABSL_ATTRIBUTE_SEC
     "\n\006result\030\001 \001(\0132\025.filestore.ResultCode\"\'\n"
     "\023CancelUploadRequest\022\020\n\010filename\030\001 \001(\t\"="
     "\n\024CancelUploadResponse\022%\n\006result\030\001 \001(\0132\025"
-    ".filestore.ResultCode\"F\n\017PutChunkRequest"
-    "\022\020\n\010filename\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001(\005\022"
-    "\014\n\004data\030\003 \001(\014\"i\n\020PutChunkResponse\022%\n\006res"
-    "ult\030\001 \001(\0132\025.filestore.ResultCode\022\020\n\010chec"
-    "ksum\030\002 \001(\t\022\016\n\006offset\030\003 \001(\003\022\014\n\004size\030\004 \001(\005"
-    "\"j\n\017GetChunkRequest\022\020\n\010filename\030\001 \001(\t\022\023\n"
-    "\013chunk_index\030\002 \001(\005\022\022\n\nchunk_size\030\003 \001(\005\022\016"
-    "\n\006offset\030\004 \001(\003\022\014\n\004size\030\005 \001(\005\"G\n\020GetChunk"
-    "Response\022%\n\006result\030\001 \001(\0132\025.filestore.Res"
-    "ultCode\022\014\n\004data\030\002 \001(\014\".\n\tChunkData\022\023\n\013ch"
-    "unk_index\030\001 \001(\005\022\014\n\004data\030\002 \001(\014\"R\n\013ChunkRe"
-    "sult\022\023\n\013chunk_index\030\001 \001(\005\022\016\n\006offset\030\002 \001("
-    "\003\022\014\n\004size\030\003 \001(\005\022\020\n\010checksum\030\004 \001(\t\"O\n\025Put"
-    "ChunksBatchRequest\022\020\n\010filename\030\001 \001(\t\022$\n\006"
-    "chunks\030\002 \003(\0132\024.filestore.ChunkData\"g\n\026Pu"
-    "tChunksBatchResponse\022%\n\006result\030\001 \001(\0132\025.f"
-    "ilestore.ResultCode\022&\n\006chunks\030\002 \003(\0132\026.fi"
-    "lestore.ChunkResult\"A\n\014GetChunkSpec\022\023\n\013c"
-    "hunk_index\030\001 \001(\005\022\016\n\006offset\030\002 \001(\003\022\014\n\004size"
-    "\030\003 \001(\005\"R\n\025GetChunksBatchRequest\022\020\n\010filen"
-    "ame\030\001 \001(\t\022\'\n\006chunks\030\002 \003(\0132\027.filestore.Ge"
-    "tChunkSpec\"1\n\014GetChunkData\022\023\n\013chunk_inde"
-    "x\030\001 \001(\005\022\014\n\004data\030\002 \001(\014\"h\n\026GetChunksBatchR"
+    ".filestore.ResultCode\"\'\n\013StorageNode\022\n\n\002"
+    "ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"\'\n\023GetFileNodesRe"
+    "quest\022\020\n\010filename\030\001 \001(\t\"d\n\024GetFileNodesR"
     "esponse\022%\n\006result\030\001 \001(\0132\025.filestore.Resu"
-    "ltCode\022\'\n\006chunks\030\002 \003(\0132\027.filestore.GetCh"
-    "unkData2\220\003\n\016MetaServiceRpc\022I\n\nUploadFile"
-    "\022\034.filestore.UploadFileRequest\032\035.filesto"
-    "re.UploadFileResponse\022O\n\014CommitUpload\022\036."
-    "filestore.CommitUploadRequest\032\037.filestor"
-    "e.CommitUploadResponse\022O\n\014CancelUpload\022\036"
-    ".filestore.CancelUploadRequest\032\037.filesto"
-    "re.CancelUploadResponse\022F\n\tQueryFile\022\033.f"
-    "ilestore.QueryFileRequest\032\034.filestore.Qu"
-    "eryFileResponse\022I\n\nDeleteFile\022\034.filestor"
-    "e.DeleteFileRequest\032\035.filestore.DeleteFi"
-    "leResponse2\226\003\n\021StorageServiceRpc\022C\n\010PutC"
-    "hunk\022\032.filestore.PutChunkRequest\032\033.files"
-    "tore.PutChunkResponse\022U\n\016PutChunksBatch\022"
-    " .filestore.PutChunksBatchRequest\032!.file"
-    "store.PutChunksBatchResponse\022C\n\010GetChunk"
-    "\022\032.filestore.GetChunkRequest\032\033.filestore"
-    ".GetChunkResponse\022U\n\016GetChunksBatch\022 .fi"
-    "lestore.GetChunksBatchRequest\032!.filestor"
-    "e.GetChunksBatchResponse\022I\n\nDeleteFile\022\034"
-    ".filestore.DeleteFileRequest\032\035.filestore"
-    ".DeleteFileResponseB\003\200\001\001b\006proto3"
+    "ltCode\022%\n\005nodes\030\002 \003(\0132\026.filestore.Storag"
+    "eNode\"F\n\017PutChunkRequest\022\020\n\010filename\030\001 \001"
+    "(\t\022\023\n\013chunk_index\030\002 \001(\005\022\014\n\004data\030\003 \001(\014\"i\n"
+    "\020PutChunkResponse\022%\n\006result\030\001 \001(\0132\025.file"
+    "store.ResultCode\022\020\n\010checksum\030\002 \001(\t\022\016\n\006of"
+    "fset\030\003 \001(\003\022\014\n\004size\030\004 \001(\005\"j\n\017GetChunkRequ"
+    "est\022\020\n\010filename\030\001 \001(\t\022\023\n\013chunk_index\030\002 \001"
+    "(\005\022\022\n\nchunk_size\030\003 \001(\005\022\016\n\006offset\030\004 \001(\003\022\014"
+    "\n\004size\030\005 \001(\005\"G\n\020GetChunkResponse\022%\n\006resu"
+    "lt\030\001 \001(\0132\025.filestore.ResultCode\022\014\n\004data\030"
+    "\002 \001(\014\".\n\tChunkData\022\023\n\013chunk_index\030\001 \001(\005\022"
+    "\014\n\004data\030\002 \001(\014\"R\n\013ChunkResult\022\023\n\013chunk_in"
+    "dex\030\001 \001(\005\022\016\n\006offset\030\002 \001(\003\022\014\n\004size\030\003 \001(\005\022"
+    "\020\n\010checksum\030\004 \001(\t\"O\n\025PutChunksBatchReque"
+    "st\022\020\n\010filename\030\001 \001(\t\022$\n\006chunks\030\002 \003(\0132\024.f"
+    "ilestore.ChunkData\"g\n\026PutChunksBatchResp"
+    "onse\022%\n\006result\030\001 \001(\0132\025.filestore.ResultC"
+    "ode\022&\n\006chunks\030\002 \003(\0132\026.filestore.ChunkRes"
+    "ult\"A\n\014GetChunkSpec\022\023\n\013chunk_index\030\001 \001(\005"
+    "\022\016\n\006offset\030\002 \001(\003\022\014\n\004size\030\003 \001(\005\"R\n\025GetChu"
+    "nksBatchRequest\022\020\n\010filename\030\001 \001(\t\022\'\n\006chu"
+    "nks\030\002 \003(\0132\027.filestore.GetChunkSpec\"1\n\014Ge"
+    "tChunkData\022\023\n\013chunk_index\030\001 \001(\005\022\014\n\004data\030"
+    "\002 \001(\014\"h\n\026GetChunksBatchResponse\022%\n\006resul"
+    "t\030\001 \001(\0132\025.filestore.ResultCode\022\'\n\006chunks"
+    "\030\002 \003(\0132\027.filestore.GetChunkData2\341\003\n\016Meta"
+    "ServiceRpc\022I\n\nUploadFile\022\034.filestore.Upl"
+    "oadFileRequest\032\035.filestore.UploadFileRes"
+    "ponse\022O\n\014CommitUpload\022\036.filestore.Commit"
+    "UploadRequest\032\037.filestore.CommitUploadRe"
+    "sponse\022O\n\014CancelUpload\022\036.filestore.Cance"
+    "lUploadRequest\032\037.filestore.CancelUploadR"
+    "esponse\022F\n\tQueryFile\022\033.filestore.QueryFi"
+    "leRequest\032\034.filestore.QueryFileResponse\022"
+    "I\n\nDeleteFile\022\034.filestore.DeleteFileRequ"
+    "est\032\035.filestore.DeleteFileResponse\022O\n\014Ge"
+    "tFileNodes\022\036.filestore.GetFileNodesReque"
+    "st\032\037.filestore.GetFileNodesResponse2\226\003\n\021"
+    "StorageServiceRpc\022C\n\010PutChunk\022\032.filestor"
+    "e.PutChunkRequest\032\033.filestore.PutChunkRe"
+    "sponse\022U\n\016PutChunksBatch\022 .filestore.Put"
+    "ChunksBatchRequest\032!.filestore.PutChunks"
+    "BatchResponse\022C\n\010GetChunk\022\032.filestore.Ge"
+    "tChunkRequest\032\033.filestore.GetChunkRespon"
+    "se\022U\n\016GetChunksBatch\022 .filestore.GetChun"
+    "ksBatchRequest\032!.filestore.GetChunksBatc"
+    "hResponse\022I\n\nDeleteFile\022\034.filestore.Dele"
+    "teFileRequest\032\035.filestore.DeleteFileResp"
+    "onseB\003\200\001\001b\006proto3"
 };
 static ::absl::once_flag descriptor_table_file_5fstorage_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_file_5fstorage_2eproto = {
     false,
     false,
-    2712,
+    2977,
     descriptor_table_protodef_file_5fstorage_2eproto,
     "file_storage.proto",
     &descriptor_table_file_5fstorage_2eproto_once,
     nullptr,
     0,
-    24,
+    27,
     schemas,
     file_message_globals,
     TableStruct_file_5fstorage_2eproto::offsets,
@@ -7192,6 +7689,712 @@ void CancelUploadResponse::InternalSwap(CancelUploadResponse* PROTOBUF_RESTRICT 
 }
 
 ::google::protobuf::Metadata CancelUploadResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+StorageNode::StorageNode(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, StorageNode_get_class_data()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:filestore.StorageNode)
+}
+PROTOBUF_NDEBUG_INLINE StorageNode::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::filestore::StorageNode& from_msg)
+      : _has_bits_{from._has_bits_},
+        ip_(arena, from.ip_) {}
+
+StorageNode::StorageNode(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const StorageNode& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, StorageNode_get_class_data()) {
+
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  StorageNode* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.port_ = from._impl_.port_;
+
+  // @@protoc_insertion_point(copy_constructor:filestore.StorageNode)
+}
+PROTOBUF_NDEBUG_INLINE StorageNode::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : ip_(arena) {}
+
+inline void StorageNode::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.port_ = {};
+}
+StorageNode::~StorageNode() {
+  // @@protoc_insertion_point(destructor:filestore.StorageNode)
+  SharedDtor(*this);
+}
+inline void StorageNode::SharedDtor(MessageLite& self) {
+  StorageNode& this_ = static_cast<StorageNode&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.ip_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull StorageNode_class_data_ =
+        StorageNode::InternalGenerateClassData_(StorageNode_globals_._default);
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+StorageNode::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&StorageNode_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(StorageNode_class_data_.tc_table);
+  return StorageNode_class_data_.base();
+}
+#else
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+StorageNode::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&StorageNode_globals_);
+  ::google::protobuf::internal::PrefetchToLocalCache(
+      ::google::protobuf::internal::MessageGlobalsBase::ToParseTableBase(&StorageNode_globals_));
+  return StorageNode_globals_.GetClassData();
+}
+#endif  // !PROTOBUF_MESSAGE_GLOBALS
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const StorageNode::ParseTableT_
+    StorageNode::_table_ =
+        StorageNode::InternalGenerateParseTable_(StorageNode_class_data_.base());
+#endif  // !PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_NOINLINE void StorageNode::Clear() {
+// @@protoc_insertion_point(message_clear_start:filestore.StorageNode)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.ip_.ClearNonDefaultToEmpty();
+  }
+  _impl_.port_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL StorageNode::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const StorageNode& this_ = static_cast<const StorageNode&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL StorageNode::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const StorageNode& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:filestore.StorageNode)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string ip = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_ip().empty()) {
+      const ::std::string& _s = this_._internal_ip();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "filestore.StorageNode.ip");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // int32 port = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_port(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:filestore.StorageNode)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t StorageNode::ByteSizeLong(const MessageLite& base) {
+  const StorageNode& this_ = static_cast<const StorageNode&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t StorageNode::ByteSizeLong() const {
+  const StorageNode& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:filestore.StorageNode)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // string ip = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_ip().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_ip());
+      }
+    }
+    // int32 port = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_port());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void StorageNode::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                      const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this = static_cast<StorageNode*>(&to_msg);
+  auto& from = static_cast<const StorageNode&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:filestore.StorageNode)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_ip().empty()) {
+        _this->_internal_set_ip(from._internal_ip());
+      } else {
+        if (_this->_impl_.ip_.IsDefault()) {
+          _this->_internal_set_ip("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_port() != 0) {
+        _this->_impl_.port_ = from._impl_.port_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void StorageNode::CopyFrom(const StorageNode& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:filestore.StorageNode)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void StorageNode::InternalSwap(StorageNode* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.ip_, &other->_impl_.ip_, arena);
+  swap(_impl_.port_, other->_impl_.port_);
+}
+
+::google::protobuf::Metadata StorageNode::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+GetFileNodesRequest::GetFileNodesRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GetFileNodesRequest_get_class_data()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:filestore.GetFileNodesRequest)
+}
+PROTOBUF_NDEBUG_INLINE GetFileNodesRequest::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::filestore::GetFileNodesRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        filename_(arena, from.filename_) {}
+
+GetFileNodesRequest::GetFileNodesRequest(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const GetFileNodesRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GetFileNodesRequest_get_class_data()) {
+
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetFileNodesRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:filestore.GetFileNodesRequest)
+}
+PROTOBUF_NDEBUG_INLINE GetFileNodesRequest::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : filename_(arena) {}
+
+inline void GetFileNodesRequest::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+GetFileNodesRequest::~GetFileNodesRequest() {
+  // @@protoc_insertion_point(destructor:filestore.GetFileNodesRequest)
+  SharedDtor(*this);
+}
+inline void GetFileNodesRequest::SharedDtor(MessageLite& self) {
+  GetFileNodesRequest& this_ = static_cast<GetFileNodesRequest&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.filename_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull GetFileNodesRequest_class_data_ =
+        GetFileNodesRequest::InternalGenerateClassData_(GetFileNodesRequest_globals_._default);
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GetFileNodesRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GetFileNodesRequest_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(GetFileNodesRequest_class_data_.tc_table);
+  return GetFileNodesRequest_class_data_.base();
+}
+#else
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GetFileNodesRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GetFileNodesRequest_globals_);
+  ::google::protobuf::internal::PrefetchToLocalCache(
+      ::google::protobuf::internal::MessageGlobalsBase::ToParseTableBase(&GetFileNodesRequest_globals_));
+  return GetFileNodesRequest_globals_.GetClassData();
+}
+#endif  // !PROTOBUF_MESSAGE_GLOBALS
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const GetFileNodesRequest::ParseTableT_
+    GetFileNodesRequest::_table_ =
+        GetFileNodesRequest::InternalGenerateParseTable_(GetFileNodesRequest_class_data_.base());
+#endif  // !PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_NOINLINE void GetFileNodesRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:filestore.GetFileNodesRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.filename_.ClearNonDefaultToEmpty();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL GetFileNodesRequest::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const GetFileNodesRequest& this_ = static_cast<const GetFileNodesRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL GetFileNodesRequest::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const GetFileNodesRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:filestore.GetFileNodesRequest)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string filename = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_filename().empty()) {
+      const ::std::string& _s = this_._internal_filename();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "filestore.GetFileNodesRequest.filename");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:filestore.GetFileNodesRequest)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t GetFileNodesRequest::ByteSizeLong(const MessageLite& base) {
+  const GetFileNodesRequest& this_ = static_cast<const GetFileNodesRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t GetFileNodesRequest::ByteSizeLong() const {
+  const GetFileNodesRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:filestore.GetFileNodesRequest)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // string filename = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_filename().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_filename());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void GetFileNodesRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                      const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this = static_cast<GetFileNodesRequest*>(&to_msg);
+  auto& from = static_cast<const GetFileNodesRequest&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:filestore.GetFileNodesRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!from._internal_filename().empty()) {
+      _this->_internal_set_filename(from._internal_filename());
+    } else {
+      if (_this->_impl_.filename_.IsDefault()) {
+        _this->_internal_set_filename("");
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void GetFileNodesRequest::CopyFrom(const GetFileNodesRequest& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:filestore.GetFileNodesRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GetFileNodesRequest::InternalSwap(GetFileNodesRequest* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.filename_, &other->_impl_.filename_, arena);
+}
+
+::google::protobuf::Metadata GetFileNodesRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+GetFileNodesResponse::GetFileNodesResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GetFileNodesResponse_get_class_data()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:filestore.GetFileNodesResponse)
+}
+PROTOBUF_NDEBUG_INLINE GetFileNodesResponse::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::filestore::GetFileNodesResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        nodes_ {
+          visibility, ::_pbi::InternalMetadataOffset::Build<
+              ::filestore::GetFileNodesResponse,
+              PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesResponse, _impl_.nodes_)>()
+          , from.nodes_
+        }
+     {}
+
+GetFileNodesResponse::GetFileNodesResponse(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const GetFileNodesResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GetFileNodesResponse_get_class_data()) {
+
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GetFileNodesResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.result_ = (CheckHasBit(cached_has_bits, 0x00000002U)) ? ::google::protobuf::Message::CopyConstruct(
+                               arena, *from._impl_.result_)
+                         : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:filestore.GetFileNodesResponse)
+}
+PROTOBUF_NDEBUG_INLINE GetFileNodesResponse::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : nodes_ { visibility, ::_pbi::InternalMetadataOffset::Build<
+            ::filestore::GetFileNodesResponse,
+            PROTOBUF_FIELD_OFFSET(::filestore::GetFileNodesResponse, _impl_.nodes_)>()
+         }
+     {}
+
+inline void GetFileNodesResponse::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
+}
+GetFileNodesResponse::~GetFileNodesResponse() {
+  // @@protoc_insertion_point(destructor:filestore.GetFileNodesResponse)
+  SharedDtor(*this);
+}
+inline void GetFileNodesResponse::SharedDtor(MessageLite& self) {
+  GetFileNodesResponse& this_ = static_cast<GetFileNodesResponse&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.result_;
+  this_._impl_.~Impl_();
+}
+
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull GetFileNodesResponse_class_data_ =
+        GetFileNodesResponse::InternalGenerateClassData_(GetFileNodesResponse_globals_._default);
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GetFileNodesResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GetFileNodesResponse_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(GetFileNodesResponse_class_data_.tc_table);
+  return GetFileNodesResponse_class_data_.base();
+}
+#else
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GetFileNodesResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GetFileNodesResponse_globals_);
+  ::google::protobuf::internal::PrefetchToLocalCache(
+      ::google::protobuf::internal::MessageGlobalsBase::ToParseTableBase(&GetFileNodesResponse_globals_));
+  return GetFileNodesResponse_globals_.GetClassData();
+}
+#endif  // !PROTOBUF_MESSAGE_GLOBALS
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const GetFileNodesResponse::ParseTableT_
+    GetFileNodesResponse::_table_ =
+        GetFileNodesResponse::InternalGenerateParseTable_(GetFileNodesResponse_class_data_.base());
+#endif  // !PROTOBUF_MESSAGE_GLOBALS
+PROTOBUF_NOINLINE void GetFileNodesResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:filestore.GetFileNodesResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.nodes_.Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(_impl_.result_ != nullptr);
+      _impl_.result_->Clear();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL GetFileNodesResponse::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const GetFileNodesResponse& this_ = static_cast<const GetFileNodesResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL GetFileNodesResponse::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const GetFileNodesResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:filestore.GetFileNodesResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .filestore.ResultCode result = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.result_, this_._impl_.result_->GetCachedSize(), target,
+        stream);
+  }
+
+  // repeated .filestore.StorageNode nodes = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_nodes_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_nodes().Get(i);
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, repfield, repfield.GetCachedSize(), target,
+          stream);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:filestore.GetFileNodesResponse)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t GetFileNodesResponse::ByteSizeLong(const MessageLite& base) {
+  const GetFileNodesResponse& this_ = static_cast<const GetFileNodesResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t GetFileNodesResponse::ByteSizeLong() const {
+  const GetFileNodesResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:filestore.GetFileNodesResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // repeated .filestore.StorageNode nodes = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      total_size += 1UL * this_._internal_nodes_size();
+      for (const auto& msg : this_._internal_nodes()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // .filestore.ResultCode result = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.result_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void GetFileNodesResponse::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                      const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this = static_cast<GetFileNodesResponse*>(&to_msg);
+  auto& from = static_cast<const GetFileNodesResponse&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:filestore.GetFileNodesResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _this->_internal_mutable_nodes()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_nodes());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(from._impl_.result_ != nullptr);
+      if (_this->_impl_.result_ == nullptr) {
+        _this->_impl_.result_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.result_);
+      } else {
+        _this->_impl_.result_->MergeFrom(*from._impl_.result_);
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void GetFileNodesResponse::CopyFrom(const GetFileNodesResponse& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:filestore.GetFileNodesResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GetFileNodesResponse::InternalSwap(GetFileNodesResponse* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.nodes_.InternalSwap(&other->_impl_.nodes_);
+  swap(_impl_.result_, other->_impl_.result_);
+}
+
+::google::protobuf::Metadata GetFileNodesResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -10447,6 +11650,13 @@ void MetaServiceRpc::DeleteFile(::google::protobuf::RpcController* PROTOBUF_NULL
   controller->SetFailed("Method DeleteFile() not implemented.");
   done->Run();
 }
+void MetaServiceRpc::GetFileNodes(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                         const ::filestore::GetFileNodesRequest* PROTOBUF_NONNULL,
+                         ::filestore::GetFileNodesResponse* PROTOBUF_NONNULL,
+                         ::google::protobuf::Closure* PROTOBUF_NULLABLE done) {
+  controller->SetFailed("Method GetFileNodes() not implemented.");
+  done->Run();
+}
 
 void MetaServiceRpc::CallMethod(
     const ::google::protobuf::MethodDescriptor* PROTOBUF_NONNULL method,
@@ -10475,6 +11685,10 @@ void MetaServiceRpc::CallMethod(
       this->DeleteFile(controller, ::google::protobuf::DownCastMessage<::filestore::DeleteFileRequest>(request),
                    ::google::protobuf::DownCastMessage<::filestore::DeleteFileResponse>(response), done);
       break;
+    case 5:
+      this->GetFileNodes(controller, ::google::protobuf::DownCastMessage<::filestore::GetFileNodesRequest>(request),
+                   ::google::protobuf::DownCastMessage<::filestore::GetFileNodesResponse>(response), done);
+      break;
 
     default:
       ABSL_LOG(FATAL) << "Bad method index; this should never happen.";
@@ -10496,6 +11710,8 @@ const ::google::protobuf::Message& MetaServiceRpc::GetRequestPrototype(
       return ::filestore::QueryFileRequest::default_instance();
     case 4:
       return ::filestore::DeleteFileRequest::default_instance();
+    case 5:
+      return ::filestore::GetFileNodesRequest::default_instance();
 
     default:
       ABSL_LOG(FATAL) << "Bad method index; this should never happen.";
@@ -10518,6 +11734,8 @@ const ::google::protobuf::Message& MetaServiceRpc::GetResponsePrototype(
       return ::filestore::QueryFileResponse::default_instance();
     case 4:
       return ::filestore::DeleteFileResponse::default_instance();
+    case 5:
+      return ::filestore::GetFileNodesResponse::default_instance();
 
     default:
       ABSL_LOG(FATAL) << "Bad method index; this should never happen.";
@@ -10572,6 +11790,13 @@ void MetaServiceRpc_Stub::DeleteFile(
     const ::filestore::DeleteFileRequest* PROTOBUF_NONNULL request, ::filestore::DeleteFileResponse* PROTOBUF_NONNULL response,
     ::google::protobuf::Closure* PROTOBUF_NULLABLE done) {
   channel_->CallMethod(descriptor()->method(4), controller,
+                       request, response, done);
+}
+void MetaServiceRpc_Stub::GetFileNodes(
+    ::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+    const ::filestore::GetFileNodesRequest* PROTOBUF_NONNULL request, ::filestore::GetFileNodesResponse* PROTOBUF_NONNULL response,
+    ::google::protobuf::Closure* PROTOBUF_NULLABLE done) {
+  channel_->CallMethod(descriptor()->method(5), controller,
                        request, response, done);
 }
 // ===================================================================

@@ -352,35 +352,28 @@ static void doDownload(const std::string& remoteFile)
               << " bytes, " << chunkCount << " chunks) -> " << outPath << std::endl;
 }
 
-// 删除：直连各存储节点删数据 -> 元数据删索引
+// 删除：查询涉及节点（去重）-> 直连各存储节点删数据 -> 元数据删索引
 static void doDelete(const std::string& remoteFile)
 {
     MprpcChannel metaChannel;
     filestore::MetaServiceRpc_Stub metaStub(&metaChannel);
 
-    filestore::QueryFileRequest qreq;
-    qreq.set_filename(remoteFile);
-    filestore::QueryFileResponse qresp;
-    MprpcController qctl;
-    metaStub.QueryFile(&qctl, &qreq, &qresp, nullptr);
-    if (qctl.Failed() || qresp.result().errcode() != 0) {
-        std::cerr << "query failed" << std::endl;
+    // 直接获取文件涉及的（去重后的）存储节点列表（P13，替代遍历 chunks 去重）
+    filestore::GetFileNodesRequest greq;
+    greq.set_filename(remoteFile);
+    filestore::GetFileNodesResponse gresp;
+    MprpcController gctl;
+    metaStub.GetFileNodes(&gctl, &greq, &gresp, nullptr);
+    if (gctl.Failed() || gresp.result().errcode() != 0) {
+        std::cerr << "get file nodes failed" << std::endl;
         return;
     }
 
-    // 收集涉及的唯一存储节点
-    std::set<std::string> nodes;
-    for (const auto& loc : qresp.chunks()) {
-        nodes.insert(loc.ip() + ":" + std::to_string(loc.port()));
-    }
-
     // 直连各存储节点删除数据
-    for (const auto& node : nodes) {
-        size_t colon = node.find(':');
-        std::string ip = node.substr(0, colon);
-        uint16_t port = static_cast<uint16_t>(std::stoi(node.substr(colon + 1)));
-        if (!deleteFileWithRetry(ip, port, remoteFile)) {
-            std::cerr << "delete data on " << node << " failed" << std::endl;
+    for (const auto& node : gresp.nodes()) {
+        uint16_t port = static_cast<uint16_t>(node.port());
+        if (!deleteFileWithRetry(node.ip(), port, remoteFile)) {
+            std::cerr << "delete data on " << node.ip() << ":" << node.port() << " failed" << std::endl;
         }
     }
 

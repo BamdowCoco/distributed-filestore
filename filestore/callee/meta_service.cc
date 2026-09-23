@@ -361,6 +361,45 @@ public:
         done->Run();
     }
 
+    // 查询某文件涉及的（去重后的）存储节点列表（P13 删除去重，替代客户端遍历 chunks 去重）
+    void GetFileNodes(::google::protobuf::RpcController* controller,
+                      const ::filestore::GetFileNodesRequest* request,
+                      ::filestore::GetFileNodesResponse* response,
+                      ::google::protobuf::Closure* done) override
+    {
+        auto conn = ConnectionPool::getInstance().getConnection();
+        if (!conn) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("get mysql connection failed");
+            done->Run();
+            return;
+        }
+
+        std::string filename = escapeSql(conn->getConn(), request->filename());
+
+        MYSQL_RES* res = conn->query(
+            "SELECT DISTINCT ip, port FROM file_chunk WHERE filename='" + filename + "'");
+        if (res == nullptr) {
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("query file_chunk failed");
+            done->Run();
+            return;
+        }
+
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+
+        MYSQL_ROW row;
+        while ((row = mysql_fetch_row(res)) != nullptr) {
+            filestore::StorageNode* node = response->add_nodes();
+            node->set_ip(row[0]);
+            node->set_port(std::stoi(row[1]));
+        }
+        mysql_free_result(res);
+
+        done->Run();
+    }
+
 private:
     // 建表（幂等）
     void createTablesIfNotExist()
