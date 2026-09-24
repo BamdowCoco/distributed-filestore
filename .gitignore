@@ -27,4 +27,6 @@ downloads/
 # 其他
 .claude/
 docs/*
+!docs/filestore/
+!docs/filestore/**
 CLAUDE.md
