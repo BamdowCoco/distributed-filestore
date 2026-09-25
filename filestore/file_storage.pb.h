@@ -21,7 +21,6 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
-#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -56,6 +55,22 @@ extern "C" {
 extern const ::google::protobuf::internal::DescriptorTable descriptor_table_file_5fstorage_2eproto;
 }  // extern "C"
 namespace filestore {
+class AddCleanupTaskRequest;
+struct AddCleanupTaskRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern AddCleanupTaskRequestGlobalsTypeInternal AddCleanupTaskRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull AddCleanupTaskRequest_class_data_;
+#else
+extern const AddCleanupTaskRequestGlobalsTypeInternal AddCleanupTaskRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class AddCleanupTaskResponse;
+struct AddCleanupTaskResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern AddCleanupTaskResponseGlobalsTypeInternal AddCleanupTaskResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull AddCleanupTaskResponse_class_data_;
+#else
+extern const AddCleanupTaskResponseGlobalsTypeInternal AddCleanupTaskResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
 class CancelUploadRequest;
 struct CancelUploadRequestGlobalsTypeInternal;
 #ifndef PROTOBUF_MESSAGE_GLOBALS
@@ -128,6 +143,14 @@ extern const ::google::protobuf::internal::ClassDataFull DeleteFileResponse_clas
 #else
 extern const DeleteFileResponseGlobalsTypeInternal DeleteFileResponse_globals_;
 #endif  // PROTOBUF_MESSAGE_GLOBALS
+class DirEntry;
+struct DirEntryGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern DirEntryGlobalsTypeInternal DirEntry_globals_;
+extern const ::google::protobuf::internal::ClassDataFull DirEntry_class_data_;
+#else
+extern const DirEntryGlobalsTypeInternal DirEntry_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
 class GetChunkData;
 struct GetChunkDataGlobalsTypeInternal;
 #ifndef PROTOBUF_MESSAGE_GLOBALS
@@ -192,6 +215,22 @@ extern const ::google::protobuf::internal::ClassDataFull GetFileNodesResponse_cl
 #else
 extern const GetFileNodesResponseGlobalsTypeInternal GetFileNodesResponse_globals_;
 #endif  // PROTOBUF_MESSAGE_GLOBALS
+class ListDirRequest;
+struct ListDirRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern ListDirRequestGlobalsTypeInternal ListDirRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull ListDirRequest_class_data_;
+#else
+extern const ListDirRequestGlobalsTypeInternal ListDirRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class ListDirResponse;
+struct ListDirResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern ListDirResponseGlobalsTypeInternal ListDirResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull ListDirResponse_class_data_;
+#else
+extern const ListDirResponseGlobalsTypeInternal ListDirResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
 class ListFilesRequest;
 struct ListFilesRequestGlobalsTypeInternal;
 #ifndef PROTOBUF_MESSAGE_GLOBALS
@@ -207,6 +246,54 @@ extern ListFilesResponseGlobalsTypeInternal ListFilesResponse_globals_;
 extern const ::google::protobuf::internal::ClassDataFull ListFilesResponse_class_data_;
 #else
 extern const ListFilesResponseGlobalsTypeInternal ListFilesResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class LoginRequest;
+struct LoginRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern LoginRequestGlobalsTypeInternal LoginRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull LoginRequest_class_data_;
+#else
+extern const LoginRequestGlobalsTypeInternal LoginRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class LoginResponse;
+struct LoginResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern LoginResponseGlobalsTypeInternal LoginResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull LoginResponse_class_data_;
+#else
+extern const LoginResponseGlobalsTypeInternal LoginResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class LogoutRequest;
+struct LogoutRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern LogoutRequestGlobalsTypeInternal LogoutRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull LogoutRequest_class_data_;
+#else
+extern const LogoutRequestGlobalsTypeInternal LogoutRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class LogoutResponse;
+struct LogoutResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern LogoutResponseGlobalsTypeInternal LogoutResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull LogoutResponse_class_data_;
+#else
+extern const LogoutResponseGlobalsTypeInternal LogoutResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class MkdirRequest;
+struct MkdirRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern MkdirRequestGlobalsTypeInternal MkdirRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull MkdirRequest_class_data_;
+#else
+extern const MkdirRequestGlobalsTypeInternal MkdirRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class MkdirResponse;
+struct MkdirResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern MkdirResponseGlobalsTypeInternal MkdirResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull MkdirResponse_class_data_;
+#else
+extern const MkdirResponseGlobalsTypeInternal MkdirResponse_globals_;
 #endif  // PROTOBUF_MESSAGE_GLOBALS
 class PutChunkRequest;
 struct PutChunkRequestGlobalsTypeInternal;
@@ -256,6 +343,22 @@ extern const ::google::protobuf::internal::ClassDataFull QueryFileResponse_class
 #else
 extern const QueryFileResponseGlobalsTypeInternal QueryFileResponse_globals_;
 #endif  // PROTOBUF_MESSAGE_GLOBALS
+class RegisterRequest;
+struct RegisterRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern RegisterRequestGlobalsTypeInternal RegisterRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull RegisterRequest_class_data_;
+#else
+extern const RegisterRequestGlobalsTypeInternal RegisterRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class RegisterResponse;
+struct RegisterResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern RegisterResponseGlobalsTypeInternal RegisterResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull RegisterResponse_class_data_;
+#else
+extern const RegisterResponseGlobalsTypeInternal RegisterResponse_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
 class ResultCode;
 struct ResultCodeGlobalsTypeInternal;
 #ifndef PROTOBUF_MESSAGE_GLOBALS
@@ -263,6 +366,22 @@ extern ResultCodeGlobalsTypeInternal ResultCode_globals_;
 extern const ::google::protobuf::internal::ClassDataFull ResultCode_class_data_;
 #else
 extern const ResultCodeGlobalsTypeInternal ResultCode_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class RmdirRequest;
+struct RmdirRequestGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern RmdirRequestGlobalsTypeInternal RmdirRequest_globals_;
+extern const ::google::protobuf::internal::ClassDataFull RmdirRequest_class_data_;
+#else
+extern const RmdirRequestGlobalsTypeInternal RmdirRequest_globals_;
+#endif  // PROTOBUF_MESSAGE_GLOBALS
+class RmdirResponse;
+struct RmdirResponseGlobalsTypeInternal;
+#ifndef PROTOBUF_MESSAGE_GLOBALS
+extern RmdirResponseGlobalsTypeInternal RmdirResponse_globals_;
+extern const ::google::protobuf::internal::ClassDataFull RmdirResponse_class_data_;
+#else
+extern const RmdirResponseGlobalsTypeInternal RmdirResponse_globals_;
 #endif  // PROTOBUF_MESSAGE_GLOBALS
 class StorageNode;
 struct StorageNodeGlobalsTypeInternal;
@@ -357,7 +476,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileRequest final : public ::
   [[nodiscard]] static const UploadFileRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<UploadFileRequest>(&UploadFileRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(UploadFileRequest& a, UploadFileRequest& b) { a.Swap(&b); }
   inline void Swap(UploadFileRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -449,26 +568,42 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileRequest final : public ::
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
-    kFilesizeFieldNumber = 2,
-    kChunkCountFieldNumber = 3,
+    kTokenFieldNumber = 1,
+    kPathFieldNumber = 2,
+    kFilesizeFieldNumber = 3,
+    kChunkCountFieldNumber = 4,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
 
   public:
-  // int64 filesize = 2;
+  // string path = 2;
+  void clear_path() ;
+  [[nodiscard]] const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
+
+  public:
+  // int64 filesize = 3;
   void clear_filesize() ;
   [[nodiscard]] ::int64_t filesize() const;
   void set_filesize(::int64_t value);
@@ -478,7 +613,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileRequest final : public ::
   void _internal_set_filesize(::int64_t value);
 
   public:
-  // int32 chunk_count = 3;
+  // int32 chunk_count = 4;
   void clear_chunk_count() ;
   [[nodiscard]] ::int32_t chunk_count() const;
   void set_chunk_count(::int32_t value);
@@ -492,8 +627,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileRequest final : public ::
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<2, 3,
-                          0, 44,
+      ::google::protobuf::internal::TcParseTable<2, 4,
+                          0, 45,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -521,7 +656,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileRequest final : public ::
         const UploadFileRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
     ::int64_t filesize_;
     ::int32_t chunk_count_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -587,7 +723,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED StorageNode final : public ::google
   [[nodiscard]] static const StorageNode& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<StorageNode>(&StorageNode_globals_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(StorageNode& a, StorageNode& b) { a.Swap(&b); }
   inline void Swap(StorageNode* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -742,6 +878,241 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED StorageNode final : public ::google
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr ip_;
     ::int32_t port_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED RmdirRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.RmdirRequest) */ {
+ public:
+  inline RmdirRequest() : RmdirRequest(nullptr) {}
+  ~RmdirRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RmdirRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RmdirRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr RmdirRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline RmdirRequest(const RmdirRequest& from) : RmdirRequest(nullptr, from) {}
+  inline RmdirRequest(RmdirRequest&& from) noexcept : RmdirRequest(nullptr, ::std::move(from)) {}
+  inline RmdirRequest& operator=(const RmdirRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RmdirRequest& operator=(RmdirRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const RmdirRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<RmdirRequest>(&RmdirRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(RmdirRequest& a, RmdirRequest& b) { a.Swap(&b); }
+  inline void Swap(RmdirRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RmdirRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] RmdirRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RmdirRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RmdirRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RmdirRequest& from) { RmdirRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RmdirRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.RmdirRequest"; }
+
+  explicit RmdirRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  RmdirRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RmdirRequest& from);
+  RmdirRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RmdirRequest&& from) noexcept
+      : RmdirRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTokenFieldNumber = 1,
+    kPathFieldNumber = 2,
+    kRecursiveFieldNumber = 3,
+  };
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // string path = 2;
+  void clear_path() ;
+  [[nodiscard]] const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
+
+  public:
+  // bool recursive = 3;
+  void clear_recursive() ;
+  [[nodiscard]] bool recursive() const;
+  void set_recursive(bool value);
+
+  private:
+  bool _internal_recursive() const;
+  void _internal_set_recursive(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.RmdirRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<2, 3,
+                          0, 40,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const RmdirRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
+    bool recursive_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -967,6 +1338,229 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ResultCode final : public ::google:
 };
 // -------------------------------------------------------------------
 
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED RegisterRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.RegisterRequest) */ {
+ public:
+  inline RegisterRequest() : RegisterRequest(nullptr) {}
+  ~RegisterRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RegisterRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RegisterRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr RegisterRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline RegisterRequest(const RegisterRequest& from) : RegisterRequest(nullptr, from) {}
+  inline RegisterRequest(RegisterRequest&& from) noexcept : RegisterRequest(nullptr, ::std::move(from)) {}
+  inline RegisterRequest& operator=(const RegisterRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RegisterRequest& operator=(RegisterRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const RegisterRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<RegisterRequest>(&RegisterRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(RegisterRequest& a, RegisterRequest& b) { a.Swap(&b); }
+  inline void Swap(RegisterRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RegisterRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] RegisterRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RegisterRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RegisterRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RegisterRequest& from) { RegisterRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RegisterRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.RegisterRequest"; }
+
+  explicit RegisterRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  RegisterRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RegisterRequest& from);
+  RegisterRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RegisterRequest&& from) noexcept
+      : RegisterRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUsernameFieldNumber = 1,
+    kPasswordFieldNumber = 2,
+  };
+  // string username = 1;
+  void clear_username() ;
+  [[nodiscard]] const ::std::string& username() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_username(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_username();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_username();
+  void set_allocated_username(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_username() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_username(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_username();
+
+  public:
+  // string password = 2;
+  void clear_password() ;
+  [[nodiscard]] const ::std::string& password() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_password(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_password();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_password();
+  void set_allocated_password(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_password() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_password(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_password();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.RegisterRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 50,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const RegisterRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr username_;
+    ::google::protobuf::internal::ArenaStringPtr password_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
 class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileRequest final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:filestore.QueryFileRequest) */ {
  public:
@@ -1023,7 +1617,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileRequest final : public ::g
   [[nodiscard]] static const QueryFileRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<QueryFileRequest>(&QueryFileRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 17;
   friend void swap(QueryFileRequest& a, QueryFileRequest& b) { a.Swap(&b); }
   inline void Swap(QueryFileRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1115,29 +1709,45 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileRequest final : public ::g
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
+    kTokenFieldNumber = 1,
+    kPathFieldNumber = 2,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // string path = 2;
+  void clear_path() ;
+  [[nodiscard]] const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.QueryFileRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 1,
-                          0, 43,
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 44,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -1165,7 +1775,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileRequest final : public ::g
         const QueryFileRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1229,7 +1840,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
   [[nodiscard]] static const PutChunkRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<PutChunkRequest>(&PutChunkRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 15;
+  static constexpr int kIndexInFileMessages = 30;
   friend void swap(PutChunkRequest& a, PutChunkRequest& b) { a.Swap(&b); }
   inline void Swap(PutChunkRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1321,25 +1932,10 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
     kDataFieldNumber = 3,
+    kFileIdFieldNumber = 1,
     kChunkIndexFieldNumber = 2,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
-
-  public:
   // bytes data = 3;
   void clear_data() ;
   [[nodiscard]] const ::std::string& data() const;
@@ -1353,6 +1949,16 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
   const ::std::string& _internal_data() const;
   PROTOBUF_ALWAYS_INLINE void _internal_set_data(const ::std::string& value);
   ::std::string* PROTOBUF_NONNULL _internal_mutable_data();
+
+  public:
+  // int32 file_id = 1;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // int32 chunk_index = 2;
@@ -1370,7 +1976,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
   class _Internal;
   using ParseTableT_ =
       ::google::protobuf::internal::TcParseTable<2, 3,
-                          0, 42,
+                          0, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -1398,8 +2004,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
         const PutChunkRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
     ::google::protobuf::internal::ArenaStringPtr data_;
+    ::int32_t file_id_;
     ::int32_t chunk_index_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1408,10 +2014,663 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkRequest final : public ::go
 };
 // -------------------------------------------------------------------
 
-class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED MkdirRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.MkdirRequest) */ {
+ public:
+  inline MkdirRequest() : MkdirRequest(nullptr) {}
+  ~MkdirRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(MkdirRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MkdirRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr MkdirRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline MkdirRequest(const MkdirRequest& from) : MkdirRequest(nullptr, from) {}
+  inline MkdirRequest(MkdirRequest&& from) noexcept : MkdirRequest(nullptr, ::std::move(from)) {}
+  inline MkdirRequest& operator=(const MkdirRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MkdirRequest& operator=(MkdirRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const MkdirRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<MkdirRequest>(&MkdirRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(MkdirRequest& a, MkdirRequest& b) { a.Swap(&b); }
+  inline void Swap(MkdirRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MkdirRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] MkdirRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MkdirRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MkdirRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MkdirRequest& from) { MkdirRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MkdirRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.MkdirRequest"; }
+
+  explicit MkdirRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  MkdirRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const MkdirRequest& from);
+  MkdirRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, MkdirRequest&& from) noexcept
+      : MkdirRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTokenFieldNumber = 1,
+    kPathFieldNumber = 2,
+  };
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // string path = 2;
+  void clear_path() ;
+  [[nodiscard]] const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.MkdirRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 40,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const MkdirRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED LogoutRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.LogoutRequest) */ {
+ public:
+  inline LogoutRequest() : LogoutRequest(nullptr) {}
+  ~LogoutRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(LogoutRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LogoutRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr LogoutRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline LogoutRequest(const LogoutRequest& from) : LogoutRequest(nullptr, from) {}
+  inline LogoutRequest(LogoutRequest&& from) noexcept : LogoutRequest(nullptr, ::std::move(from)) {}
+  inline LogoutRequest& operator=(const LogoutRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LogoutRequest& operator=(LogoutRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const LogoutRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<LogoutRequest>(&LogoutRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(LogoutRequest& a, LogoutRequest& b) { a.Swap(&b); }
+  inline void Swap(LogoutRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LogoutRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] LogoutRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LogoutRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LogoutRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LogoutRequest& from) { LogoutRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LogoutRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.LogoutRequest"; }
+
+  explicit LogoutRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  LogoutRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const LogoutRequest& from);
+  LogoutRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, LogoutRequest&& from) noexcept
+      : LogoutRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTokenFieldNumber = 1,
+  };
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.LogoutRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          0, 37,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const LogoutRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED LoginRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.LoginRequest) */ {
+ public:
+  inline LoginRequest() : LoginRequest(nullptr) {}
+  ~LoginRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(LoginRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LoginRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr LoginRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline LoginRequest(const LoginRequest& from) : LoginRequest(nullptr, from) {}
+  inline LoginRequest(LoginRequest&& from) noexcept : LoginRequest(nullptr, ::std::move(from)) {}
+  inline LoginRequest& operator=(const LoginRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LoginRequest& operator=(LoginRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const LoginRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<LoginRequest>(&LoginRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(LoginRequest& a, LoginRequest& b) { a.Swap(&b); }
+  inline void Swap(LoginRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LoginRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] LoginRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LoginRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LoginRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LoginRequest& from) { LoginRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LoginRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.LoginRequest"; }
+
+  explicit LoginRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  LoginRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const LoginRequest& from);
+  LoginRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, LoginRequest&& from) noexcept
+      : LoginRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUsernameFieldNumber = 1,
+    kPasswordFieldNumber = 2,
+  };
+  // string username = 1;
+  void clear_username() ;
+  [[nodiscard]] const ::std::string& username() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_username(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_username();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_username();
+  void set_allocated_username(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_username() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_username(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_username();
+
+  public:
+  // string password = 2;
+  void clear_password() ;
+  [[nodiscard]] const ::std::string& password() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_password(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_password();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_password();
+  void set_allocated_password(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_password() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_password(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_password();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.LoginRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 47,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const LoginRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr username_;
+    ::google::protobuf::internal::ArenaStringPtr password_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:filestore.ListFilesRequest) */ {
  public:
   inline ListFilesRequest() : ListFilesRequest(nullptr) {}
+  ~ListFilesRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
   void operator delete(ListFilesRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
@@ -1463,7 +2722,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
   [[nodiscard]] static const ListFilesRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<ListFilesRequest>(&ListFilesRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 27;
+  static constexpr int kIndexInFileMessages = 42;
   friend void swap(ListFilesRequest& a, ListFilesRequest& b) { a.Swap(&b); }
   inline void Swap(ListFilesRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1483,17 +2742,50 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
 
   [[nodiscard]] ListFilesRequest* PROTOBUF_NONNULL
   New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<ListFilesRequest>(arena);
+    return ::google::protobuf::Message::DefaultConstruct<ListFilesRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ListFilesRequest& from) { ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from); }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ListFilesRequest& from) { ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from); }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListFilesRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ListFilesRequest& from) { ListFilesRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
 
   public:
   [[nodiscard]] bool IsInitialized() const {
     return true;
   }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ListFilesRequest* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
@@ -1521,11 +2813,35 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
+  enum : int {
+    kShardFieldNumber = 1,
+    kShardCountFieldNumber = 2,
+  };
+  // int32 shard = 1;
+  void clear_shard() ;
+  [[nodiscard]] ::int32_t shard() const;
+  void set_shard(::int32_t value);
+
+  private:
+  ::int32_t _internal_shard() const;
+  void _internal_set_shard(::int32_t value);
+
+  public:
+  // int32 shard_count = 2;
+  void clear_shard_count() ;
+  [[nodiscard]] ::int32_t shard_count() const;
+  void set_shard_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_shard_count() const;
+  void _internal_set_shard_count(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:filestore.ListFilesRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 0,
+      ::google::protobuf::internal::TcParseTable<1, 2,
                           0, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
@@ -1542,6 +2858,246 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
   friend class ::google::protobuf::Arena::InternalHelper;
   using InternalArenaConstructable_ = void;
   using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const ListFilesRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int32_t shard_;
+    ::int32_t shard_count_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListDirRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.ListDirRequest) */ {
+ public:
+  inline ListDirRequest() : ListDirRequest(nullptr) {}
+  ~ListDirRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ListDirRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr ListDirRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline ListDirRequest(const ListDirRequest& from) : ListDirRequest(nullptr, from) {}
+  inline ListDirRequest(ListDirRequest&& from) noexcept : ListDirRequest(nullptr, ::std::move(from)) {}
+  inline ListDirRequest& operator=(const ListDirRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListDirRequest& operator=(ListDirRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const ListDirRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<ListDirRequest>(&ListDirRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 13;
+  friend void swap(ListDirRequest& a, ListDirRequest& b) { a.Swap(&b); }
+  inline void Swap(ListDirRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ListDirRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] ListDirRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ListDirRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListDirRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ListDirRequest& from) { ListDirRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ListDirRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.ListDirRequest"; }
+
+  explicit ListDirRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  ListDirRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const ListDirRequest& from);
+  ListDirRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, ListDirRequest&& from) noexcept
+      : ListDirRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTokenFieldNumber = 1,
+    kPathFieldNumber = 2,
+  };
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // string path = 2;
+  void clear_path() ;
+  [[nodiscard]] const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.ListDirRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 42,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const ListDirRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_file_5fstorage_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1602,7 +3158,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesRequest final : public 
   [[nodiscard]] static const GetFileNodesRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetFileNodesRequest>(&GetFileNodesRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(GetFileNodesRequest& a, GetFileNodesRequest& b) { a.Swap(&b); }
   inline void Swap(GetFileNodesRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1694,29 +3250,45 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesRequest final : public 
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
+    kTokenFieldNumber = 1,
+    kPathFieldNumber = 2,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // string path = 2;
+  void clear_path() ;
+  [[nodiscard]] const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.GetFileNodesRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 1,
-                          0, 46,
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 47,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -1744,7 +3316,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesRequest final : public 
         const GetFileNodesRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1808,7 +3381,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkSpec final : public ::googl
   [[nodiscard]] static const GetChunkSpec& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunkSpec>(&GetChunkSpec_globals_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 38;
   friend void swap(GetChunkSpec& a, GetChunkSpec& b) { a.Swap(&b); }
   inline void Swap(GetChunkSpec* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2033,7 +3606,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
   [[nodiscard]] static const GetChunkRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunkRequest>(&GetChunkRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 17;
+  static constexpr int kIndexInFileMessages = 32;
   friend void swap(GetChunkRequest& a, GetChunkRequest& b) { a.Swap(&b); }
   inline void Swap(GetChunkRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2125,25 +3698,20 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
+    kFileIdFieldNumber = 1,
     kChunkIndexFieldNumber = 2,
-    kChunkSizeFieldNumber = 3,
     kOffsetFieldNumber = 4,
+    kChunkSizeFieldNumber = 3,
     kSizeFieldNumber = 5,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  // int32 file_id = 1;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // int32 chunk_index = 2;
@@ -2156,16 +3724,6 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
   void _internal_set_chunk_index(::int32_t value);
 
   public:
-  // int32 chunk_size = 3;
-  void clear_chunk_size() ;
-  [[nodiscard]] ::int32_t chunk_size() const;
-  void set_chunk_size(::int32_t value);
-
-  private:
-  ::int32_t _internal_chunk_size() const;
-  void _internal_set_chunk_size(::int32_t value);
-
-  public:
   // int64 offset = 4;
   void clear_offset() ;
   [[nodiscard]] ::int64_t offset() const;
@@ -2174,6 +3732,16 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
   private:
   ::int64_t _internal_offset() const;
   void _internal_set_offset(::int64_t value);
+
+  public:
+  // int32 chunk_size = 3;
+  void clear_chunk_size() ;
+  [[nodiscard]] ::int32_t chunk_size() const;
+  void set_chunk_size(::int32_t value);
+
+  private:
+  ::int32_t _internal_chunk_size() const;
+  void _internal_set_chunk_size(::int32_t value);
 
   public:
   // int32 size = 5;
@@ -2191,7 +3759,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
   class _Internal;
   using ParseTableT_ =
       ::google::protobuf::internal::TcParseTable<3, 5,
-                          0, 42,
+                          0, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -2219,10 +3787,10 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkRequest final : public ::go
         const GetChunkRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::int32_t file_id_;
     ::int32_t chunk_index_;
-    ::int32_t chunk_size_;
     ::int64_t offset_;
+    ::int32_t chunk_size_;
     ::int32_t size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2287,7 +3855,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkData final : public ::googl
   [[nodiscard]] static const GetChunkData& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunkData>(&GetChunkData_globals_);
   }
-  static constexpr int kIndexInFileMessages = 25;
+  static constexpr int kIndexInFileMessages = 40;
   friend void swap(GetChunkData& a, GetChunkData& b) { a.Swap(&b); }
   inline void Swap(GetChunkData* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2449,6 +4017,236 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkData final : public ::googl
 };
 // -------------------------------------------------------------------
 
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DirEntry final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.DirEntry) */ {
+ public:
+  inline DirEntry() : DirEntry(nullptr) {}
+  ~DirEntry() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DirEntry* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DirEntry));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr DirEntry(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline DirEntry(const DirEntry& from) : DirEntry(nullptr, from) {}
+  inline DirEntry(DirEntry&& from) noexcept : DirEntry(nullptr, ::std::move(from)) {}
+  inline DirEntry& operator=(const DirEntry& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DirEntry& operator=(DirEntry&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const DirEntry& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<DirEntry>(&DirEntry_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(DirEntry& a, DirEntry& b) { a.Swap(&b); }
+  inline void Swap(DirEntry* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DirEntry* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] DirEntry* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DirEntry>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DirEntry& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DirEntry& from) { DirEntry::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DirEntry* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.DirEntry"; }
+
+  explicit DirEntry(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  DirEntry(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const DirEntry& from);
+  DirEntry(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, DirEntry&& from) noexcept
+      : DirEntry(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNameFieldNumber = 1,
+    kIsDirFieldNumber = 2,
+    kFileIdFieldNumber = 3,
+  };
+  // string name = 1;
+  void clear_name() ;
+  [[nodiscard]] const ::std::string& name() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_name(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_name();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_name();
+  void set_allocated_name(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_name() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_name(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
+
+  public:
+  // bool is_dir = 2;
+  void clear_is_dir() ;
+  [[nodiscard]] bool is_dir() const;
+  void set_is_dir(bool value);
+
+  private:
+  bool _internal_is_dir() const;
+  void _internal_set_is_dir(bool value);
+
+  public:
+  // int32 file_id = 3;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.DirEntry)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<2, 3,
+                          0, 31,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const DirEntry& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr name_;
+    bool is_dir_;
+    ::int32_t file_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
 class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DeleteFileRequest final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:filestore.DeleteFileRequest) */ {
  public:
@@ -2505,7 +4303,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DeleteFileRequest final : public ::
   [[nodiscard]] static const DeleteFileRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<DeleteFileRequest>(&DeleteFileRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 19;
   friend void swap(DeleteFileRequest& a, DeleteFileRequest& b) { a.Swap(&b); }
   inline void Swap(DeleteFileRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2597,29 +4395,40 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DeleteFileRequest final : public ::
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
+    kTokenFieldNumber = 1,
+    kFileIdFieldNumber = 2,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // int32 file_id = 2;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.DeleteFileRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 1,
-                          0, 44,
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 41,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -2647,7 +4456,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DeleteFileRequest final : public ::
         const DeleteFileRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::int32_t file_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2711,7 +4521,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ChunkResult final : public ::google
   [[nodiscard]] static const ChunkResult& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<ChunkResult>(&ChunkResult_globals_);
   }
-  static constexpr int kIndexInFileMessages = 20;
+  static constexpr int kIndexInFileMessages = 35;
   friend void swap(ChunkResult& a, ChunkResult& b) { a.Swap(&b); }
   inline void Swap(ChunkResult* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3224,7 +5034,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ChunkData final : public ::google::
   [[nodiscard]] static const ChunkData& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<ChunkData>(&ChunkData_globals_);
   }
-  static constexpr int kIndexInFileMessages = 19;
+  static constexpr int kIndexInFileMessages = 34;
   friend void swap(ChunkData& a, ChunkData& b) { a.Swap(&b); }
   inline void Swap(ChunkData* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3442,7 +5252,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadRequest final : public 
   [[nodiscard]] static const CancelUploadRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CancelUploadRequest>(&CancelUploadRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 23;
   friend void swap(CancelUploadRequest& a, CancelUploadRequest& b) { a.Swap(&b); }
   inline void Swap(CancelUploadRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3534,29 +5344,40 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadRequest final : public 
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenameFieldNumber = 1,
+    kTokenFieldNumber = 1,
+    kFileIdFieldNumber = 2,
   };
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // int32 file_id = 2;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.CancelUploadRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 1,
-                          0, 46,
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          0, 43,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -3584,7 +5405,238 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadRequest final : public 
         const CancelUploadRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::int32_t file_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED AddCleanupTaskRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.AddCleanupTaskRequest) */ {
+ public:
+  inline AddCleanupTaskRequest() : AddCleanupTaskRequest(nullptr) {}
+  ~AddCleanupTaskRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(AddCleanupTaskRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AddCleanupTaskRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr AddCleanupTaskRequest(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline AddCleanupTaskRequest(const AddCleanupTaskRequest& from) : AddCleanupTaskRequest(nullptr, from) {}
+  inline AddCleanupTaskRequest(AddCleanupTaskRequest&& from) noexcept : AddCleanupTaskRequest(nullptr, ::std::move(from)) {}
+  inline AddCleanupTaskRequest& operator=(const AddCleanupTaskRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AddCleanupTaskRequest& operator=(AddCleanupTaskRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const AddCleanupTaskRequest& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<AddCleanupTaskRequest>(&AddCleanupTaskRequest_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 28;
+  friend void swap(AddCleanupTaskRequest& a, AddCleanupTaskRequest& b) { a.Swap(&b); }
+  inline void Swap(AddCleanupTaskRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AddCleanupTaskRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] AddCleanupTaskRequest* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AddCleanupTaskRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AddCleanupTaskRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AddCleanupTaskRequest& from) { AddCleanupTaskRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AddCleanupTaskRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.AddCleanupTaskRequest"; }
+
+  explicit AddCleanupTaskRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  AddCleanupTaskRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const AddCleanupTaskRequest& from);
+  AddCleanupTaskRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, AddCleanupTaskRequest&& from) noexcept
+      : AddCleanupTaskRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNodeIpFieldNumber = 1,
+    kNodePortFieldNumber = 2,
+    kFileIdFieldNumber = 3,
+  };
+  // string node_ip = 1;
+  void clear_node_ip() ;
+  [[nodiscard]] const ::std::string& node_ip() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_node_ip(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_node_ip();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_node_ip();
+  void set_allocated_node_ip(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_node_ip() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_node_ip(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_node_ip();
+
+  public:
+  // int32 node_port = 2;
+  void clear_node_port() ;
+  [[nodiscard]] ::int32_t node_port() const;
+  void set_node_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_node_port() const;
+  void _internal_set_node_port(::int32_t value);
+
+  public:
+  // int32 file_id = 3;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.AddCleanupTaskRequest)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<2, 3,
+                          0, 47,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const AddCleanupTaskRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr node_ip_;
+    ::int32_t node_port_;
+    ::int32_t file_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -3648,7 +5700,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileResponse final : public :
   [[nodiscard]] static const UploadFileResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<UploadFileResponse>(&UploadFileResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 16;
   friend void swap(UploadFileResponse& a, UploadFileResponse& b) { a.Swap(&b); }
   inline void Swap(UploadFileResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3740,10 +5792,11 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileResponse final : public :
 
   // accessors -------------------------------------------------------
   enum : int {
-    kChunksFieldNumber = 2,
+    kChunksFieldNumber = 3,
     kResultFieldNumber = 1,
+    kFileIdFieldNumber = 2,
   };
-  // repeated .filestore.ChunkLocation chunks = 2;
+  // repeated .filestore.ChunkLocation chunks = 3;
   [[nodiscard]] int chunks_size() const;
   private:
   int _internal_chunks_size() const;
@@ -3778,11 +5831,21 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileResponse final : public :
   ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
 
   public:
+  // int32 file_id = 2;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:filestore.UploadFileResponse)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<1, 2,
+      ::google::protobuf::internal::TcParseTable<2, 3,
                           2, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
@@ -3812,6 +5875,419 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED UploadFileResponse final : public :
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::filestore::ChunkLocation > chunks_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    ::int32_t file_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED RmdirResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.RmdirResponse) */ {
+ public:
+  inline RmdirResponse() : RmdirResponse(nullptr) {}
+  ~RmdirResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RmdirResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RmdirResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr RmdirResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline RmdirResponse(const RmdirResponse& from) : RmdirResponse(nullptr, from) {}
+  inline RmdirResponse(RmdirResponse&& from) noexcept : RmdirResponse(nullptr, ::std::move(from)) {}
+  inline RmdirResponse& operator=(const RmdirResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RmdirResponse& operator=(RmdirResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const RmdirResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<RmdirResponse>(&RmdirResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(RmdirResponse& a, RmdirResponse& b) { a.Swap(&b); }
+  inline void Swap(RmdirResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RmdirResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] RmdirResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RmdirResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RmdirResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RmdirResponse& from) { RmdirResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RmdirResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.RmdirResponse"; }
+
+  explicit RmdirResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  RmdirResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RmdirResponse& from);
+  RmdirResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RmdirResponse&& from) noexcept
+      : RmdirResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.RmdirResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const RmdirResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED RegisterResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.RegisterResponse) */ {
+ public:
+  inline RegisterResponse() : RegisterResponse(nullptr) {}
+  ~RegisterResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RegisterResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RegisterResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr RegisterResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline RegisterResponse(const RegisterResponse& from) : RegisterResponse(nullptr, from) {}
+  inline RegisterResponse(RegisterResponse&& from) noexcept : RegisterResponse(nullptr, ::std::move(from)) {}
+  inline RegisterResponse& operator=(const RegisterResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RegisterResponse& operator=(RegisterResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const RegisterResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<RegisterResponse>(&RegisterResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(RegisterResponse& a, RegisterResponse& b) { a.Swap(&b); }
+  inline void Swap(RegisterResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RegisterResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] RegisterResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RegisterResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RegisterResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RegisterResponse& from) { RegisterResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RegisterResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.RegisterResponse"; }
+
+  explicit RegisterResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  RegisterResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RegisterResponse& from);
+  RegisterResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RegisterResponse&& from) noexcept
+      : RegisterResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.RegisterResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const RegisterResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
     ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3876,7 +6352,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileResponse final : public ::
   [[nodiscard]] static const QueryFileResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<QueryFileResponse>(&QueryFileResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 18;
   friend void swap(QueryFileResponse& a, QueryFileResponse& b) { a.Swap(&b); }
   inline void Swap(QueryFileResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3968,12 +6444,13 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileResponse final : public ::
 
   // accessors -------------------------------------------------------
   enum : int {
-    kChunksFieldNumber = 4,
+    kChunksFieldNumber = 5,
     kResultFieldNumber = 1,
-    kFilesizeFieldNumber = 2,
-    kChunkCountFieldNumber = 3,
+    kFilesizeFieldNumber = 3,
+    kFileIdFieldNumber = 2,
+    kChunkCountFieldNumber = 4,
   };
-  // repeated .filestore.ChunkLocation chunks = 4;
+  // repeated .filestore.ChunkLocation chunks = 5;
   [[nodiscard]] int chunks_size() const;
   private:
   int _internal_chunks_size() const;
@@ -4008,7 +6485,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileResponse final : public ::
   ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
 
   public:
-  // int64 filesize = 2;
+  // int64 filesize = 3;
   void clear_filesize() ;
   [[nodiscard]] ::int64_t filesize() const;
   void set_filesize(::int64_t value);
@@ -4018,7 +6495,17 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileResponse final : public ::
   void _internal_set_filesize(::int64_t value);
 
   public:
-  // int32 chunk_count = 3;
+  // int32 file_id = 2;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
+
+  public:
+  // int32 chunk_count = 4;
   void clear_chunk_count() ;
   [[nodiscard]] ::int32_t chunk_count() const;
   void set_chunk_count(::int32_t value);
@@ -4032,7 +6519,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileResponse final : public ::
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<2, 4,
+      ::google::protobuf::internal::TcParseTable<3, 5,
                           2, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
@@ -4064,6 +6551,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED QueryFileResponse final : public ::
     ::google::protobuf::RepeatedPtrField< ::filestore::ChunkLocation > chunks_;
     ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
     ::int64_t filesize_;
+    ::int32_t file_id_;
     ::int32_t chunk_count_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4128,7 +6616,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunksBatchResponse final : publ
   [[nodiscard]] static const PutChunksBatchResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<PutChunksBatchResponse>(&PutChunksBatchResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 37;
   friend void swap(PutChunksBatchResponse& a, PutChunksBatchResponse& b) { a.Swap(&b); }
   inline void Swap(PutChunksBatchResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4356,7 +6844,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunksBatchRequest final : publi
   [[nodiscard]] static const PutChunksBatchRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<PutChunksBatchRequest>(&PutChunksBatchRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 21;
+  static constexpr int kIndexInFileMessages = 36;
   friend void swap(PutChunksBatchRequest& a, PutChunksBatchRequest& b) { a.Swap(&b); }
   inline void Swap(PutChunksBatchRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4449,7 +6937,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunksBatchRequest final : publi
   // accessors -------------------------------------------------------
   enum : int {
     kChunksFieldNumber = 2,
-    kFilenameFieldNumber = 1,
+    kFileIdFieldNumber = 1,
   };
   // repeated .filestore.ChunkData chunks = 2;
   [[nodiscard]] int chunks_size() const;
@@ -4471,19 +6959,14 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunksBatchRequest final : publi
   ::google::protobuf::RepeatedPtrField<::filestore::ChunkData>* PROTOBUF_NONNULL _internal_mutable_chunks();
 
   public:
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  // int32 file_id = 1;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.PutChunksBatchRequest)
@@ -4491,7 +6974,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunksBatchRequest final : publi
   class _Internal;
   using ParseTableT_ =
       ::google::protobuf::internal::TcParseTable<1, 2,
-                          1, 48,
+                          1, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -4520,7 +7003,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunksBatchRequest final : publi
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::filestore::ChunkData > chunks_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::int32_t file_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4584,7 +7067,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkResponse final : public ::g
   [[nodiscard]] static const PutChunkResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<PutChunkResponse>(&PutChunkResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 16;
+  static constexpr int kIndexInFileMessages = 31;
   friend void swap(PutChunkResponse& a, PutChunkResponse& b) { a.Swap(&b); }
   inline void Swap(PutChunkResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4775,6 +7258,653 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED PutChunkResponse final : public ::g
 };
 // -------------------------------------------------------------------
 
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED MkdirResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.MkdirResponse) */ {
+ public:
+  inline MkdirResponse() : MkdirResponse(nullptr) {}
+  ~MkdirResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(MkdirResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MkdirResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr MkdirResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline MkdirResponse(const MkdirResponse& from) : MkdirResponse(nullptr, from) {}
+  inline MkdirResponse(MkdirResponse&& from) noexcept : MkdirResponse(nullptr, ::std::move(from)) {}
+  inline MkdirResponse& operator=(const MkdirResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MkdirResponse& operator=(MkdirResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const MkdirResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<MkdirResponse>(&MkdirResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(MkdirResponse& a, MkdirResponse& b) { a.Swap(&b); }
+  inline void Swap(MkdirResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MkdirResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] MkdirResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MkdirResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MkdirResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MkdirResponse& from) { MkdirResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MkdirResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.MkdirResponse"; }
+
+  explicit MkdirResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  MkdirResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const MkdirResponse& from);
+  MkdirResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, MkdirResponse&& from) noexcept
+      : MkdirResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.MkdirResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const MkdirResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED LogoutResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.LogoutResponse) */ {
+ public:
+  inline LogoutResponse() : LogoutResponse(nullptr) {}
+  ~LogoutResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(LogoutResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LogoutResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr LogoutResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline LogoutResponse(const LogoutResponse& from) : LogoutResponse(nullptr, from) {}
+  inline LogoutResponse(LogoutResponse&& from) noexcept : LogoutResponse(nullptr, ::std::move(from)) {}
+  inline LogoutResponse& operator=(const LogoutResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LogoutResponse& operator=(LogoutResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const LogoutResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<LogoutResponse>(&LogoutResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(LogoutResponse& a, LogoutResponse& b) { a.Swap(&b); }
+  inline void Swap(LogoutResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LogoutResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] LogoutResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LogoutResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LogoutResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LogoutResponse& from) { LogoutResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LogoutResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.LogoutResponse"; }
+
+  explicit LogoutResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  LogoutResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const LogoutResponse& from);
+  LogoutResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, LogoutResponse&& from) noexcept
+      : LogoutResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.LogoutResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const LogoutResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED LoginResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.LoginResponse) */ {
+ public:
+  inline LoginResponse() : LoginResponse(nullptr) {}
+  ~LoginResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(LoginResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LoginResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr LoginResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline LoginResponse(const LoginResponse& from) : LoginResponse(nullptr, from) {}
+  inline LoginResponse(LoginResponse&& from) noexcept : LoginResponse(nullptr, ::std::move(from)) {}
+  inline LoginResponse& operator=(const LoginResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LoginResponse& operator=(LoginResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const LoginResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<LoginResponse>(&LoginResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(LoginResponse& a, LoginResponse& b) { a.Swap(&b); }
+  inline void Swap(LoginResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LoginResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] LoginResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LoginResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LoginResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LoginResponse& from) { LoginResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LoginResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.LoginResponse"; }
+
+  explicit LoginResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  LoginResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const LoginResponse& from);
+  LoginResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, LoginResponse&& from) noexcept
+      : LoginResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTokenFieldNumber = 2,
+    kResultFieldNumber = 1,
+    kUserIdFieldNumber = 3,
+  };
+  // string token = 2;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // int32 user_id = 3;
+  void clear_user_id() ;
+  [[nodiscard]] ::int32_t user_id() const;
+  void set_user_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_user_id() const;
+  void _internal_set_user_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.LoginResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<2, 3,
+                          1, 37,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const LoginResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    ::int32_t user_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
 class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesResponse final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:filestore.ListFilesResponse) */ {
  public:
@@ -4831,7 +7961,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesResponse final : public ::
   [[nodiscard]] static const ListFilesResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<ListFilesResponse>(&ListFilesResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 28;
+  static constexpr int kIndexInFileMessages = 43;
   friend void swap(ListFilesResponse& a, ListFilesResponse& b) { a.Swap(&b); }
   inline void Swap(ListFilesResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5009,6 +8139,234 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesResponse final : public ::
 };
 // -------------------------------------------------------------------
 
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListDirResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.ListDirResponse) */ {
+ public:
+  inline ListDirResponse() : ListDirResponse(nullptr) {}
+  ~ListDirResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ListDirResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr ListDirResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline ListDirResponse(const ListDirResponse& from) : ListDirResponse(nullptr, from) {}
+  inline ListDirResponse(ListDirResponse&& from) noexcept : ListDirResponse(nullptr, ::std::move(from)) {}
+  inline ListDirResponse& operator=(const ListDirResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListDirResponse& operator=(ListDirResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const ListDirResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<ListDirResponse>(&ListDirResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 14;
+  friend void swap(ListDirResponse& a, ListDirResponse& b) { a.Swap(&b); }
+  inline void Swap(ListDirResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ListDirResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] ListDirResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ListDirResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListDirResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ListDirResponse& from) { ListDirResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ListDirResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.ListDirResponse"; }
+
+  explicit ListDirResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  ListDirResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const ListDirResponse& from);
+  ListDirResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, ListDirResponse&& from) noexcept
+      : ListDirResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kEntriesFieldNumber = 2,
+    kResultFieldNumber = 1,
+  };
+  // repeated .filestore.DirEntry entries = 2;
+  [[nodiscard]] int entries_size() const;
+  private:
+  int _internal_entries_size() const;
+
+  public:
+  void clear_entries() ;
+  [[nodiscard]] const ::filestore::DirEntry& entries(int index) const;
+  [[nodiscard]] ::filestore::DirEntry* PROTOBUF_NONNULL mutable_entries(int index);
+  ::filestore::DirEntry* PROTOBUF_NONNULL add_entries();
+  [[nodiscard]] const ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>&
+  entries() const;
+  [[nodiscard]] ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>* PROTOBUF_NONNULL
+  mutable_entries();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>& _internal_entries() const;
+  ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>* PROTOBUF_NONNULL _internal_mutable_entries();
+
+  public:
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.ListDirResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<1, 2,
+                          2, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const ListDirResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::filestore::DirEntry > entries_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
+// -------------------------------------------------------------------
+
 class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesResponse final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:filestore.GetFileNodesResponse) */ {
  public:
@@ -5065,7 +8423,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesResponse final : public
   [[nodiscard]] static const GetFileNodesResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetFileNodesResponse>(&GetFileNodesResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 27;
   friend void swap(GetFileNodesResponse& a, GetFileNodesResponse& b) { a.Swap(&b); }
   inline void Swap(GetFileNodesResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5157,10 +8515,11 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesResponse final : public
 
   // accessors -------------------------------------------------------
   enum : int {
-    kNodesFieldNumber = 2,
+    kNodesFieldNumber = 3,
     kResultFieldNumber = 1,
+    kFileIdFieldNumber = 2,
   };
-  // repeated .filestore.StorageNode nodes = 2;
+  // repeated .filestore.StorageNode nodes = 3;
   [[nodiscard]] int nodes_size() const;
   private:
   int _internal_nodes_size() const;
@@ -5195,11 +8554,21 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesResponse final : public
   ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
 
   public:
+  // int32 file_id = 2;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:filestore.GetFileNodesResponse)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<1, 2,
+      ::google::protobuf::internal::TcParseTable<2, 3,
                           2, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
@@ -5230,6 +8599,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetFileNodesResponse final : public
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::filestore::StorageNode > nodes_;
     ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    ::int32_t file_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -5293,7 +8663,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunksBatchResponse final : publ
   [[nodiscard]] static const GetChunksBatchResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunksBatchResponse>(&GetChunksBatchResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 26;
+  static constexpr int kIndexInFileMessages = 41;
   friend void swap(GetChunksBatchResponse& a, GetChunksBatchResponse& b) { a.Swap(&b); }
   inline void Swap(GetChunksBatchResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5521,7 +8891,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunksBatchRequest final : publi
   [[nodiscard]] static const GetChunksBatchRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunksBatchRequest>(&GetChunksBatchRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 39;
   friend void swap(GetChunksBatchRequest& a, GetChunksBatchRequest& b) { a.Swap(&b); }
   inline void Swap(GetChunksBatchRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5614,7 +8984,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunksBatchRequest final : publi
   // accessors -------------------------------------------------------
   enum : int {
     kChunksFieldNumber = 2,
-    kFilenameFieldNumber = 1,
+    kFileIdFieldNumber = 1,
   };
   // repeated .filestore.GetChunkSpec chunks = 2;
   [[nodiscard]] int chunks_size() const;
@@ -5636,19 +9006,14 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunksBatchRequest final : publi
   ::google::protobuf::RepeatedPtrField<::filestore::GetChunkSpec>* PROTOBUF_NONNULL _internal_mutable_chunks();
 
   public:
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  // int32 file_id = 1;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.GetChunksBatchRequest)
@@ -5656,7 +9021,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunksBatchRequest final : publi
   class _Internal;
   using ParseTableT_ =
       ::google::protobuf::internal::TcParseTable<1, 2,
-                          1, 48,
+                          1, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -5685,7 +9050,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunksBatchRequest final : publi
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::filestore::GetChunkSpec > chunks_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::int32_t file_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -5749,7 +9114,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED GetChunkResponse final : public ::g
   [[nodiscard]] static const GetChunkResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<GetChunkResponse>(&GetChunkResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 18;
+  static constexpr int kIndexInFileMessages = 33;
   friend void swap(GetChunkResponse& a, GetChunkResponse& b) { a.Swap(&b); }
   inline void Swap(GetChunkResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5972,7 +9337,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED DeleteFileResponse final : public :
   [[nodiscard]] static const DeleteFileResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<DeleteFileResponse>(&DeleteFileResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 20;
   friend void swap(DeleteFileResponse& a, DeleteFileResponse& b) { a.Swap(&b); }
   inline void Swap(DeleteFileResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -6178,7 +9543,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadResponse final : public
   [[nodiscard]] static const CommitUploadResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CommitUploadResponse>(&CommitUploadResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(CommitUploadResponse& a, CommitUploadResponse& b) { a.Swap(&b); }
   inline void Swap(CommitUploadResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -6384,7 +9749,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadRequest final : public 
   [[nodiscard]] static const CommitUploadRequest& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CommitUploadRequest>(&CommitUploadRequest_globals_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 21;
   friend void swap(CommitUploadRequest& a, CommitUploadRequest& b) { a.Swap(&b); }
   inline void Swap(CommitUploadRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -6476,10 +9841,11 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadRequest final : public 
 
   // accessors -------------------------------------------------------
   enum : int {
-    kChunksFieldNumber = 2,
-    kFilenameFieldNumber = 1,
+    kChunksFieldNumber = 3,
+    kTokenFieldNumber = 1,
+    kFileIdFieldNumber = 2,
   };
-  // repeated .filestore.ChunkLocation chunks = 2;
+  // repeated .filestore.ChunkLocation chunks = 3;
   [[nodiscard]] int chunks_size() const;
   private:
   int _internal_chunks_size() const;
@@ -6499,27 +9865,37 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadRequest final : public 
   ::google::protobuf::RepeatedPtrField<::filestore::ChunkLocation>* PROTOBUF_NONNULL _internal_mutable_chunks();
 
   public:
-  // string filename = 1;
-  void clear_filename() ;
-  [[nodiscard]] const ::std::string& filename() const;
+  // string token = 1;
+  void clear_token() ;
+  [[nodiscard]] const ::std::string& token() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filename(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_filename();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_filename();
-  void set_allocated_filename(::std::string* PROTOBUF_NULLABLE value);
+  void set_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_token();
+  void set_allocated_token(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  const ::std::string& _internal_filename() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
+  const ::std::string& _internal_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_token();
+
+  public:
+  // int32 file_id = 2;
+  void clear_file_id() ;
+  [[nodiscard]] ::int32_t file_id() const;
+  void set_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_file_id() const;
+  void _internal_set_file_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:filestore.CommitUploadRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<1, 2,
-                          1, 46,
+      ::google::protobuf::internal::TcParseTable<2, 3,
+                          1, 43,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -6548,7 +9924,8 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CommitUploadRequest final : public 
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::filestore::ChunkLocation > chunks_;
-    ::google::protobuf::internal::ArenaStringPtr filename_;
+    ::google::protobuf::internal::ArenaStringPtr token_;
+    ::int32_t file_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6612,7 +9989,7 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadResponse final : public
   [[nodiscard]] static const CancelUploadResponse& default_instance() {
     return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<CancelUploadResponse>(&CancelUploadResponse_globals_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(CancelUploadResponse& a, CancelUploadResponse& b) { a.Swap(&b); }
   inline void Swap(CancelUploadResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -6760,6 +10137,212 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CancelUploadResponse final : public
   union { Impl_ _impl_; };
   friend struct ::TableStruct_file_5fstorage_2eproto;
 };
+// -------------------------------------------------------------------
+
+class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED AddCleanupTaskResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:filestore.AddCleanupTaskResponse) */ {
+ public:
+  inline AddCleanupTaskResponse() : AddCleanupTaskResponse(nullptr) {}
+  ~AddCleanupTaskResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(AddCleanupTaskResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AddCleanupTaskResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit constexpr AddCleanupTaskResponse(::google::protobuf::internal::ConstantInitialized,
+                           const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+                               class_data);
+
+  inline AddCleanupTaskResponse(const AddCleanupTaskResponse& from) : AddCleanupTaskResponse(nullptr, from) {}
+  inline AddCleanupTaskResponse(AddCleanupTaskResponse&& from) noexcept : AddCleanupTaskResponse(nullptr, ::std::move(from)) {}
+  inline AddCleanupTaskResponse& operator=(const AddCleanupTaskResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AddCleanupTaskResponse& operator=(AddCleanupTaskResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  [[nodiscard]] inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  [[nodiscard]] inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL
+  mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  [[nodiscard]] static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL
+  GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  [[nodiscard]] static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  [[nodiscard]] static const AddCleanupTaskResponse& default_instance() {
+    return *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<AddCleanupTaskResponse>(&AddCleanupTaskResponse_globals_);
+  }
+  static constexpr int kIndexInFileMessages = 29;
+  friend void swap(AddCleanupTaskResponse& a, AddCleanupTaskResponse& b) { a.Swap(&b); }
+  inline void Swap(AddCleanupTaskResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AddCleanupTaskResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  [[nodiscard]] AddCleanupTaskResponse* PROTOBUF_NONNULL
+  New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AddCleanupTaskResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AddCleanupTaskResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AddCleanupTaskResponse& from) { AddCleanupTaskResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  [[nodiscard]] bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  [[nodiscard]] static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  [[nodiscard]] static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  [[nodiscard]] ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] ::size_t ByteSizeLong() const final;
+  [[nodiscard]] ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  [[nodiscard]] int GetCachedSize() const {
+    return _impl_._cached_size_.Get();
+  }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AddCleanupTaskResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "filestore.AddCleanupTaskResponse"; }
+
+  explicit AddCleanupTaskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  AddCleanupTaskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const AddCleanupTaskResponse& from);
+  AddCleanupTaskResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, AddCleanupTaskResponse&& from) noexcept
+      : AddCleanupTaskResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_(
+      const MessageLite& prototype,
+      const ::google::protobuf::internal::TcParseTableBase* PROTOBUF_NULLABLE tc_table = nullptr);
+
+  [[nodiscard]] ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // .filestore.ResultCode result = 1;
+  [[nodiscard]] bool has_result() const;
+  void clear_result() ;
+  [[nodiscard]] const ::filestore::ResultCode& result() const;
+  [[nodiscard]] ::filestore::ResultCode* PROTOBUF_NULLABLE release_result();
+  ::filestore::ResultCode* PROTOBUF_NONNULL mutable_result();
+  void set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value);
+  ::filestore::ResultCode* PROTOBUF_NULLABLE unsafe_arena_release_result();
+
+  private:
+  const ::filestore::ResultCode& _internal_result() const;
+  ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:filestore.AddCleanupTaskResponse)
+ private:
+  class _Internal;
+  using ParseTableT_ =
+      ::google::protobuf::internal::TcParseTable<0, 1,
+                          1, 0,
+                          2>;
+  static constexpr ParseTableT_ InternalGenerateParseTable_(
+      const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
+  friend class ::google::protobuf::internal::TcParser;
+  #ifndef PROTOBUF_MESSAGE_GLOBALS
+  static const ParseTableT_ _table_;
+  #endif
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                                    ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const AddCleanupTaskResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_file_5fstorage_2eproto;
+};
 
 // ===================================================================
 
@@ -6780,6 +10363,30 @@ class MetaServiceRpc : public ::google::protobuf::Service {
 
   static const ::google::protobuf::ServiceDescriptor* PROTOBUF_NONNULL descriptor();
 
+  virtual void Register(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::RegisterRequest* PROTOBUF_NONNULL request,
+                        ::filestore::RegisterResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void Login(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::LoginRequest* PROTOBUF_NONNULL request,
+                        ::filestore::LoginResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void Logout(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::LogoutRequest* PROTOBUF_NONNULL request,
+                        ::filestore::LogoutResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void Mkdir(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::MkdirRequest* PROTOBUF_NONNULL request,
+                        ::filestore::MkdirResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void Rmdir(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::RmdirRequest* PROTOBUF_NONNULL request,
+                        ::filestore::RmdirResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void ListDir(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::ListDirRequest* PROTOBUF_NONNULL request,
+                        ::filestore::ListDirResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
   virtual void UploadFile(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::UploadFileRequest* PROTOBUF_NONNULL request,
                         ::filestore::UploadFileResponse* PROTOBUF_NONNULL response,
@@ -6803,6 +10410,10 @@ class MetaServiceRpc : public ::google::protobuf::Service {
   virtual void GetFileNodes(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::GetFileNodesRequest* PROTOBUF_NONNULL request,
                         ::filestore::GetFileNodesResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
+  virtual void AddCleanupTask(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::AddCleanupTaskRequest* PROTOBUF_NONNULL request,
+                        ::filestore::AddCleanupTaskResponse* PROTOBUF_NONNULL response,
                         ::google::protobuf::Closure* PROTOBUF_NULLABLE done);
 
   // implements Service ----------------------------------------------
@@ -6836,6 +10447,30 @@ class MetaServiceRpc_Stub final : public MetaServiceRpc {
   inline ::google::protobuf::RpcChannel* PROTOBUF_NULLABLE channel() { return channel_; }
 
   // implements MetaServiceRpc ------------------------------------------
+  void Register(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::RegisterRequest* PROTOBUF_NONNULL request,
+                        ::filestore::RegisterResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void Login(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::LoginRequest* PROTOBUF_NONNULL request,
+                        ::filestore::LoginResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void Logout(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::LogoutRequest* PROTOBUF_NONNULL request,
+                        ::filestore::LogoutResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void Mkdir(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::MkdirRequest* PROTOBUF_NONNULL request,
+                        ::filestore::MkdirResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void Rmdir(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::RmdirRequest* PROTOBUF_NONNULL request,
+                        ::filestore::RmdirResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void ListDir(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::ListDirRequest* PROTOBUF_NONNULL request,
+                        ::filestore::ListDirResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
   void UploadFile(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::UploadFileRequest* PROTOBUF_NONNULL request,
                         ::filestore::UploadFileResponse* PROTOBUF_NONNULL response,
@@ -6859,6 +10494,10 @@ class MetaServiceRpc_Stub final : public MetaServiceRpc {
   void GetFileNodes(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
                         const ::filestore::GetFileNodesRequest* PROTOBUF_NONNULL request,
                         ::filestore::GetFileNodesResponse* PROTOBUF_NONNULL response,
+                        ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
+  void AddCleanupTask(::google::protobuf::RpcController* PROTOBUF_NULLABLE controller,
+                        const ::filestore::AddCleanupTaskRequest* PROTOBUF_NONNULL request,
+                        ::filestore::AddCleanupTaskResponse* PROTOBUF_NONNULL response,
                         ::google::protobuf::Closure* PROTOBUF_NULLABLE done) override;
 
  private:
@@ -7299,77 +10938,1764 @@ inline void ChunkLocation::_internal_set_size(::int32_t value) {
 
 // -------------------------------------------------------------------
 
-// UploadFileRequest
+// RegisterRequest
 
-// string filename = 1;
-inline void UploadFileRequest::clear_filename() {
+// string username = 1;
+inline void RegisterRequest::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.username_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& UploadFileRequest::filename() const
+inline const ::std::string& RegisterRequest::username() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.UploadFileRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.RegisterRequest.username)
+  return _internal_username();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void UploadFileRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void RegisterRequest::set_username(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.UploadFileRequest.filename)
+  _impl_.username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.RegisterRequest.username)
 }
-inline ::std::string* PROTOBUF_NONNULL UploadFileRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL RegisterRequest::mutable_username()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.UploadFileRequest.filename)
+  ::std::string* _s = _internal_mutable_username();
+  // @@protoc_insertion_point(field_mutable:filestore.RegisterRequest.username)
   return _s;
 }
-inline const ::std::string& UploadFileRequest::_internal_filename() const {
+inline const ::std::string& RegisterRequest::_internal_username() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.username_.Get();
 }
-inline void UploadFileRequest::_internal_set_filename(const ::std::string& value) {
+inline void RegisterRequest::_internal_set_username(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.username_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL UploadFileRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL RegisterRequest::_internal_mutable_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.username_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE UploadFileRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE RegisterRequest::release_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.UploadFileRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.RegisterRequest.username)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.username_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.username_.Set("", GetArena());
   }
   return released;
 }
-inline void UploadFileRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void RegisterRequest::set_allocated_username(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.username_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.username_.IsDefault()) {
+    _impl_.username_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.UploadFileRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.RegisterRequest.username)
 }
 
-// int64 filesize = 2;
+// string password = 2;
+inline void RegisterRequest::clear_password() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.password_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& RegisterRequest::password() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.RegisterRequest.password)
+  return _internal_password();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void RegisterRequest::set_password(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.password_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.RegisterRequest.password)
+}
+inline ::std::string* PROTOBUF_NONNULL RegisterRequest::mutable_password()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_password();
+  // @@protoc_insertion_point(field_mutable:filestore.RegisterRequest.password)
+  return _s;
+}
+inline const ::std::string& RegisterRequest::_internal_password() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.password_.Get();
+}
+inline void RegisterRequest::_internal_set_password(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.password_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL RegisterRequest::_internal_mutable_password() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.password_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE RegisterRequest::release_password() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.RegisterRequest.password)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.password_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.password_.Set("", GetArena());
+  }
+  return released;
+}
+inline void RegisterRequest::set_allocated_password(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.password_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.password_.IsDefault()) {
+    _impl_.password_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.RegisterRequest.password)
+}
+
+// -------------------------------------------------------------------
+
+// RegisterResponse
+
+// .filestore.ResultCode result = 1;
+inline bool RegisterResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void RegisterResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& RegisterResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& RegisterResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.RegisterResponse.result)
+  return _internal_result();
+}
+inline void RegisterResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.RegisterResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE RegisterResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE RegisterResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.RegisterResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL RegisterResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL RegisterResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.RegisterResponse.result)
+  return _msg;
+}
+inline void RegisterResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.RegisterResponse.result)
+}
+
+// -------------------------------------------------------------------
+
+// LoginRequest
+
+// string username = 1;
+inline void LoginRequest::clear_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.username_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& LoginRequest::username() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.LoginRequest.username)
+  return _internal_username();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void LoginRequest::set_username(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.LoginRequest.username)
+}
+inline ::std::string* PROTOBUF_NONNULL LoginRequest::mutable_username()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_username();
+  // @@protoc_insertion_point(field_mutable:filestore.LoginRequest.username)
+  return _s;
+}
+inline const ::std::string& LoginRequest::_internal_username() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.username_.Get();
+}
+inline void LoginRequest::_internal_set_username(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.username_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL LoginRequest::_internal_mutable_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.username_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE LoginRequest::release_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.LoginRequest.username)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.username_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.username_.Set("", GetArena());
+  }
+  return released;
+}
+inline void LoginRequest::set_allocated_username(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.username_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.username_.IsDefault()) {
+    _impl_.username_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.LoginRequest.username)
+}
+
+// string password = 2;
+inline void LoginRequest::clear_password() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.password_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& LoginRequest::password() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.LoginRequest.password)
+  return _internal_password();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void LoginRequest::set_password(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.password_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.LoginRequest.password)
+}
+inline ::std::string* PROTOBUF_NONNULL LoginRequest::mutable_password()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_password();
+  // @@protoc_insertion_point(field_mutable:filestore.LoginRequest.password)
+  return _s;
+}
+inline const ::std::string& LoginRequest::_internal_password() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.password_.Get();
+}
+inline void LoginRequest::_internal_set_password(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.password_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL LoginRequest::_internal_mutable_password() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.password_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE LoginRequest::release_password() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.LoginRequest.password)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.password_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.password_.Set("", GetArena());
+  }
+  return released;
+}
+inline void LoginRequest::set_allocated_password(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.password_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.password_.IsDefault()) {
+    _impl_.password_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.LoginRequest.password)
+}
+
+// -------------------------------------------------------------------
+
+// LoginResponse
+
+// .filestore.ResultCode result = 1;
+inline bool LoginResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void LoginResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::filestore::ResultCode& LoginResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& LoginResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.LoginResponse.result)
+  return _internal_result();
+}
+inline void LoginResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.LoginResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE LoginResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE LoginResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.LoginResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL LoginResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL LoginResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.LoginResponse.result)
+  return _msg;
+}
+inline void LoginResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.LoginResponse.result)
+}
+
+// string token = 2;
+inline void LoginResponse::clear_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& LoginResponse::token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.LoginResponse.token)
+  return _internal_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void LoginResponse::set_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.LoginResponse.token)
+}
+inline ::std::string* PROTOBUF_NONNULL LoginResponse::mutable_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.LoginResponse.token)
+  return _s;
+}
+inline const ::std::string& LoginResponse::_internal_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.token_.Get();
+}
+inline void LoginResponse::_internal_set_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL LoginResponse::_internal_mutable_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE LoginResponse::release_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.LoginResponse.token)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.token_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  return released;
+}
+inline void LoginResponse::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.LoginResponse.token)
+}
+
+// int32 user_id = 3;
+inline void LoginResponse::clear_user_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.user_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t LoginResponse::user_id() const {
+  // @@protoc_insertion_point(field_get:filestore.LoginResponse.user_id)
+  return _internal_user_id();
+}
+inline void LoginResponse::set_user_id(::int32_t value) {
+  _internal_set_user_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.LoginResponse.user_id)
+}
+inline ::int32_t LoginResponse::_internal_user_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.user_id_;
+}
+inline void LoginResponse::_internal_set_user_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.user_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// LogoutRequest
+
+// string token = 1;
+inline void LogoutRequest::clear_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& LogoutRequest::token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.LogoutRequest.token)
+  return _internal_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void LogoutRequest::set_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.LogoutRequest.token)
+}
+inline ::std::string* PROTOBUF_NONNULL LogoutRequest::mutable_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.LogoutRequest.token)
+  return _s;
+}
+inline const ::std::string& LogoutRequest::_internal_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.token_.Get();
+}
+inline void LogoutRequest::_internal_set_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL LogoutRequest::_internal_mutable_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE LogoutRequest::release_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.LogoutRequest.token)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.token_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  return released;
+}
+inline void LogoutRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.LogoutRequest.token)
+}
+
+// -------------------------------------------------------------------
+
+// LogoutResponse
+
+// .filestore.ResultCode result = 1;
+inline bool LogoutResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void LogoutResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& LogoutResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& LogoutResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.LogoutResponse.result)
+  return _internal_result();
+}
+inline void LogoutResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.LogoutResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE LogoutResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE LogoutResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.LogoutResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL LogoutResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL LogoutResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.LogoutResponse.result)
+  return _msg;
+}
+inline void LogoutResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.LogoutResponse.result)
+}
+
+// -------------------------------------------------------------------
+
+// MkdirRequest
+
+// string token = 1;
+inline void MkdirRequest::clear_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& MkdirRequest::token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.MkdirRequest.token)
+  return _internal_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void MkdirRequest::set_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.MkdirRequest.token)
+}
+inline ::std::string* PROTOBUF_NONNULL MkdirRequest::mutable_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.MkdirRequest.token)
+  return _s;
+}
+inline const ::std::string& MkdirRequest::_internal_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.token_.Get();
+}
+inline void MkdirRequest::_internal_set_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL MkdirRequest::_internal_mutable_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE MkdirRequest::release_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.MkdirRequest.token)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.token_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  return released;
+}
+inline void MkdirRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.MkdirRequest.token)
+}
+
+// string path = 2;
+inline void MkdirRequest::clear_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& MkdirRequest::path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.MkdirRequest.path)
+  return _internal_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void MkdirRequest::set_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.MkdirRequest.path)
+}
+inline ::std::string* PROTOBUF_NONNULL MkdirRequest::mutable_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_path();
+  // @@protoc_insertion_point(field_mutable:filestore.MkdirRequest.path)
+  return _s;
+}
+inline const ::std::string& MkdirRequest::_internal_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.path_.Get();
+}
+inline void MkdirRequest::_internal_set_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL MkdirRequest::_internal_mutable_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE MkdirRequest::release_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.MkdirRequest.path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void MkdirRequest::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.MkdirRequest.path)
+}
+
+// -------------------------------------------------------------------
+
+// MkdirResponse
+
+// .filestore.ResultCode result = 1;
+inline bool MkdirResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void MkdirResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& MkdirResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& MkdirResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.MkdirResponse.result)
+  return _internal_result();
+}
+inline void MkdirResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.MkdirResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE MkdirResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE MkdirResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.MkdirResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL MkdirResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL MkdirResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.MkdirResponse.result)
+  return _msg;
+}
+inline void MkdirResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.MkdirResponse.result)
+}
+
+// -------------------------------------------------------------------
+
+// RmdirRequest
+
+// string token = 1;
+inline void RmdirRequest::clear_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& RmdirRequest::token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.RmdirRequest.token)
+  return _internal_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void RmdirRequest::set_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.RmdirRequest.token)
+}
+inline ::std::string* PROTOBUF_NONNULL RmdirRequest::mutable_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.RmdirRequest.token)
+  return _s;
+}
+inline const ::std::string& RmdirRequest::_internal_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.token_.Get();
+}
+inline void RmdirRequest::_internal_set_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL RmdirRequest::_internal_mutable_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE RmdirRequest::release_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.RmdirRequest.token)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.token_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  return released;
+}
+inline void RmdirRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.RmdirRequest.token)
+}
+
+// string path = 2;
+inline void RmdirRequest::clear_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& RmdirRequest::path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.RmdirRequest.path)
+  return _internal_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void RmdirRequest::set_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.RmdirRequest.path)
+}
+inline ::std::string* PROTOBUF_NONNULL RmdirRequest::mutable_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_path();
+  // @@protoc_insertion_point(field_mutable:filestore.RmdirRequest.path)
+  return _s;
+}
+inline const ::std::string& RmdirRequest::_internal_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.path_.Get();
+}
+inline void RmdirRequest::_internal_set_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL RmdirRequest::_internal_mutable_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE RmdirRequest::release_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.RmdirRequest.path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void RmdirRequest::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.RmdirRequest.path)
+}
+
+// bool recursive = 3;
+inline void RmdirRequest::clear_recursive() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.recursive_ = false;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline bool RmdirRequest::recursive() const {
+  // @@protoc_insertion_point(field_get:filestore.RmdirRequest.recursive)
+  return _internal_recursive();
+}
+inline void RmdirRequest::set_recursive(bool value) {
+  _internal_set_recursive(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.RmdirRequest.recursive)
+}
+inline bool RmdirRequest::_internal_recursive() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.recursive_;
+}
+inline void RmdirRequest::_internal_set_recursive(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.recursive_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RmdirResponse
+
+// .filestore.ResultCode result = 1;
+inline bool RmdirResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void RmdirResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& RmdirResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& RmdirResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.RmdirResponse.result)
+  return _internal_result();
+}
+inline void RmdirResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.RmdirResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE RmdirResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE RmdirResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.RmdirResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL RmdirResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL RmdirResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.RmdirResponse.result)
+  return _msg;
+}
+inline void RmdirResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.RmdirResponse.result)
+}
+
+// -------------------------------------------------------------------
+
+// DirEntry
+
+// string name = 1;
+inline void DirEntry::clear_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.name_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& DirEntry::name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.DirEntry.name)
+  return _internal_name();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void DirEntry::set_name(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.DirEntry.name)
+}
+inline ::std::string* PROTOBUF_NONNULL DirEntry::mutable_name()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:filestore.DirEntry.name)
+  return _s;
+}
+inline const ::std::string& DirEntry::_internal_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.name_.Get();
+}
+inline void DirEntry::_internal_set_name(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.name_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL DirEntry::_internal_mutable_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.name_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE DirEntry::release_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.DirEntry.name)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.name_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.name_.Set("", GetArena());
+  }
+  return released;
+}
+inline void DirEntry::set_allocated_name(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.DirEntry.name)
+}
+
+// bool is_dir = 2;
+inline void DirEntry::clear_is_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_dir_ = false;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline bool DirEntry::is_dir() const {
+  // @@protoc_insertion_point(field_get:filestore.DirEntry.is_dir)
+  return _internal_is_dir();
+}
+inline void DirEntry::set_is_dir(bool value) {
+  _internal_set_is_dir(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.DirEntry.is_dir)
+}
+inline bool DirEntry::_internal_is_dir() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_dir_;
+}
+inline void DirEntry::_internal_set_is_dir(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_dir_ = value;
+}
+
+// int32 file_id = 3;
+inline void DirEntry::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t DirEntry::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.DirEntry.file_id)
+  return _internal_file_id();
+}
+inline void DirEntry::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.DirEntry.file_id)
+}
+inline ::int32_t DirEntry::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void DirEntry::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ListDirRequest
+
+// string token = 1;
+inline void ListDirRequest::clear_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& ListDirRequest::token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.ListDirRequest.token)
+  return _internal_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void ListDirRequest::set_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.ListDirRequest.token)
+}
+inline ::std::string* PROTOBUF_NONNULL ListDirRequest::mutable_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.ListDirRequest.token)
+  return _s;
+}
+inline const ::std::string& ListDirRequest::_internal_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.token_.Get();
+}
+inline void ListDirRequest::_internal_set_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL ListDirRequest::_internal_mutable_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE ListDirRequest::release_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.ListDirRequest.token)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.token_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  return released;
+}
+inline void ListDirRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.ListDirRequest.token)
+}
+
+// string path = 2;
+inline void ListDirRequest::clear_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& ListDirRequest::path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.ListDirRequest.path)
+  return _internal_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void ListDirRequest::set_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.ListDirRequest.path)
+}
+inline ::std::string* PROTOBUF_NONNULL ListDirRequest::mutable_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_path();
+  // @@protoc_insertion_point(field_mutable:filestore.ListDirRequest.path)
+  return _s;
+}
+inline const ::std::string& ListDirRequest::_internal_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.path_.Get();
+}
+inline void ListDirRequest::_internal_set_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL ListDirRequest::_internal_mutable_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE ListDirRequest::release_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.ListDirRequest.path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void ListDirRequest::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.ListDirRequest.path)
+}
+
+// -------------------------------------------------------------------
+
+// ListDirResponse
+
+// .filestore.ResultCode result = 1;
+inline bool ListDirResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void ListDirResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::filestore::ResultCode& ListDirResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& ListDirResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.ListDirResponse.result)
+  return _internal_result();
+}
+inline void ListDirResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.ListDirResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE ListDirResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE ListDirResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.ListDirResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL ListDirResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL ListDirResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.ListDirResponse.result)
+  return _msg;
+}
+inline void ListDirResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.ListDirResponse.result)
+}
+
+// repeated .filestore.DirEntry entries = 2;
+inline int ListDirResponse::_internal_entries_size() const {
+  return _internal_entries().size();
+}
+inline int ListDirResponse::entries_size() const {
+  return _internal_entries_size();
+}
+inline void ListDirResponse::clear_entries() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.entries_.Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::DirEntry& ListDirResponse::entries(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.ListDirResponse.entries)
+  return _internal_entries().Get(index);
+}
+inline ::filestore::DirEntry* PROTOBUF_NONNULL ListDirResponse::mutable_entries(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:filestore.ListDirResponse.entries)
+  return _internal_mutable_entries()->Mutable(index);
+}
+inline ::filestore::DirEntry* PROTOBUF_NONNULL ListDirResponse::add_entries()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::filestore::DirEntry* _add =
+      _internal_mutable_entries()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:filestore.ListDirResponse.entries)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>& ListDirResponse::entries() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:filestore.ListDirResponse.entries)
+  return _internal_entries();
+}
+inline ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>* PROTOBUF_NONNULL
+ListDirResponse::mutable_entries() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:filestore.ListDirResponse.entries)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_entries();
+}
+inline const ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>&
+ListDirResponse::_internal_entries() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.entries_;
+}
+inline ::google::protobuf::RepeatedPtrField<::filestore::DirEntry>* PROTOBUF_NONNULL
+ListDirResponse::_internal_mutable_entries() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.entries_;
+}
+
+// -------------------------------------------------------------------
+
+// UploadFileRequest
+
+// string token = 1;
+inline void UploadFileRequest::clear_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::std::string& UploadFileRequest::token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.UploadFileRequest.token)
+  return _internal_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void UploadFileRequest::set_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.UploadFileRequest.token)
+}
+inline ::std::string* PROTOBUF_NONNULL UploadFileRequest::mutable_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.UploadFileRequest.token)
+  return _s;
+}
+inline const ::std::string& UploadFileRequest::_internal_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.token_.Get();
+}
+inline void UploadFileRequest::_internal_set_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL UploadFileRequest::_internal_mutable_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE UploadFileRequest::release_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.UploadFileRequest.token)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.token_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  return released;
+}
+inline void UploadFileRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.UploadFileRequest.token)
+}
+
+// string path = 2;
+inline void UploadFileRequest::clear_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& UploadFileRequest::path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.UploadFileRequest.path)
+  return _internal_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void UploadFileRequest::set_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.UploadFileRequest.path)
+}
+inline ::std::string* PROTOBUF_NONNULL UploadFileRequest::mutable_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_path();
+  // @@protoc_insertion_point(field_mutable:filestore.UploadFileRequest.path)
+  return _s;
+}
+inline const ::std::string& UploadFileRequest::_internal_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.path_.Get();
+}
+inline void UploadFileRequest::_internal_set_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL UploadFileRequest::_internal_mutable_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE UploadFileRequest::release_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.UploadFileRequest.path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void UploadFileRequest::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.UploadFileRequest.path)
+}
+
+// int64 filesize = 3;
 inline void UploadFileRequest::clear_filesize() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.filesize_ = ::int64_t{0};
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
 }
 inline ::int64_t UploadFileRequest::filesize() const {
   // @@protoc_insertion_point(field_get:filestore.UploadFileRequest.filesize)
@@ -7377,7 +12703,7 @@ inline ::int64_t UploadFileRequest::filesize() const {
 }
 inline void UploadFileRequest::set_filesize(::int64_t value) {
   _internal_set_filesize(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   // @@protoc_insertion_point(field_set:filestore.UploadFileRequest.filesize)
 }
 inline ::int64_t UploadFileRequest::_internal_filesize() const {
@@ -7389,11 +12715,11 @@ inline void UploadFileRequest::_internal_set_filesize(::int64_t value) {
   _impl_.filesize_ = value;
 }
 
-// int32 chunk_count = 3;
+// int32 chunk_count = 4;
 inline void UploadFileRequest::clear_chunk_count() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.chunk_count_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
 }
 inline ::int32_t UploadFileRequest::chunk_count() const {
   // @@protoc_insertion_point(field_get:filestore.UploadFileRequest.chunk_count)
@@ -7401,7 +12727,7 @@ inline ::int32_t UploadFileRequest::chunk_count() const {
 }
 inline void UploadFileRequest::set_chunk_count(::int32_t value) {
   _internal_set_chunk_count(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   // @@protoc_insertion_point(field_set:filestore.UploadFileRequest.chunk_count)
 }
 inline ::int32_t UploadFileRequest::_internal_chunk_count() const {
@@ -7515,7 +12841,31 @@ inline void UploadFileResponse::set_allocated_result(::filestore::ResultCode* PR
   // @@protoc_insertion_point(field_set_allocated:filestore.UploadFileResponse.result)
 }
 
-// repeated .filestore.ChunkLocation chunks = 2;
+// int32 file_id = 2;
+inline void UploadFileResponse::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t UploadFileResponse::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.UploadFileResponse.file_id)
+  return _internal_file_id();
+}
+inline void UploadFileResponse::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.UploadFileResponse.file_id)
+}
+inline ::int32_t UploadFileResponse::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void UploadFileResponse::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// repeated .filestore.ChunkLocation chunks = 3;
 inline int UploadFileResponse::_internal_chunks_size() const {
   return _internal_chunks().size();
 }
@@ -7574,68 +12924,132 @@ UploadFileResponse::_internal_mutable_chunks() {
 
 // QueryFileRequest
 
-// string filename = 1;
-inline void QueryFileRequest::clear_filename() {
+// string token = 1;
+inline void QueryFileRequest::clear_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.token_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& QueryFileRequest::filename() const
+inline const ::std::string& QueryFileRequest::token() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.QueryFileRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.QueryFileRequest.token)
+  return _internal_token();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void QueryFileRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void QueryFileRequest::set_token(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.QueryFileRequest.filename)
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.QueryFileRequest.token)
 }
-inline ::std::string* PROTOBUF_NONNULL QueryFileRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL QueryFileRequest::mutable_token()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.QueryFileRequest.filename)
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.QueryFileRequest.token)
   return _s;
 }
-inline const ::std::string& QueryFileRequest::_internal_filename() const {
+inline const ::std::string& QueryFileRequest::_internal_token() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.token_.Get();
 }
-inline void QueryFileRequest::_internal_set_filename(const ::std::string& value) {
+inline void QueryFileRequest::_internal_set_token(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.token_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL QueryFileRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL QueryFileRequest::_internal_mutable_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.token_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE QueryFileRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE QueryFileRequest::release_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.QueryFileRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.QueryFileRequest.token)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.token_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.token_.Set("", GetArena());
   }
   return released;
 }
-inline void QueryFileRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void QueryFileRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.QueryFileRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.QueryFileRequest.token)
+}
+
+// string path = 2;
+inline void QueryFileRequest::clear_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& QueryFileRequest::path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.QueryFileRequest.path)
+  return _internal_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void QueryFileRequest::set_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.QueryFileRequest.path)
+}
+inline ::std::string* PROTOBUF_NONNULL QueryFileRequest::mutable_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_path();
+  // @@protoc_insertion_point(field_mutable:filestore.QueryFileRequest.path)
+  return _s;
+}
+inline const ::std::string& QueryFileRequest::_internal_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.path_.Get();
+}
+inline void QueryFileRequest::_internal_set_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL QueryFileRequest::_internal_mutable_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE QueryFileRequest::release_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.QueryFileRequest.path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void QueryFileRequest::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.QueryFileRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -7740,7 +13154,31 @@ inline void QueryFileResponse::set_allocated_result(::filestore::ResultCode* PRO
   // @@protoc_insertion_point(field_set_allocated:filestore.QueryFileResponse.result)
 }
 
-// int64 filesize = 2;
+// int32 file_id = 2;
+inline void QueryFileResponse::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+}
+inline ::int32_t QueryFileResponse::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.QueryFileResponse.file_id)
+  return _internal_file_id();
+}
+inline void QueryFileResponse::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:filestore.QueryFileResponse.file_id)
+}
+inline ::int32_t QueryFileResponse::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void QueryFileResponse::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// int64 filesize = 3;
 inline void QueryFileResponse::clear_filesize() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.filesize_ = ::int64_t{0};
@@ -7764,11 +13202,11 @@ inline void QueryFileResponse::_internal_set_filesize(::int64_t value) {
   _impl_.filesize_ = value;
 }
 
-// int32 chunk_count = 3;
+// int32 chunk_count = 4;
 inline void QueryFileResponse::clear_chunk_count() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.chunk_count_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
 }
 inline ::int32_t QueryFileResponse::chunk_count() const {
   // @@protoc_insertion_point(field_get:filestore.QueryFileResponse.chunk_count)
@@ -7776,7 +13214,7 @@ inline ::int32_t QueryFileResponse::chunk_count() const {
 }
 inline void QueryFileResponse::set_chunk_count(::int32_t value) {
   _internal_set_chunk_count(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   // @@protoc_insertion_point(field_set:filestore.QueryFileResponse.chunk_count)
 }
 inline ::int32_t QueryFileResponse::_internal_chunk_count() const {
@@ -7788,7 +13226,7 @@ inline void QueryFileResponse::_internal_set_chunk_count(::int32_t value) {
   _impl_.chunk_count_ = value;
 }
 
-// repeated .filestore.ChunkLocation chunks = 4;
+// repeated .filestore.ChunkLocation chunks = 5;
 inline int QueryFileResponse::_internal_chunks_size() const {
   return _internal_chunks().size();
 }
@@ -7847,68 +13285,92 @@ QueryFileResponse::_internal_mutable_chunks() {
 
 // DeleteFileRequest
 
-// string filename = 1;
-inline void DeleteFileRequest::clear_filename() {
+// string token = 1;
+inline void DeleteFileRequest::clear_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.token_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& DeleteFileRequest::filename() const
+inline const ::std::string& DeleteFileRequest::token() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.DeleteFileRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.DeleteFileRequest.token)
+  return _internal_token();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void DeleteFileRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void DeleteFileRequest::set_token(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.DeleteFileRequest.filename)
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.DeleteFileRequest.token)
 }
-inline ::std::string* PROTOBUF_NONNULL DeleteFileRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL DeleteFileRequest::mutable_token()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.DeleteFileRequest.filename)
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.DeleteFileRequest.token)
   return _s;
 }
-inline const ::std::string& DeleteFileRequest::_internal_filename() const {
+inline const ::std::string& DeleteFileRequest::_internal_token() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.token_.Get();
 }
-inline void DeleteFileRequest::_internal_set_filename(const ::std::string& value) {
+inline void DeleteFileRequest::_internal_set_token(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.token_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL DeleteFileRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL DeleteFileRequest::_internal_mutable_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.token_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE DeleteFileRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE DeleteFileRequest::release_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.DeleteFileRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.DeleteFileRequest.token)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.token_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.token_.Set("", GetArena());
   }
   return released;
 }
-inline void DeleteFileRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void DeleteFileRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.DeleteFileRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.DeleteFileRequest.token)
+}
+
+// int32 file_id = 2;
+inline void DeleteFileRequest::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline ::int32_t DeleteFileRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.DeleteFileRequest.file_id)
+  return _internal_file_id();
+}
+inline void DeleteFileRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.DeleteFileRequest.file_id)
+}
+inline ::int32_t DeleteFileRequest::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void DeleteFileRequest::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -8017,71 +13479,95 @@ inline void DeleteFileResponse::set_allocated_result(::filestore::ResultCode* PR
 
 // CommitUploadRequest
 
-// string filename = 1;
-inline void CommitUploadRequest::clear_filename() {
+// string token = 1;
+inline void CommitUploadRequest::clear_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.token_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
 }
-inline const ::std::string& CommitUploadRequest::filename() const
+inline const ::std::string& CommitUploadRequest::token() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.CommitUploadRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.CommitUploadRequest.token)
+  return _internal_token();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void CommitUploadRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void CommitUploadRequest::set_token(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.CommitUploadRequest.filename)
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.CommitUploadRequest.token)
 }
-inline ::std::string* PROTOBUF_NONNULL CommitUploadRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL CommitUploadRequest::mutable_token()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.CommitUploadRequest.filename)
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.CommitUploadRequest.token)
   return _s;
 }
-inline const ::std::string& CommitUploadRequest::_internal_filename() const {
+inline const ::std::string& CommitUploadRequest::_internal_token() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.token_.Get();
 }
-inline void CommitUploadRequest::_internal_set_filename(const ::std::string& value) {
+inline void CommitUploadRequest::_internal_set_token(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.token_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL CommitUploadRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL CommitUploadRequest::_internal_mutable_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.token_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE CommitUploadRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE CommitUploadRequest::release_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.CommitUploadRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.CommitUploadRequest.token)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.token_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.token_.Set("", GetArena());
   }
   return released;
 }
-inline void CommitUploadRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void CommitUploadRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.CommitUploadRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.CommitUploadRequest.token)
 }
 
-// repeated .filestore.ChunkLocation chunks = 2;
+// int32 file_id = 2;
+inline void CommitUploadRequest::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t CommitUploadRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.CommitUploadRequest.file_id)
+  return _internal_file_id();
+}
+inline void CommitUploadRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.CommitUploadRequest.file_id)
+}
+inline ::int32_t CommitUploadRequest::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void CommitUploadRequest::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// repeated .filestore.ChunkLocation chunks = 3;
 inline int CommitUploadRequest::_internal_chunks_size() const {
   return _internal_chunks().size();
 }
@@ -8242,68 +13728,92 @@ inline void CommitUploadResponse::set_allocated_result(::filestore::ResultCode* 
 
 // CancelUploadRequest
 
-// string filename = 1;
-inline void CancelUploadRequest::clear_filename() {
+// string token = 1;
+inline void CancelUploadRequest::clear_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.token_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& CancelUploadRequest::filename() const
+inline const ::std::string& CancelUploadRequest::token() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.CancelUploadRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.CancelUploadRequest.token)
+  return _internal_token();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void CancelUploadRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void CancelUploadRequest::set_token(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.CancelUploadRequest.filename)
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.CancelUploadRequest.token)
 }
-inline ::std::string* PROTOBUF_NONNULL CancelUploadRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL CancelUploadRequest::mutable_token()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.CancelUploadRequest.filename)
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.CancelUploadRequest.token)
   return _s;
 }
-inline const ::std::string& CancelUploadRequest::_internal_filename() const {
+inline const ::std::string& CancelUploadRequest::_internal_token() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.token_.Get();
 }
-inline void CancelUploadRequest::_internal_set_filename(const ::std::string& value) {
+inline void CancelUploadRequest::_internal_set_token(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.token_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL CancelUploadRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL CancelUploadRequest::_internal_mutable_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.token_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE CancelUploadRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE CancelUploadRequest::release_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.CancelUploadRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.CancelUploadRequest.token)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.token_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.token_.Set("", GetArena());
   }
   return released;
 }
-inline void CancelUploadRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void CancelUploadRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.CancelUploadRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.CancelUploadRequest.token)
+}
+
+// int32 file_id = 2;
+inline void CancelUploadRequest::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline ::int32_t CancelUploadRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.CancelUploadRequest.file_id)
+  return _internal_file_id();
+}
+inline void CancelUploadRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.CancelUploadRequest.file_id)
+}
+inline ::int32_t CancelUploadRequest::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void CancelUploadRequest::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -8504,68 +14014,132 @@ inline void StorageNode::_internal_set_port(::int32_t value) {
 
 // GetFileNodesRequest
 
-// string filename = 1;
-inline void GetFileNodesRequest::clear_filename() {
+// string token = 1;
+inline void GetFileNodesRequest::clear_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.token_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& GetFileNodesRequest::filename() const
+inline const ::std::string& GetFileNodesRequest::token() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.GetFileNodesRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.GetFileNodesRequest.token)
+  return _internal_token();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void GetFileNodesRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void GetFileNodesRequest::set_token(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.GetFileNodesRequest.filename)
+  _impl_.token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.GetFileNodesRequest.token)
 }
-inline ::std::string* PROTOBUF_NONNULL GetFileNodesRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL GetFileNodesRequest::mutable_token()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.GetFileNodesRequest.filename)
+  ::std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:filestore.GetFileNodesRequest.token)
   return _s;
 }
-inline const ::std::string& GetFileNodesRequest::_internal_filename() const {
+inline const ::std::string& GetFileNodesRequest::_internal_token() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.token_.Get();
 }
-inline void GetFileNodesRequest::_internal_set_filename(const ::std::string& value) {
+inline void GetFileNodesRequest::_internal_set_token(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.token_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL GetFileNodesRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL GetFileNodesRequest::_internal_mutable_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.token_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE GetFileNodesRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE GetFileNodesRequest::release_token() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.GetFileNodesRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.GetFileNodesRequest.token)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.token_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.token_.Set("", GetArena());
   }
   return released;
 }
-inline void GetFileNodesRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void GetFileNodesRequest::set_allocated_token(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.token_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.GetFileNodesRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.GetFileNodesRequest.token)
+}
+
+// string path = 2;
+inline void GetFileNodesRequest::clear_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline const ::std::string& GetFileNodesRequest::path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.GetFileNodesRequest.path)
+  return _internal_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GetFileNodesRequest::set_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.GetFileNodesRequest.path)
+}
+inline ::std::string* PROTOBUF_NONNULL GetFileNodesRequest::mutable_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_path();
+  // @@protoc_insertion_point(field_mutable:filestore.GetFileNodesRequest.path)
+  return _s;
+}
+inline const ::std::string& GetFileNodesRequest::_internal_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.path_.Get();
+}
+inline void GetFileNodesRequest::_internal_set_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GetFileNodesRequest::_internal_mutable_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GetFileNodesRequest::release_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.GetFileNodesRequest.path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GetFileNodesRequest::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
+    _impl_.path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:filestore.GetFileNodesRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -8670,7 +14244,31 @@ inline void GetFileNodesResponse::set_allocated_result(::filestore::ResultCode* 
   // @@protoc_insertion_point(field_set_allocated:filestore.GetFileNodesResponse.result)
 }
 
-// repeated .filestore.StorageNode nodes = 2;
+// int32 file_id = 2;
+inline void GetFileNodesResponse::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t GetFileNodesResponse::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.GetFileNodesResponse.file_id)
+  return _internal_file_id();
+}
+inline void GetFileNodesResponse::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.GetFileNodesResponse.file_id)
+}
+inline ::int32_t GetFileNodesResponse::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void GetFileNodesResponse::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// repeated .filestore.StorageNode nodes = 3;
 inline int GetFileNodesResponse::_internal_nodes_size() const {
   return _internal_nodes().size();
 }
@@ -8727,70 +14325,248 @@ GetFileNodesResponse::_internal_mutable_nodes() {
 
 // -------------------------------------------------------------------
 
-// PutChunkRequest
+// AddCleanupTaskRequest
 
-// string filename = 1;
-inline void PutChunkRequest::clear_filename() {
+// string node_ip = 1;
+inline void AddCleanupTaskRequest::clear_node_ip() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.node_ip_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& PutChunkRequest::filename() const
+inline const ::std::string& AddCleanupTaskRequest::node_ip() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.PutChunkRequest.filename)
-  return _internal_filename();
+  // @@protoc_insertion_point(field_get:filestore.AddCleanupTaskRequest.node_ip)
+  return _internal_node_ip();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void PutChunkRequest::set_filename(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void AddCleanupTaskRequest::set_node_ip(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.PutChunkRequest.filename)
+  _impl_.node_ip_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:filestore.AddCleanupTaskRequest.node_ip)
 }
-inline ::std::string* PROTOBUF_NONNULL PutChunkRequest::mutable_filename()
+inline ::std::string* PROTOBUF_NONNULL AddCleanupTaskRequest::mutable_node_ip()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.PutChunkRequest.filename)
+  ::std::string* _s = _internal_mutable_node_ip();
+  // @@protoc_insertion_point(field_mutable:filestore.AddCleanupTaskRequest.node_ip)
   return _s;
 }
-inline const ::std::string& PutChunkRequest::_internal_filename() const {
+inline const ::std::string& AddCleanupTaskRequest::_internal_node_ip() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.node_ip_.Get();
 }
-inline void PutChunkRequest::_internal_set_filename(const ::std::string& value) {
+inline void AddCleanupTaskRequest::_internal_set_node_ip(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
+  _impl_.node_ip_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL PutChunkRequest::_internal_mutable_filename() {
+inline ::std::string* PROTOBUF_NONNULL AddCleanupTaskRequest::_internal_mutable_node_ip() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
+  return _impl_.node_ip_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE PutChunkRequest::release_filename() {
+inline ::std::string* PROTOBUF_NULLABLE AddCleanupTaskRequest::release_node_ip() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.PutChunkRequest.filename)
+  // @@protoc_insertion_point(field_release:filestore.AddCleanupTaskRequest.node_ip)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
+  auto* released = _impl_.node_ip_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
+    _impl_.node_ip_.Set("", GetArena());
   }
   return released;
 }
-inline void PutChunkRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
+inline void AddCleanupTaskRequest::set_allocated_node_ip(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
     ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
+  _impl_.node_ip_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.node_ip_.IsDefault()) {
+    _impl_.node_ip_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:filestore.PutChunkRequest.filename)
+  // @@protoc_insertion_point(field_set_allocated:filestore.AddCleanupTaskRequest.node_ip)
+}
+
+// int32 node_port = 2;
+inline void AddCleanupTaskRequest::clear_node_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.node_port_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline ::int32_t AddCleanupTaskRequest::node_port() const {
+  // @@protoc_insertion_point(field_get:filestore.AddCleanupTaskRequest.node_port)
+  return _internal_node_port();
+}
+inline void AddCleanupTaskRequest::set_node_port(::int32_t value) {
+  _internal_set_node_port(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.AddCleanupTaskRequest.node_port)
+}
+inline ::int32_t AddCleanupTaskRequest::_internal_node_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.node_port_;
+}
+inline void AddCleanupTaskRequest::_internal_set_node_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.node_port_ = value;
+}
+
+// int32 file_id = 3;
+inline void AddCleanupTaskRequest::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t AddCleanupTaskRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.AddCleanupTaskRequest.file_id)
+  return _internal_file_id();
+}
+inline void AddCleanupTaskRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.AddCleanupTaskRequest.file_id)
+}
+inline ::int32_t AddCleanupTaskRequest::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void AddCleanupTaskRequest::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// AddCleanupTaskResponse
+
+// .filestore.ResultCode result = 1;
+inline bool AddCleanupTaskResponse::has_result() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.result_ != nullptr);
+  return value;
+}
+inline void AddCleanupTaskResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ != nullptr) _impl_.result_->Clear();
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline const ::filestore::ResultCode& AddCleanupTaskResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::filestore::ResultCode* p = _impl_.result_;
+  return p != nullptr ? *p : *::google::protobuf::internal::MessageGlobalsBase::ToDefaultInstance<::filestore::ResultCode>(&::filestore::ResultCode_globals_);
+}
+inline const ::filestore::ResultCode& AddCleanupTaskResponse::result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:filestore.AddCleanupTaskResponse.result)
+  return _internal_result();
+}
+inline void AddCleanupTaskResponse::unsafe_arena_set_allocated_result(
+    ::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:filestore.AddCleanupTaskResponse.result)
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE AddCleanupTaskResponse::release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* released = _impl_.result_;
+  _impl_.result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::filestore::ResultCode* PROTOBUF_NULLABLE AddCleanupTaskResponse::unsafe_arena_release_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:filestore.AddCleanupTaskResponse.result)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* temp = _impl_.result_;
+  _impl_.result_ = nullptr;
+  return temp;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL AddCleanupTaskResponse::_internal_mutable_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::filestore::ResultCode>(GetArena());
+    _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(p);
+  }
+  return _impl_.result_;
+}
+inline ::filestore::ResultCode* PROTOBUF_NONNULL AddCleanupTaskResponse::mutable_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::filestore::ResultCode* _msg = _internal_mutable_result();
+  // @@protoc_insertion_point(field_mutable:filestore.AddCleanupTaskResponse.result)
+  return _msg;
+}
+inline void AddCleanupTaskResponse::set_allocated_result(::filestore::ResultCode* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.result_ = reinterpret_cast<::filestore::ResultCode*>(value);
+  // @@protoc_insertion_point(field_set_allocated:filestore.AddCleanupTaskResponse.result)
+}
+
+// -------------------------------------------------------------------
+
+// PutChunkRequest
+
+// int32 file_id = 1;
+inline void PutChunkRequest::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline ::int32_t PutChunkRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.PutChunkRequest.file_id)
+  return _internal_file_id();
+}
+inline void PutChunkRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.PutChunkRequest.file_id)
+}
+inline ::int32_t PutChunkRequest::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void PutChunkRequest::_internal_set_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
 }
 
 // int32 chunk_index = 2;
@@ -8821,7 +14597,7 @@ inline void PutChunkRequest::_internal_set_chunk_index(::int32_t value) {
 inline void PutChunkRequest::clear_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.data_.ClearToEmpty();
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
 inline const ::std::string& PutChunkRequest::data() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -8831,13 +14607,13 @@ inline const ::std::string& PutChunkRequest::data() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void PutChunkRequest::set_data(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   _impl_.data_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:filestore.PutChunkRequest.data)
 }
 inline ::std::string* PROTOBUF_NONNULL PutChunkRequest::mutable_data()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   ::std::string* _s = _internal_mutable_data();
   // @@protoc_insertion_point(field_mutable:filestore.PutChunkRequest.data)
   return _s;
@@ -8857,10 +14633,10 @@ inline ::std::string* PROTOBUF_NONNULL PutChunkRequest::_internal_mutable_data()
 inline ::std::string* PROTOBUF_NULLABLE PutChunkRequest::release_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:filestore.PutChunkRequest.data)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   auto* released = _impl_.data_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.data_.Set("", GetArena());
@@ -8870,9 +14646,9 @@ inline ::std::string* PROTOBUF_NULLABLE PutChunkRequest::release_data() {
 inline void PutChunkRequest::set_allocated_data(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
   }
   _impl_.data_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.data_.IsDefault()) {
@@ -9099,68 +14875,28 @@ inline void PutChunkResponse::_internal_set_size(::int32_t value) {
 
 // GetChunkRequest
 
-// string filename = 1;
-inline void GetChunkRequest::clear_filename() {
+// int32 file_id = 1;
+inline void GetChunkRequest::clear_file_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.file_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline const ::std::string& GetChunkRequest::filename() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.GetChunkRequest.filename)
-  return _internal_filename();
+inline ::int32_t GetChunkRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.GetChunkRequest.file_id)
+  return _internal_file_id();
 }
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void GetChunkRequest::set_filename(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
+inline void GetChunkRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.GetChunkRequest.filename)
+  // @@protoc_insertion_point(field_set:filestore.GetChunkRequest.file_id)
 }
-inline ::std::string* PROTOBUF_NONNULL GetChunkRequest::mutable_filename()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.GetChunkRequest.filename)
-  return _s;
-}
-inline const ::std::string& GetChunkRequest::_internal_filename() const {
+inline ::int32_t GetChunkRequest::_internal_file_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.file_id_;
 }
-inline void GetChunkRequest::_internal_set_filename(const ::std::string& value) {
+inline void GetChunkRequest::_internal_set_file_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL GetChunkRequest::_internal_mutable_filename() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE GetChunkRequest::release_filename() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.GetChunkRequest.filename)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
-    return nullptr;
-  }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  auto* released = _impl_.filename_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
-  }
-  return released;
-}
-inline void GetChunkRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:filestore.GetChunkRequest.filename)
+  _impl_.file_id_ = value;
 }
 
 // int32 chunk_index = 2;
@@ -9191,7 +14927,7 @@ inline void GetChunkRequest::_internal_set_chunk_index(::int32_t value) {
 inline void GetChunkRequest::clear_chunk_size() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.chunk_size_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
 }
 inline ::int32_t GetChunkRequest::chunk_size() const {
   // @@protoc_insertion_point(field_get:filestore.GetChunkRequest.chunk_size)
@@ -9199,7 +14935,7 @@ inline ::int32_t GetChunkRequest::chunk_size() const {
 }
 inline void GetChunkRequest::set_chunk_size(::int32_t value) {
   _internal_set_chunk_size(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   // @@protoc_insertion_point(field_set:filestore.GetChunkRequest.chunk_size)
 }
 inline ::int32_t GetChunkRequest::_internal_chunk_size() const {
@@ -9215,7 +14951,7 @@ inline void GetChunkRequest::_internal_set_chunk_size(::int32_t value) {
 inline void GetChunkRequest::clear_offset() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.offset_ = ::int64_t{0};
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
 }
 inline ::int64_t GetChunkRequest::offset() const {
   // @@protoc_insertion_point(field_get:filestore.GetChunkRequest.offset)
@@ -9223,7 +14959,7 @@ inline ::int64_t GetChunkRequest::offset() const {
 }
 inline void GetChunkRequest::set_offset(::int64_t value) {
   _internal_set_offset(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   // @@protoc_insertion_point(field_set:filestore.GetChunkRequest.offset)
 }
 inline ::int64_t GetChunkRequest::_internal_offset() const {
@@ -9661,68 +15397,28 @@ inline void ChunkResult::set_allocated_checksum(::std::string* PROTOBUF_NULLABLE
 
 // PutChunksBatchRequest
 
-// string filename = 1;
-inline void PutChunksBatchRequest::clear_filename() {
+// int32 file_id = 1;
+inline void PutChunksBatchRequest::clear_file_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.file_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
 }
-inline const ::std::string& PutChunksBatchRequest::filename() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.PutChunksBatchRequest.filename)
-  return _internal_filename();
+inline ::int32_t PutChunksBatchRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.PutChunksBatchRequest.file_id)
+  return _internal_file_id();
 }
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void PutChunksBatchRequest::set_filename(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
+inline void PutChunksBatchRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.PutChunksBatchRequest.filename)
+  // @@protoc_insertion_point(field_set:filestore.PutChunksBatchRequest.file_id)
 }
-inline ::std::string* PROTOBUF_NONNULL PutChunksBatchRequest::mutable_filename()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.PutChunksBatchRequest.filename)
-  return _s;
-}
-inline const ::std::string& PutChunksBatchRequest::_internal_filename() const {
+inline ::int32_t PutChunksBatchRequest::_internal_file_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.file_id_;
 }
-inline void PutChunksBatchRequest::_internal_set_filename(const ::std::string& value) {
+inline void PutChunksBatchRequest::_internal_set_file_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL PutChunksBatchRequest::_internal_mutable_filename() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE PutChunksBatchRequest::release_filename() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.PutChunksBatchRequest.filename)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
-    return nullptr;
-  }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  auto* released = _impl_.filename_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
-  }
-  return released;
-}
-inline void PutChunksBatchRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:filestore.PutChunksBatchRequest.filename)
+  _impl_.file_id_ = value;
 }
 
 // repeated .filestore.ChunkData chunks = 2;
@@ -10017,68 +15713,28 @@ inline void GetChunkSpec::_internal_set_size(::int32_t value) {
 
 // GetChunksBatchRequest
 
-// string filename = 1;
-inline void GetChunksBatchRequest::clear_filename() {
+// int32 file_id = 1;
+inline void GetChunksBatchRequest::clear_file_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.ClearToEmpty();
+  _impl_.file_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
 }
-inline const ::std::string& GetChunksBatchRequest::filename() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.GetChunksBatchRequest.filename)
-  return _internal_filename();
+inline ::int32_t GetChunksBatchRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.GetChunksBatchRequest.file_id)
+  return _internal_file_id();
 }
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void GetChunksBatchRequest::set_filename(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
+inline void GetChunksBatchRequest::set_file_id(::int32_t value) {
+  _internal_set_file_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  _impl_.filename_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:filestore.GetChunksBatchRequest.filename)
+  // @@protoc_insertion_point(field_set:filestore.GetChunksBatchRequest.file_id)
 }
-inline ::std::string* PROTOBUF_NONNULL GetChunksBatchRequest::mutable_filename()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::std::string* _s = _internal_mutable_filename();
-  // @@protoc_insertion_point(field_mutable:filestore.GetChunksBatchRequest.filename)
-  return _s;
-}
-inline const ::std::string& GetChunksBatchRequest::_internal_filename() const {
+inline ::int32_t GetChunksBatchRequest::_internal_file_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filename_.Get();
+  return _impl_.file_id_;
 }
-inline void GetChunksBatchRequest::_internal_set_filename(const ::std::string& value) {
+inline void GetChunksBatchRequest::_internal_set_file_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filename_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL GetChunksBatchRequest::_internal_mutable_filename() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.filename_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE GetChunksBatchRequest::release_filename() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:filestore.GetChunksBatchRequest.filename)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
-    return nullptr;
-  }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  auto* released = _impl_.filename_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.filename_.Set("", GetArena());
-  }
-  return released;
-}
-inline void GetChunksBatchRequest::set_allocated_filename(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-  _impl_.filename_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.filename_.IsDefault()) {
-    _impl_.filename_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:filestore.GetChunksBatchRequest.filename)
+  _impl_.file_id_ = value;
 }
 
 // repeated .filestore.GetChunkSpec chunks = 2;
@@ -10388,6 +16044,54 @@ GetChunksBatchResponse::_internal_mutable_chunks() {
 // -------------------------------------------------------------------
 
 // ListFilesRequest
+
+// int32 shard = 1;
+inline void ListFilesRequest::clear_shard() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.shard_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+}
+inline ::int32_t ListFilesRequest::shard() const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.shard)
+  return _internal_shard();
+}
+inline void ListFilesRequest::set_shard(::int32_t value) {
+  _internal_set_shard(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.shard)
+}
+inline ::int32_t ListFilesRequest::_internal_shard() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.shard_;
+}
+inline void ListFilesRequest::_internal_set_shard(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.shard_ = value;
+}
+
+// int32 shard_count = 2;
+inline void ListFilesRequest::clear_shard_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.shard_count_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline ::int32_t ListFilesRequest::shard_count() const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.shard_count)
+  return _internal_shard_count();
+}
+inline void ListFilesRequest::set_shard_count(::int32_t value) {
+  _internal_set_shard_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.shard_count)
+}
+inline ::int32_t ListFilesRequest::_internal_shard_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.shard_count_;
+}
+inline void ListFilesRequest::_internal_set_shard_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.shard_count_ = value;
+}
 
 // -------------------------------------------------------------------
 

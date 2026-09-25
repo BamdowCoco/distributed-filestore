@@ -21,37 +21,124 @@ message ChunkLocation
     int32 size = 6;        // 块实际大小（字节）
 }
 
-// ===== 元数据服务：文件索引 =====
+// ===== 鉴权 =====
+
+message RegisterRequest
+{
+    string username = 1;
+    string password = 2;
+}
+
+message RegisterResponse
+{
+    ResultCode result = 1;
+}
+
+message LoginRequest
+{
+    string username = 1;
+    string password = 2;
+}
+
+message LoginResponse
+{
+    ResultCode result = 1;
+    string token = 2;      // 登录会话 token
+    int32 user_id = 3;
+}
+
+message LogoutRequest
+{
+    string token = 1;
+}
+
+message LogoutResponse
+{
+    ResultCode result = 1;
+}
+
+// ===== 目录（虚拟文件树） =====
+
+message MkdirRequest
+{
+    string token = 1;
+    string path = 2;       // 要创建的目录虚拟路径
+}
+
+message MkdirResponse
+{
+    ResultCode result = 1;
+}
+
+message RmdirRequest
+{
+    string token = 1;
+    string path = 2;
+    bool recursive = 3;   // true=递归删除目录下所有子目录和文件
+}
+
+message RmdirResponse
+{
+    ResultCode result = 1;
+}
+
+// 目录项
+message DirEntry
+{
+    string name = 1;       // 文件/目录名
+    bool is_dir = 2;       // true=目录 false=文件
+    int32 file_id = 3;     // 文件对应的 file_id（目录为 0）
+}
+
+message ListDirRequest
+{
+    string token = 1;
+    string path = 2;       // 要列出的目录虚拟路径（/ 表示根）
+}
+
+message ListDirResponse
+{
+    ResultCode result = 1;
+    repeated DirEntry entries = 2;
+}
+
+// ===== 文件（ID-first：路径 -> file_id） =====
 
 message UploadFileRequest
 {
-    string filename = 1;
-    int64 filesize = 2;
-    int32 chunk_count = 3;
+    string token = 1;
+    string path = 2;       // 文件虚拟路径（如 /docs/report.txt）
+    int64 filesize = 3;
+    int32 chunk_count = 4;
 }
 
 message UploadFileResponse
 {
     ResultCode result = 1;
-    repeated ChunkLocation chunks = 2;   // 块分配方案
+    int32 file_id = 2;                 // 本次上传分配的唯一标识（数据文件以 file_id 命名）
+    repeated ChunkLocation chunks = 3; // 块分配方案
 }
 
 message QueryFileRequest
 {
-    string filename = 1;
+    string token = 1;
+    string path = 2;       // 文件虚拟路径
 }
 
 message QueryFileResponse
 {
     ResultCode result = 1;
-    int64 filesize = 2;
-    int32 chunk_count = 3;
-    repeated ChunkLocation chunks = 4;   // 块位置映射
+    int32 file_id = 2;
+    int64 filesize = 3;
+    int32 chunk_count = 4;
+    repeated ChunkLocation chunks = 5; // 块位置映射
 }
 
+// 删除文件（元数据服务与存储服务共用：按 file_id 定位；token 仅元数据服务校验）
 message DeleteFileRequest
 {
-    string filename = 1;
+    string token = 1;
+    int32 file_id = 2;
 }
 
 message DeleteFileResponse
@@ -63,8 +150,9 @@ message DeleteFileResponse
 // 并登记每块校验和（chunk_index + checksum）
 message CommitUploadRequest
 {
-    string filename = 1;
-    repeated ChunkLocation chunks = 2;   // 每块的 chunk_index + checksum
+    string token = 1;
+    int32 file_id = 2;
+    repeated ChunkLocation chunks = 3;   // 每块的 chunk_index + checksum
 }
 
 message CommitUploadResponse
@@ -75,7 +163,8 @@ message CommitUploadResponse
 // 上传失败回滚：删除 PENDING 状态的元数据记录
 message CancelUploadRequest
 {
-    string filename = 1;
+    string token = 1;
+    int32 file_id = 2;
 }
 
 message CancelUploadResponse
@@ -93,30 +182,57 @@ message StorageNode
 // 查询某文件涉及的（去重后的）存储节点列表
 message GetFileNodesRequest
 {
-    string filename = 1;
+    string token = 1;
+    string path = 2;       // 文件虚拟路径
 }
 
 message GetFileNodesResponse
 {
     ResultCode result = 1;
-    repeated StorageNode nodes = 2;
+    int32 file_id = 2;                 // 唯一标识
+    repeated StorageNode nodes = 3;    // 去重后的存储节点列表
+}
+
+// 待清理任务入队（删块失败后由客户端上报，元数据服务持久化 + 推 Redis Stream）
+message AddCleanupTaskRequest
+{
+    string node_ip = 1;
+    int32 node_port = 2;
+    int32 file_id = 3;   // 待清理的数据文件唯一标识
+}
+
+message AddCleanupTaskResponse
+{
+    ResultCode result = 1;
 }
 
 service MetaServiceRpc
 {
+    // 鉴权
+    rpc Register(RegisterRequest) returns(RegisterResponse);
+    rpc Login(LoginRequest) returns(LoginResponse);
+    rpc Logout(LogoutRequest) returns(LogoutResponse);
+
+    // 目录
+    rpc Mkdir(MkdirRequest) returns(MkdirResponse);
+    rpc Rmdir(RmdirRequest) returns(RmdirResponse);
+    rpc ListDir(ListDirRequest) returns(ListDirResponse);
+
+    // 文件
     rpc UploadFile(UploadFileRequest) returns(UploadFileResponse);
     rpc CommitUpload(CommitUploadRequest) returns(CommitUploadResponse);
     rpc CancelUpload(CancelUploadRequest) returns(CancelUploadResponse);
     rpc QueryFile(QueryFileRequest) returns(QueryFileResponse);
     rpc DeleteFile(DeleteFileRequest) returns(DeleteFileResponse);
     rpc GetFileNodes(GetFileNodesRequest) returns(GetFileNodesResponse);
+    rpc AddCleanupTask(AddCleanupTaskRequest) returns(AddCleanupTaskResponse);
 }
 
-// ===== 存储服务：文件块 =====
+// ===== 存储服务：文件块（数据文件以 file_id 命名） =====
 
 message PutChunkRequest
 {
-    string filename = 1;
+    int32 file_id = 1;
     int32 chunk_index = 2;
     bytes data = 3;
 }
@@ -131,7 +247,7 @@ message PutChunkResponse
 
 message GetChunkRequest
 {
-    string filename = 1;
+    int32 file_id = 1;
     int32 chunk_index = 2;   // 保留：日志/调试用
     int32 chunk_size = 3;    // 兼容旧字段
     int64 offset = 4;        // 块在数据文件内的偏移（紧凑存储）
@@ -161,7 +277,7 @@ message ChunkResult
 
 message PutChunksBatchRequest
 {
-    string filename = 1;
+    int32 file_id = 1;
     repeated ChunkData chunks = 2;
 }
 
@@ -181,7 +297,7 @@ message GetChunkSpec
 
 message GetChunksBatchRequest
 {
-    string filename = 1;
+    int32 file_id = 1;
     repeated GetChunkSpec chunks = 2;
 }
 
@@ -197,15 +313,17 @@ message GetChunksBatchResponse
     repeated GetChunkData chunks = 2;
 }
 
-// 列出本节点 data_dir 下的所有文件名（P20 孤儿块 GC 用）
+// 列出本节点 data_dir 下的文件唯一标识（P20 孤儿块 GC 用，按分片过滤）
 message ListFilesRequest
 {
+    int32 shard = 1;        // 要扫描的分片号（0 ~ shard_count-1）
+    int32 shard_count = 2;  // 总分片数 K
 }
 
 message ListFilesResponse
 {
     ResultCode result = 1;
-    repeated string filenames = 2;
+    repeated string filenames = 2;   // data_dir 下的 file_id（字符串形式）
 }
 
 service StorageServiceRpc
