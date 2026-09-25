@@ -19,10 +19,12 @@ config/mysql.cnf
 
 # 日志文件
 **/*.log
+zookeeper.out
 
 # 文件存储运行时数据
 filestore/data_node*/
 downloads/
+test/integration/tmp/
 
 # 其他
 .claude/
