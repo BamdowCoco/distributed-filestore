@@ -120,14 +120,12 @@ void RpcProvider::onConnection(const muduo::net::TcpConnectionPtr& conn)
     if (conn->connected()) {
         // 登记连接，记录最后活跃时间（P18 空闲超时追踪）
         std::lock_guard<std::mutex> lock(m_connMutex);
-        m_conns[conn->name()] = conn;
-        m_lastActivity[conn->name()] = muduo::Timestamp::now();
+        m_connections[conn->name()] = ConnectionInfo{conn, muduo::Timestamp::now()};
     } else {
         // 移除追踪
         {
             std::lock_guard<std::mutex> lock(m_connMutex);
-            m_conns.erase(conn->name());
-            m_lastActivity.erase(conn->name());
+            m_connections.erase(conn->name());
         }
         // 断开与rpc客户端连接
         conn->shutdown();
@@ -141,11 +139,9 @@ void RpcProvider::checkIdleConnections()
     muduo::Timestamp now = muduo::Timestamp::now();
     {
         std::lock_guard<std::mutex> lock(m_connMutex);
-        for (const auto& kv : m_conns) {
-            auto it = m_lastActivity.find(kv.first);
-            if (it != m_lastActivity.end() &&
-                muduo::timeDifference(now, it->second) > kIdleTimeout) {
-                toShutdown.push_back(kv.second);
+        for (const auto& kv : m_connections) {
+            if (muduo::timeDifference(now, kv.second.lastActivity) > kIdleTimeout) {
+                toShutdown.push_back(kv.second.conn);
             }
         }
     }
@@ -174,7 +170,7 @@ void RpcProvider::onMessage(const muduo::net::TcpConnectionPtr& conn,
     // 更新最后活跃时间（P18 空闲超时追踪）
     {
         std::lock_guard<std::mutex> lock(m_connMutex);
-        m_lastActivity[conn->name()] = time;
+        m_connections[conn->name()].lastActivity = time;
     }
 
     // TCP 是字节流，大请求（如 PutChunksBatch 批量上传）可能被拆成多次 onMessage 回调（半包），

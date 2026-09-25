@@ -34,7 +34,7 @@ void MprpcApplication::init(int argc, char** argv)
     int opt;
     std::string configFile;
     bool hasConfig = false;
-    while ((opt = getopt(argc, argv, "i:"))!=-1) {
+    while ((opt = getopt(argc, argv, "+i:"))!=-1) {
         switch (opt) {
         case 'i':
             configFile = optarg;

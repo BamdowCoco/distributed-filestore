@@ -46,8 +46,12 @@ private:
     // 扫描并关闭空闲超时的连接（P18，由 run() 的定时器周期性触发）
     void checkIdleConnections();
 
-    // P18 空闲连接追踪：连接名 -> 连接对象 / 最后活跃时间（onMessage 更新，定时器线程扫描）
+    // P18 空闲连接追踪：连接名 -> 连接对象 + 最后活跃时间（onMessage 更新，定时器线程扫描）
+    struct ConnectionInfo
+    {
+        muduo::net::TcpConnectionPtr conn;
+        muduo::Timestamp lastActivity;
+    };
     std::mutex m_connMutex;
-    std::unordered_map<std::string, muduo::net::TcpConnectionPtr> m_conns;
-    std::unordered_map<std::string, muduo::Timestamp> m_lastActivity;
+    std::unordered_map<std::string, ConnectionInfo> m_connections;
 };
