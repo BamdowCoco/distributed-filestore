@@ -6,25 +6,33 @@
 
 // 全局watcher回调
 // zkserver给zkclient响应通知
-void globalWatcher(zhandle_t *zh, int type, 
+void globalWatcher(zhandle_t *zh, int type,
                 int state, const char *path,void *watcherCtx)
 {
-    if(type == ZOO_SESSION_EVENT) {
-        if (state == ZOO_CONNECTED_STATE) {
-            sem_t* sem = (sem_t*)zoo_get_context(zh);
-            sem_post(sem);
-        }
+    if(type != ZOO_SESSION_EVENT || state != ZOO_CONNECTED_STATE) {
+        return;
+    }
+    // context 是 ZKClient 的成员信号量；关闭流程中可能已清空，必须判空
+    sem_t* sem = (sem_t*)zoo_get_context(zh);
+    if (sem != nullptr) {
+        sem_post(sem);
     }
 }
 
-ZKClient::ZKClient():m_zhandle(nullptr) {}
+ZKClient::ZKClient():m_zhandle(nullptr)
+{
+    sem_init(&m_sem, 0, 0);
+}
 
 ZKClient::~ZKClient()
 {
-    if(!m_zhandle) {
-        // 关闭句柄 释放资源
+    if(m_zhandle) {
+        // 关闭句柄 释放资源。这会先停掉 watcher 与 I/O 线程，
+        // 因此必须在 sem_destroy 之前完成，否则 watcher 可能向已销毁的信号量投递
         zookeeper_close(m_zhandle);
+        m_zhandle = nullptr;
     }
+    sem_destroy(&m_sem);
 }
 
 // 启动zkclient 连接zkserver
@@ -47,12 +55,8 @@ void ZKClient::start()
         exit(EXIT_FAILURE);
     }
 
-    sem_t sem;
-    sem_init(&sem, 0, 0);
-    // 添加上下文: 信号量
-    zoo_set_context(m_zhandle, &sem);
-
-    // sem_wait(&sem);
+    // 把成员信号量的地址交给 zhandle 作为 context（存活期与句柄一致，见头文件说明）
+    zoo_set_context(m_zhandle, &m_sem);
 
     struct timespec abstime;
 
@@ -60,7 +64,7 @@ void ZKClient::start()
     clock_gettime(CLOCK_REALTIME, &abstime);
     abstime.tv_sec += 3;
 
-    if(0 == sem_timedwait(&sem, &abstime)) {
+    if(0 == sem_timedwait(&m_sem, &abstime)) {
         LOG_INFO("zkclient start success!");
     } else if(errno == ETIMEDOUT){
         LOG_ERROR("zkclient start wait timeout(3s) failure! errno: %d", errno);
@@ -141,6 +145,8 @@ std::vector<std::string> ZKClient::getChildren(const std::string path)
     for(int i=0;i<childrenStrings.count;i++) {
         childrenRet.push_back(childrenStrings.data[i]);
     }
+    // zoo_get_children 在堆上分配了字符串数组，须显式释放
+    deallocate_String_vector(&childrenStrings);
 
     return childrenRet;
 }
