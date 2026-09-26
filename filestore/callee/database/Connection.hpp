@@ -25,10 +25,13 @@ public:
                  std::string user, std::string password,
                  std::string dbname);
 
-    // 更新操作 insert delete update 
+    // 更新操作 insert delete update
     bool update(std::string sql);
     // 查询操作 select
     MYSQL_RES* query(std::string sql);
+
+    // 最近一次 update 影响的行数（DELETE 可用作存在性探针）
+    my_ulonglong affectedRows() const;
 
     // 刷新连接空闲时间点
     void refreshIdleStart();

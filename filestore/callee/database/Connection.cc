@@ -58,6 +58,14 @@ MYSQL_RES* Connection::query(std::string sql)
     return mysql_store_result(_conn);
 }
 
+my_ulonglong Connection::affectedRows() const
+{
+    if (_conn == nullptr) {
+        return 0;
+    }
+    return mysql_affected_rows(_conn);
+}
+
 void Connection::refreshIdleStart()
 {
     _idleStart = Clock::now();

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 一键编译并运行 5 个本地基准测试（不依赖 ZooKeeper / MySQL / 服务进程）
+# 一键编译并运行 6 个本地测试（不依赖 ZooKeeper / MySQL / 服务进程）
 set -e
 
 # 定位项目根目录（脚本在 test/bench/ 下）
@@ -15,20 +15,23 @@ COMMON_INC="-I$ROOT/filestore/common"
 
 echo "========== 编译本地基准 =========="
 
-echo "[1/5] bench_md5"
+echo "[1/6] bench_md5"
 $CXX $CXXFLAGS $COMMON_INC "$ROOT/test/bench/bench_md5.cc" -o "$BUILD_DIR/bench_md5" -lcrypto
 
-echo "[2/5] test_consistent_hash"
+echo "[2/6] test_consistent_hash"
 $CXX $CXXFLAGS $COMMON_INC "$ROOT/test/bench/test_consistent_hash.cc" -o "$BUILD_DIR/test_consistent_hash" -lcrypto
 
-echo "[3/5] bench_connect"
+echo "[3/6] bench_connect"
 $CXX $CXXFLAGS "$ROOT/test/bench/bench_connect.cc" -o "$BUILD_DIR/bench_connect" -pthread
 
-echo "[4/5] test_compact_storage"
+echo "[4/6] test_compact_storage"
 $CXX $CXXFLAGS $COMMON_INC "$ROOT/test/bench/test_compact_storage.cc" -o "$BUILD_DIR/test_compact_storage" -lcrypto
 
-echo "[5/5] bench_throughput"
+echo "[5/6] bench_throughput"
 $CXX $CXXFLAGS "$ROOT/test/bench/bench_throughput.cc" -o "$BUILD_DIR/bench_throughput" -pthread
+
+echo "[6/6] test_ticket"
+$CXX $CXXFLAGS "$ROOT/test/bench/test_ticket.cc" -o "$BUILD_DIR/test_ticket" -lcrypto
 
 echo
 echo "========== 运行本地基准 =========="
@@ -52,6 +55,10 @@ echo ">> test_compact_storage（空间利用率）"
 echo
 echo ">> bench_throughput（吞吐量）"
 "$BUILD_DIR/bench_throughput"
+
+echo
+echo ">> test_ticket（票据验签 + 不可信数字解析边界）"
+"$BUILD_DIR/test_ticket"
 
 echo
 echo "========== 本地基准全部完成 =========="

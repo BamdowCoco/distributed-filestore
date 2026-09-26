@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -103,10 +104,20 @@ private:
     // 鉴权：token -> user_id，失败返回 0
     int authenticate(const std::string& token);
 
+    // 签发存储访问票据（op: put/get/del/list，list 用 fileId=0）
+    std::string makeStorageTicket(int userId, int32_t fileId, const std::string& op) const;
+
+    // 校验 (ip, port) 是否为当前活跃存储节点（AddCleanupTask 防 SSRF 用）
+    bool isActiveStorageNode(const std::string& ip, int port);
+
     // 路径/节点解析辅助（借用调用方的连接，传引用避免裸指针）
     PathNode resolvePath(Connection& conn, int userId, const std::string& path);
     int resolveParentDir(Connection& conn, int userId, const std::vector<std::string>& parts);
     bool nodeExists(Connection& conn, int userId, int parentId, const std::string& name);
+
+    // 事务内锁定 file_meta 行并校验归属：
+    // 命中返回 true 并输出 status（0=PENDING/1=COMPLETE），否则返回 false 且 reason 说明原因
+    bool lockOwnedFile(Connection& conn, int userId, int32_t fileId, int& status, std::string& reason);
 
     // 递归删除目录：收集后代 -> 删元数据 -> 块数据入待清理队列
     void removeDirRecursive(Connection& conn, int userId, int rootDirId);
@@ -114,7 +125,7 @@ private:
     // 建表（幂等）
     void createTablesIfNotExist();
 
-    // 后台线程：动态发现 + 待清理队列 + 分片扫描
+    // 后台线程：动态发现 + 待清理队列 + 分片扫描 + 超时 PENDING 回收
     void nodeWatchLoop();
     void enqueueCleanup(const std::string& ip, int port, int fileId);
     void processCleanupTask(int taskId);
@@ -122,9 +133,13 @@ private:
     void cleanupRetryLoop();
     void shardScanLoop();
     void scanShard(int shard);
+    // 回收超时未提交的 PENDING 上传（客户端中途崩溃残留的记录与已落盘块）
+    void reclaimStalePending();
+    void pendingReclaimLoop();
 
     std::mutex m_ringMutex;
     ConsistentHash m_ring;
     std::vector<StorageNode> m_nodes;
     Redis m_redis;
+    std::string m_ticketSecret;
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <set>
 #include <string>
 
 #include "file_storage.pb.h"
@@ -52,10 +51,11 @@ private:
     bool getChunksBatch(const std::string& ip, uint16_t port, MprpcChannel& channel,
                         const filestore::GetChunksBatchRequest& breq,
                         filestore::GetChunksBatchResponse& bresp);
-    bool deleteFile(const std::string& ip, uint16_t port, int32_t fileId);
+    // ticket 为元数据服务签发的 del 票据（存储节点据此校验删除权限）
+    bool deleteFile(const std::string& ip, uint16_t port, int32_t fileId, const std::string& ticket);
 
-    // 上传失败回滚：删已传块 + 取消元数据 PENDING 记录
-    void rollbackUpload(int32_t fileId, const std::set<std::string>& nodes);
+    // 上传失败回滚：调用元数据 CancelUpload（由其把各节点删块任务入待清理队列）
+    void rollbackUpload(int32_t fileId);
 
     MprpcChannel m_metaChannel;
     filestore::MetaServiceRpc_Stub m_metaStub;

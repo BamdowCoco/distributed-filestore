@@ -117,6 +117,7 @@ message UploadFileResponse
     ResultCode result = 1;
     int32 file_id = 2;                 // 本次上传分配的唯一标识（数据文件以 file_id 命名）
     repeated ChunkLocation chunks = 3; // 块分配方案
+    string ticket = 4;                 // 上传块用的存储访问票据（op=put，绑定 file_id）
 }
 
 message QueryFileRequest
@@ -132,13 +133,16 @@ message QueryFileResponse
     int64 filesize = 3;
     int32 chunk_count = 4;
     repeated ChunkLocation chunks = 5; // 块位置映射
+    string ticket = 6;                 // 下载块用的存储访问票据（op=get，绑定 file_id）
 }
 
-// 删除文件（元数据服务与存储服务共用：按 file_id 定位；token 仅元数据服务校验）
+// 删除文件（元数据服务与存储服务共用：按 file_id 定位）
+// token 由元数据服务校验身份，ticket 由存储节点离线验签（绑定 file_id + op=del）
 message DeleteFileRequest
 {
     string token = 1;
     int32 file_id = 2;
+    string ticket = 3;
 }
 
 message DeleteFileResponse
@@ -191,6 +195,7 @@ message GetFileNodesResponse
     ResultCode result = 1;
     int32 file_id = 2;                 // 唯一标识
     repeated StorageNode nodes = 3;    // 去重后的存储节点列表
+    string ticket = 4;                 // 删除块用的存储访问票据（op=del，绑定 file_id）
 }
 
 // 待清理任务入队（删块失败后由客户端上报，元数据服务持久化 + 推 Redis Stream）
@@ -199,6 +204,7 @@ message AddCleanupTaskRequest
     string node_ip = 1;
     int32 node_port = 2;
     int32 file_id = 3;   // 待清理的数据文件唯一标识
+    string token = 4;    // 会话 token（元数据服务校验身份 + 节点是否在活跃环内）
 }
 
 message AddCleanupTaskResponse
@@ -235,6 +241,7 @@ message PutChunkRequest
     int32 file_id = 1;
     int32 chunk_index = 2;
     bytes data = 3;
+    string ticket = 4;     // 存储访问票据（op=put）
 }
 
 message PutChunkResponse
@@ -252,6 +259,7 @@ message GetChunkRequest
     int32 chunk_size = 3;    // 兼容旧字段
     int64 offset = 4;        // 块在数据文件内的偏移（紧凑存储）
     int32 size = 5;          // 块实际大小（按此长度读取）
+    string ticket = 6;       // 存储访问票据（op=get）
 }
 
 message GetChunkResponse
@@ -279,6 +287,7 @@ message PutChunksBatchRequest
 {
     int32 file_id = 1;
     repeated ChunkData chunks = 2;
+    string ticket = 3;     // 存储访问票据（op=put）
 }
 
 message PutChunksBatchResponse
@@ -299,6 +308,7 @@ message GetChunksBatchRequest
 {
     int32 file_id = 1;
     repeated GetChunkSpec chunks = 2;
+    string ticket = 3;     // 存储访问票据（op=get）
 }
 
 message GetChunkData
@@ -318,6 +328,7 @@ message ListFilesRequest
 {
     int32 shard = 1;        // 要扫描的分片号（0 ~ shard_count-1）
     int32 shard_count = 2;  // 总分片数 K
+    string ticket = 3;      // 存储访问票据（op=list，仅元数据服务的 GC 持有）
 }
 
 message ListFilesResponse

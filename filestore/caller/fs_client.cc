@@ -104,6 +104,22 @@ std::string leafName(const std::string& path)
     return (pos == std::string::npos) ? path : path.substr(pos + 1);
 }
 
+// 统一的失败原因提取。服务端返回「未登录」意味着本地这个 token 已经失效
+// （Redis 会话过期/被清），此时顺手清掉本地 token 并给出可操作的提示——
+// 否则用户只会看到一串 not logged in，无从知道该重新登录。
+std::string failureReason(const MprpcController& ctl, const filestore::ResultCode& result)
+{
+    if (ctl.Failed()) {
+        return ctl.ErrorText();
+    }
+    std::string msg = result.errmsg();
+    if (msg == "not logged in") {
+        saveToken("");
+        msg += "（本地会话已失效，已清除；请重新执行 login）";
+    }
+    return msg;
+}
+
 }  // namespace
 
 // 构造：创建元数据服务 stub（走 ZooKeeper 发现模式）
@@ -124,7 +140,7 @@ bool FsClient::registerUser(const std::string& username, const std::string& pass
     m_metaStub.Register(&ctl, &req, &resp, nullptr);
     if (ctl.Failed() || resp.result().errcode() != 0) {
         std::cerr << "register failed: "
-                  << (ctl.Failed() ? ctl.ErrorText() : resp.result().errmsg()) << std::endl;
+                  << failureReason(ctl, resp.result()) << std::endl;
         return false;
     }
     return true;
@@ -133,12 +149,8 @@ bool FsClient::registerUser(const std::string& username, const std::string& pass
 // 登录：调用 meta Login，成功后本地保存 token（已登录则提示不重复签发）
 bool FsClient::login(const std::string& username, const std::string& password)
 {
-    // 已登录则提示，不重复签发 token
-    if (!loadToken().empty()) {
-        std::cerr << "already logged in" << std::endl;
-        return false;
-    }
-
+    // 总是重新认证。原先「本地已有 token 就直接返回 already logged in」的做法会让
+    // 失效 token 变成死局：后续每个命令都报 not logged in，而 login 又拒绝刷新。
     filestore::LoginRequest req;
     req.set_username(username);
     req.set_password(password);
@@ -147,7 +159,7 @@ bool FsClient::login(const std::string& username, const std::string& password)
     m_metaStub.Login(&ctl, &req, &resp, nullptr);
     if (ctl.Failed() || resp.result().errcode() != 0) {
         std::cerr << "login failed: "
-                  << (ctl.Failed() ? ctl.ErrorText() : resp.result().errmsg()) << std::endl;
+                  << failureReason(ctl, resp.result()) << std::endl;
         return false;
     }
     saveToken(resp.token());
@@ -185,7 +197,7 @@ bool FsClient::mkdir(const std::string& path)
     m_metaStub.Mkdir(&ctl, &req, &resp, nullptr);
     if (ctl.Failed() || resp.result().errcode() != 0) {
         std::cerr << "mkdir failed: "
-                  << (ctl.Failed() ? ctl.ErrorText() : resp.result().errmsg()) << std::endl;
+                  << failureReason(ctl, resp.result()) << std::endl;
         return false;
     }
     return true;
@@ -203,7 +215,7 @@ bool FsClient::rmdir(const std::string& path, bool recursive)
     m_metaStub.Rmdir(&ctl, &req, &resp, nullptr);
     if (ctl.Failed() || resp.result().errcode() != 0) {
         std::cerr << "rmdir failed: "
-                  << (ctl.Failed() ? ctl.ErrorText() : resp.result().errmsg()) << std::endl;
+                  << failureReason(ctl, resp.result()) << std::endl;
         return false;
     }
     return true;
@@ -220,7 +232,7 @@ bool FsClient::listDir(const std::string& path)
     m_metaStub.ListDir(&ctl, &req, &resp, nullptr);
     if (ctl.Failed() || resp.result().errcode() != 0) {
         std::cerr << "ls failed: "
-                  << (ctl.Failed() ? ctl.ErrorText() : resp.result().errmsg()) << std::endl;
+                  << failureReason(ctl, resp.result()) << std::endl;
         return false;
     }
     for (const auto& e : resp.entries()) {
@@ -275,16 +287,11 @@ bool FsClient::upload(const std::string& localFile, const std::string& virtualPa
     m_metaStub.UploadFile(&controller, &request, &response, nullptr);
     if (controller.Failed() || response.result().errcode() != 0) {
         std::cerr << "upload register failed: "
-                  << (controller.Failed() ? controller.ErrorText() : response.result().errmsg()) << std::endl;
+                  << failureReason(controller, response.result()) << std::endl;
         return false;
     }
     int32_t fileId = response.file_id();
-
-    std::set<std::string> involvedNodes;
-    for (int i = 0; i < chunkCount; ++i) {
-        const filestore::ChunkLocation& loc = response.chunks(i);
-        involvedNodes.insert(loc.ip() + ":" + std::to_string(loc.port()));
-    }
+    const std::string putTicket = response.ticket();
 
     std::vector<int64_t> offsets(chunkCount, 0);
     std::vector<int32_t> sizes(chunkCount, 0);
@@ -308,6 +315,7 @@ bool FsClient::upload(const std::string& localFile, const std::string& virtualPa
             size_t end = std::min(start + static_cast<size_t>(MAX_BATCH_CHUNKS), chunkIdxs.size());
             filestore::PutChunksBatchRequest breq;
             breq.set_file_id(fileId);
+            breq.set_ticket(putTicket);
             for (size_t k = start; k < end; ++k) {
                 int idx = chunkIdxs[k];
                 int64_t fileOffset = static_cast<int64_t>(idx) * CHUNK_SIZE;
@@ -322,7 +330,7 @@ bool FsClient::upload(const std::string& localFile, const std::string& virtualPa
             filestore::PutChunksBatchResponse bresp;
             if (!putChunksBatch(ip, port, channel, breq, bresp)) {
                 std::cerr << "put chunks batch to " << node << " failed, rolling back..." << std::endl;
-                rollbackUpload(fileId, involvedNodes);
+                rollbackUpload(fileId);
                 return false;
             }
             for (const auto& r : bresp.chunks()) {
@@ -348,7 +356,7 @@ bool FsClient::upload(const std::string& localFile, const std::string& virtualPa
     m_metaStub.CommitUpload(&commitCtl, &commitReq, &commitResp, nullptr);
     if (commitCtl.Failed() || commitResp.result().errcode() != 0) {
         std::cerr << "commit upload failed, rolling back..." << std::endl;
-        rollbackUpload(fileId, involvedNodes);
+        rollbackUpload(fileId);
         return false;
     }
 
@@ -368,7 +376,7 @@ bool FsClient::download(const std::string& virtualPath, const std::string& dest)
     m_metaStub.QueryFile(&controller, &request, &response, nullptr);
     if (controller.Failed() || response.result().errcode() != 0) {
         std::cerr << "query failed: "
-                  << (controller.Failed() ? controller.ErrorText() : response.result().errmsg()) << std::endl;
+                  << failureReason(controller, response.result()) << std::endl;
         return false;
     }
     int32_t fileId = response.file_id();
@@ -404,6 +412,7 @@ bool FsClient::download(const std::string& virtualPath, const std::string& dest)
             size_t end = std::min(start + static_cast<size_t>(MAX_BATCH_CHUNKS), chunkIdxs.size());
             filestore::GetChunksBatchRequest breq;
             breq.set_file_id(fileId);
+            breq.set_ticket(response.ticket());
             for (size_t k = start; k < end; ++k) {
                 int idx = chunkIdxs[k];
                 const filestore::ChunkLocation& loc = response.chunks(idx);
@@ -446,7 +455,7 @@ bool FsClient::remove(const std::string& virtualPath)
     MprpcController gctl;
     m_metaStub.GetFileNodes(&gctl, &greq, &gresp, nullptr);
     if (gctl.Failed() || gresp.result().errcode() != 0) {
-        std::cerr << "get file nodes failed" << std::endl;
+        std::cerr << "get file nodes failed: " << failureReason(gctl, gresp.result()) << std::endl;
         return false;
     }
     int32_t fileId = gresp.file_id();
@@ -458,19 +467,20 @@ bool FsClient::remove(const std::string& virtualPath)
     MprpcController mctl;
     m_metaStub.DeleteFile(&mctl, &mreq, &mresp, nullptr);
     if (mctl.Failed() || mresp.result().errcode() != 0) {
-        std::cerr << "delete index failed" << std::endl;
+        std::cerr << "delete index failed: " << failureReason(mctl, mresp.result()) << std::endl;
         return false;
     }
 
     for (const auto& node : gresp.nodes()) {
         uint16_t port = static_cast<uint16_t>(node.port());
-        if (!deleteFile(node.ip(), port, fileId)) {
+        if (!deleteFile(node.ip(), port, fileId, gresp.ticket())) {
             std::cerr << "delete data on " << node.ip() << ":" << node.port()
                       << " failed, enqueue cleanup" << std::endl;
             filestore::AddCleanupTaskRequest creq;
             creq.set_node_ip(node.ip());
             creq.set_node_port(node.port());
             creq.set_file_id(fileId);
+            creq.set_token(loadToken());
             filestore::AddCleanupTaskResponse cresp;
             MprpcController cctl;
             m_metaStub.AddCleanupTask(&cctl, &creq, &cresp, nullptr);
@@ -533,13 +543,15 @@ bool FsClient::getChunksBatch(const std::string& ip, uint16_t port, MprpcChannel
 }
 
 // 删除节点上的数据文件（data_dir/<file_id>），失败重试 MAX_RETRY 次
-bool FsClient::deleteFile(const std::string& ip, uint16_t port, int32_t fileId)
+bool FsClient::deleteFile(const std::string& ip, uint16_t port, int32_t fileId,
+                          const std::string& ticket)
 {
     for (int attempt = 1; attempt <= MAX_RETRY; ++attempt) {
         MprpcChannel channel(ip, port);
         filestore::StorageServiceRpc_Stub stub(&channel);
         filestore::DeleteFileRequest req;
         req.set_file_id(fileId);
+        req.set_ticket(ticket);
         filestore::DeleteFileResponse resp;
         MprpcController ctl;
         stub.DeleteFile(&ctl, &req, &resp, nullptr);
@@ -553,19 +565,19 @@ bool FsClient::deleteFile(const std::string& ip, uint16_t port, int32_t fileId)
     return false;
 }
 
-// 上传失败回滚：删各节点已传块 + 取消元数据 PENDING 记录
-void FsClient::rollbackUpload(int32_t fileId, const std::set<std::string>& nodes)
+// 上传失败回滚：取消元数据侧的 PENDING 记录即可。
+// 已落盘的块由元数据服务在 CancelUpload 内按 file_chunk 记录的节点入待清理队列，
+// 客户端不需要（也没有）删块权限的票据。
+void FsClient::rollbackUpload(int32_t fileId)
 {
-    for (const auto& node : nodes) {
-        size_t colon = node.find(':');
-        std::string ip = node.substr(0, colon);
-        uint16_t port = static_cast<uint16_t>(std::stoi(node.substr(colon + 1)));
-        deleteFile(ip, port, fileId);
-    }
     filestore::CancelUploadRequest creq;
     creq.set_token(loadToken());
     creq.set_file_id(fileId);
     filestore::CancelUploadResponse cresp;
     MprpcController cctl;
     m_metaStub.CancelUpload(&cctl, &creq, &cresp, nullptr);
+    if (cctl.Failed() || cresp.result().errcode() != 0) {
+        std::cerr << "cancel upload failed: "
+                  << failureReason(cctl, cresp.result()) << std::endl;
+    }
 }

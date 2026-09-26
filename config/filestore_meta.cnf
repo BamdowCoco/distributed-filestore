@@ -11,5 +11,13 @@ zookeeper_ip=127.0.0.1
 zookeeper_port=2181
 
 [storage_nodes]
-# 存储节点列表，逗号分隔 ip:port
+# 存储节点列表，逗号分隔 ip:port（仅作启动时的种子，运行期由 ZK 动态发现覆盖）
 storage_nodes=127.0.0.1:8001,127.0.0.1:8002
+
+[auth]
+# 存储访问票据的共享密钥：元数据服务签发、各存储节点验签，四者必须完全一致。
+#
+# 真实密钥不要写进本文件（它受版本控制）。推荐用环境变量提供，在每个进程启动前导出同一个值：
+#     export MPRPC_TICKET_SECRET="$(openssl rand -hex 32)"
+# 仅在本机未纳管的配置副本里，才改填下面的键（填了就别提交）：
+# ticket_secret=<your-secret>

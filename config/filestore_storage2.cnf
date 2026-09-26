@@ -13,3 +13,9 @@ zookeeper_port=2181
 [storage]
 # 本存储节点的数据落盘目录
 data_dir=filestore/data_node2
+
+[auth]
+# 存储访问票据的共享密钥：必须与元数据服务（config/filestore_meta.cnf）所在进程完全一致。
+# 真实密钥不要写进本文件（它受版本控制），推荐用环境变量 MPRPC_TICKET_SECRET 提供；
+# 仅在本机未纳管的配置副本里才改填下面的键（填了就别提交）：
+# ticket_secret=<your-secret>

@@ -52,8 +52,12 @@ private:
     // 校验 file_id 合法性（>0）
     static bool isValidFileId(int32_t file_id);
 
+    // 校验存储访问票据：必须由元数据服务签发、绑定本次的 file_id 与操作且未过期
+    bool checkTicket(int32_t file_id, const std::string& op, const std::string& ticket) const;
+
     // 数据文件路径：data_dir/<file_id>
     std::string dataPath(int32_t file_id) const;
 
     std::string m_dataDir;
+    std::string m_ticketSecret;
 };

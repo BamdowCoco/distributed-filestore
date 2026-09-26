@@ -14,11 +14,15 @@
 # ---- 可调参数（可用环境变量覆盖，冒烟测试传小序列） ----
 UPLOAD_SEQ=(${UPLOAD_SEQ_OVERRIDE:-100 500 1000 2000 5000 10000})   # 循环上传：次数渐进序列
 BIGFILE_SEQ_MB=(${BIGFILE_SEQ_MB_OVERRIDE:-64 256 1024 2048 5120})   # 大文件：大小渐进序列（MB）
-DISCOVERY_PORTS=(8001 8002 8004 8005 8006 8007 8008 8009 8010 8011)  # 10 节点动态发现（短暂验证，不上传）
+# 10 节点动态发现（短暂验证，不上传）。小内存机器可用 DISCOVERY_PORTS_OVERRIDE 降规模
+DISCOVERY_PORTS=(${DISCOVERY_PORTS_OVERRIDE:-8001 8002 8004 8005 8006 8007 8008 8009 8010 8011})
 SCALE_PORTS=(8001 8002 8004)                                          # 规模测试 3 节点（降载，适配 2GB VM）
 RPC_LATENCY_N=10000                             # RPC 延迟采样次数
 CLUSTER_DISCOVER_WAIT=12                        # 等 meta 发现全部节点的秒数
 TIMEOUT_UPLOAD=600                              # 单次 fs_caller 超时（秒）
+# 回归用的专用测试账号（脚本开头自动注册/登录，避免依赖遗留的 ~/.fscli 状态）
+TEST_USER="${TEST_USER_OVERRIDE:-fstest}"
+TEST_PWD="${TEST_PWD_OVERRIDE:-fstest123}"
 
 # ---- 路径 ----
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -79,12 +83,16 @@ parse_mysql_conf() {
     done < "$CONFIG/mysql.cnf"
 }
 
-# 清空 MySQL 元数据表（先子后父）
+# 清空 MySQL 元数据表（先子后父）。
+# 注意必须一并清 file_node：UploadFile 的同目录查重（nodeExists）与归属校验都依赖它，
+# 残留行会让下一档的同名上传直接报「文件已存在」或「permission denied」。
 clear_mysql() {
     parse_mysql_conf
     [ -n "$mysql_db" ] || { echo "[错误] 无法解析 config/mysql.cnf"; exit 1; }
     mysql -h"$mysql_ip" -P"$mysql_port" -u"$mysql_user" -p"$mysql_pass" "$mysql_db" \
-        -e "DELETE FROM file_chunk; DELETE FROM file_meta;" >/dev/null 2>&1 \
+        -e "DELETE FROM file_chunk; DELETE FROM file_meta; DELETE FROM cleanup_queue;
+            DELETE FROM file_node WHERE user_id =
+                (SELECT id FROM user WHERE username='$TEST_USER');" >/dev/null 2>&1 \
         || echo "[警告] 清空 MySQL 失败（可能表尚未建立，忽略）"
 }
 
@@ -112,9 +120,24 @@ restore() {
     sleep 35
     clear_mysql
     rm -rf "$TMP_DIR/cfg" "$TMP_DIR"/data_node* "$TMP_DIR"/up_*.bin "$TMP_DIR"/big.bin \
-           downloads
+           "$TMP_DIR"/big_out.bin downloads
     mkdir -p "$TMP_DIR/cfg"
     echo "已还原（进程 / MySQL / 落盘 / 临时文件）"
+}
+
+# 确保本地有可用会话：注册（已存在则忽略）-> 清掉遗留 token -> 登录 -> 复位当前目录。
+# 必须先 logout：login 只在本地 token 文件为空时才真正认证，直接 login 会因
+# 上次遗留的过期 token 而返回「already logged in」，之后所有命令都报 not logged in。
+# ~/.fscli/cwd 同样会跨会话残留，让相对虚拟路径落到意外目录，故复位为 /。
+ensure_session() {
+    "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" register "$TEST_USER" "$TEST_PWD" >/dev/null 2>&1 || true
+    "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" logout >/dev/null 2>&1 || true
+    if ! "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" login "$TEST_USER" "$TEST_PWD" >/dev/null 2>&1; then
+        echo "[错误] 测试账号 $TEST_USER 登录失败" >&2
+        return 1
+    fi
+    "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" cd / >/dev/null 2>&1 || true
+    echo "会话就绪（账号 $TEST_USER，cwd=/）" >&2
 }
 
 # 等一组端口全部监听
@@ -223,6 +246,7 @@ echo "========== 测试 3：循环上传极限（3 节点）=========="
 check_mem
 start_cluster "${SCALE_PORTS[*]}" 3 "3 节点规模测试"
 echo "（本轮发现节点数 = ${CLUSTER_COUNT:-未检测到}）"
+ensure_session || { restore; exit 1; }
 
 # 生成 1MB 基准文件
 dd if=/dev/urandom of="$TMP_DIR/blob.bin" bs=1024 count=1024 2>/dev/null
@@ -244,7 +268,9 @@ for n in "${UPLOAD_SEQ[@]}"; do
         fi
         ln -f "$TMP_DIR/blob.bin" "$TMP_DIR/up_$i.bin" 2>/dev/null || cp "$TMP_DIR/blob.bin" "$TMP_DIR/up_$i.bin"
         t0=$(date +%s.%N)
-        if timeout "$TIMEOUT_UPLOAD" "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" upload "$TMP_DIR/up_$i.bin" 2>&1 | grep -q " done"; then
+        # 成功与否以 fs_caller 的退出码为准（旧版 grep " done" 匹配不到 upload 的输出，恒判失败）
+        if timeout "$TIMEOUT_UPLOAD" "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" \
+             upload "$TMP_DIR/up_$i.bin" "/up_$i.bin" > /dev/null 2>&1; then
             ok=$((ok + 1))
         else
             fail=$((fail + 1))
@@ -272,6 +298,7 @@ echo "========== 测试 4：大文件极限（3 节点）=========="
 check_mem
 start_cluster "${SCALE_PORTS[*]}" 3 "3 节点规模测试"
 echo "（本轮发现节点数 = ${CLUSTER_COUNT:-未检测到}）"
+ensure_session || { restore; exit 1; }
 
 BIGFILE_MAX_MB=""
 for mb in "${BIGFILE_SEQ_MB[@]}"; do
@@ -287,20 +314,20 @@ for mb in "${BIGFILE_SEQ_MB[@]}"; do
     dd if=/dev/zero of="$TMP_DIR/big.bin" bs=1M count="$mb" 2>/dev/null
     # 上传
     t0=$(date +%s.%N)
-    if ! timeout "$TIMEOUT_UPLOAD" "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" upload "$TMP_DIR/big.bin" > "$LOG_DIR/big_upload.log" 2>&1 \
-         && grep -q " done" "$LOG_DIR/big_upload.log"; then
+    if ! timeout "$TIMEOUT_UPLOAD" "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" \
+         upload "$TMP_DIR/big.bin" "/big.bin" > "$LOG_DIR/big_upload.log" 2>&1; then
         echo ">>> 上传 ${mb}MB 失败，停止；最大成功大小 = ${BIGFILE_MAX_MB:-无}"
         break
     fi
-    # 下载
-    if ! timeout "$TIMEOUT_UPLOAD" "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" download big.bin > "$LOG_DIR/big_download.log" 2>&1 \
-         && grep -q " done" "$LOG_DIR/big_download.log"; then
+    # 下载（显式指定目标路径：客户端默认写 ~/Downloads，与脚本原先假设的 downloads/ 不符）
+    if ! timeout "$TIMEOUT_UPLOAD" "$BIN/fs_caller" -i "$CONFIG/filestore_meta.cnf" \
+         download /big.bin -o "$TMP_DIR/big_out.bin" > "$LOG_DIR/big_download.log" 2>&1; then
         echo ">>> 下载 ${mb}MB 失败，停止；最大成功大小 = ${BIGFILE_MAX_MB:-无}"
         break
     fi
     # md5 对比
     src_md5=$(md5sum "$TMP_DIR/big.bin" | awk '{print $1}')
-    dst_md5=$(md5sum "downloads/big.bin" | awk '{print $1}')
+    dst_md5=$(md5sum "$TMP_DIR/big_out.bin" | awk '{print $1}')
     t1=$(date +%s.%N)
     secs=$(awk -v s="$t0" -v e="$t1" 'BEGIN { printf "%.3f", e - s }')
     thr=$(awk -v m="$mb" -v t="$secs" 'BEGIN { if (t > 0) printf "%.2f", m / t; else print "0" }')
@@ -312,7 +339,7 @@ for mb in "${BIGFILE_SEQ_MB[@]}"; do
     BIGFILE_MAX_MB="$mb"
     BIGFILE_THROUGHPUT="$thr"
     BIGFILE_MD5="$src_md5"
-    rm -f "$TMP_DIR/big.bin" "downloads/big.bin"
+    rm -f "$TMP_DIR/big.bin" "$TMP_DIR/big_out.bin"
     echo ">>> ${mb}MB 成功，继续加大规模"
 done
 restore

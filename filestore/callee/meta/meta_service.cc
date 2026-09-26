@@ -1,14 +1,19 @@
 #include "meta_service.h"
 
 #include <chrono>
+#include <climits>
 #include <cstdint>
 #include <iostream>
 #include <random>
 #include <set>
 #include <sstream>
 #include <thread>
+#include <utility>
 
+#include "common/common.h"
+#include "common/ticket.h"
 #include "database/CommonConnectionPool.hpp"
+#include "logger.h"
 #include "mprpc_application.h"
 #include "mprpc_channel.h"
 #include "mprpc_controller.h"
@@ -26,6 +31,17 @@ constexpr int kMaxRetry = 10;
 // 鉴权：Redis session key 前缀与 token 有效期（秒）
 constexpr const char* kSessionPrefix = "session:";
 constexpr int kTokenTtl = 86400;   // 1 天
+
+// 单文件分块数上限（4MB × 25600 = 100GB）。chunk_count 由客户端给出，
+// 不设上限则一次请求即可让元数据服务分配/插入上亿行。
+constexpr int32_t kMaxChunkCount = 25600;
+
+// 超时未提交的 PENDING 上传：超过该时长仍为 PENDING 视为客户端已放弃，回收其记录与块
+constexpr int kPendingTtlMinutes = 60;
+constexpr int kPendingReclaimIntervalSec = 300;
+
+// 存储访问票据有效期（秒）。大文件上传可能持续较久，故给足余量。
+constexpr int kTicketTtlSec = 3600;
 
 namespace {
 
@@ -121,10 +137,23 @@ MetaService::MetaService()
         m_nodes = seedNodes;
     }
 
+    m_ticketSecret = resolveTicketSecret(MprpcApplication::getConfig().load("ticket_secret"));
+    if (m_ticketSecret.empty()) {
+        // 没有密钥就签不出存储节点能验签的票据，服务起来也没用；
+        // 显式失败退出，避免用占位值跑起来、等到每个上传请求才暴露问题。
+        LOG_ERROR("storage ticket secret is not configured; set MPRPC_TICKET_SECRET "
+                  "(recommended) or ticket_secret in the config file");
+        exit(EXIT_FAILURE);
+    }
+
     std::thread([this]() { nodeWatchLoop(); }).detach();
     std::thread([this]() { cleanupQueueLoop(); }).detach();
     std::thread([this]() { cleanupRetryLoop(); }).detach();
     std::thread([this]() { shardScanLoop(); }).detach();
+    std::thread([this]() { pendingReclaimLoop(); }).detach();
+
+    // 启动时先清一次上次运行遗留的超时 PENDING 上传
+    reclaimStalePending();
 }
 
 // ===================== 鉴权 =====================
@@ -456,6 +485,18 @@ void MetaService::UploadFile(::google::protobuf::RpcController* controller,
         return;
     }
 
+    // 文件大小与分块数由客户端给出，必须自洽且有上限：
+    // filesize=0 -> chunk_count=0；否则 chunk_count == ceil(filesize / CHUNK_SIZE)
+    int64_t expectChunks = (request->filesize() + CHUNK_SIZE - 1) / CHUNK_SIZE;
+    if (request->filesize() < 0 || request->chunk_count() < 0 ||
+        request->chunk_count() != expectChunks ||
+        request->chunk_count() > kMaxChunkCount) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid filesize or chunk_count");
+        done->Run();
+        return;
+    }
+
     auto conn = ConnectionPool::getInstance().getConnection();
     if (!conn) {
         response->mutable_result()->set_errcode(1);
@@ -497,7 +538,12 @@ void MetaService::UploadFile(::google::protobuf::RpcController* controller,
     }
 
     // 事务：插入 file_meta 分配 file_id
-    conn->update("START TRANSACTION");
+    if (!conn->update("START TRANSACTION")) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("begin transaction failed");
+        done->Run();
+        return;
+    }
     if (!conn->update(
             "INSERT INTO file_meta(filesize, chunk_count, status) VALUES(" +
             std::to_string(request->filesize()) + ", " +
@@ -539,9 +585,7 @@ void MetaService::UploadFile(::google::protobuf::RpcController* controller,
         done->Run();
         return;
     }
-    conn->update("COMMIT");
-
-    // 一致性哈希分配块（按 file_id#chunk_index 落环）
+    // 一致性哈希分配块（按 file_id#chunk_index 落环）。持锁期间只做计算，不做数据库 IO
     std::vector<filestore::ChunkLocation> chunks;
     {
         std::lock_guard<std::mutex> lock(m_ringMutex);
@@ -555,13 +599,20 @@ void MetaService::UploadFile(::google::protobuf::RpcController* controller,
         }
     }
 
-    // 逐块插入块位置
-    for (const auto& loc : chunks) {
-        std::string insertChunk =
-            "INSERT INTO file_chunk(file_id, chunk_index, ip, port) VALUES(" +
-            std::to_string(fileId) + ", " + std::to_string(loc.chunk_index()) + ", '" +
-            escapeSql(conn->getConn(), loc.ip()) + "', " + std::to_string(loc.port()) + ")";
-        if (!conn->update(insertChunk)) {
+    // 逐块插入块位置：与上面同一事务，失败则整体回滚，避免留下「有索引无块」的半残文件
+    if (!chunks.empty()) {
+        std::string insertChunks = "INSERT INTO file_chunk(file_id, chunk_index, ip, port) VALUES";
+        for (size_t i = 0; i < chunks.size(); ++i) {
+            if (i > 0) {
+                insertChunks += ",";
+            }
+            insertChunks += "(" + std::to_string(fileId) + ", " +
+                            std::to_string(chunks[i].chunk_index()) + ", '" +
+                            escapeSql(conn->getConn(), chunks[i].ip()) + "', " +
+                            std::to_string(chunks[i].port()) + ")";
+        }
+        if (!conn->update(insertChunks)) {
+            conn->update("ROLLBACK");
             response->mutable_result()->set_errcode(1);
             response->mutable_result()->set_errmsg("insert file_chunk failed");
             done->Run();
@@ -569,9 +620,19 @@ void MetaService::UploadFile(::google::protobuf::RpcController* controller,
         }
     }
 
+    if (!conn->update("COMMIT")) {
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("commit failed");
+        done->Run();
+        return;
+    }
+
     response->mutable_result()->set_errcode(0);
     response->mutable_result()->set_errmsg("");
     response->set_file_id(fileId);
+    // 上传块用的票据：存储节点据此确认本次写入在授权范围内
+    response->set_ticket(makeStorageTicket(userId, fileId, "put"));
     for (const auto& loc : chunks) {
         filestore::ChunkLocation* respLoc = response->add_chunks();
         respLoc->CopyFrom(loc);
@@ -590,6 +651,13 @@ void MetaService::CommitUpload(::google::protobuf::RpcController* controller,
                                ::filestore::CommitUploadResponse* response,
                                ::google::protobuf::Closure* done)
 {
+    int userId = authenticate(request->token());
+    if (userId == 0) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("not logged in");
+        done->Run();
+        return;
+    }
     auto conn = ConnectionPool::getInstance().getConnection();
     if (!conn) {
         response->mutable_result()->set_errcode(1);
@@ -599,10 +667,53 @@ void MetaService::CommitUpload(::google::protobuf::RpcController* controller,
     }
     int32_t fileId = request->file_id();
 
-    // 事务：PENDING -> COMPLETE，逐块登记校验和/偏移/大小
-    conn->update("START TRANSACTION");
-    bool ok = conn->update(
-        "UPDATE file_meta SET status=1 WHERE id=" + std::to_string(fileId) + " AND status=0");
+    if (!conn->update("START TRANSACTION")) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("begin transaction failed");
+        done->Run();
+        return;
+    }
+
+    // 状态机：锁定该行并校验归属（否则任意未认证者都能把他人 PENDING 文件翻成 COMPLETE）
+    int status = 0;
+    std::string reason;
+    if (!lockOwnedFile(*conn, userId, fileId, status, reason)) {
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg(reason);
+        done->Run();
+        return;
+    }
+    if (status == 1) {
+        // 已 COMPLETE：幂等返回成功，重复 commit（如客户端未收到响应而重试）不应报错
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+        done->Run();
+        return;
+    }
+
+    // 块记录应已由 UploadFile 在同一事务内写全；数量不符说明元数据处于中间态，拒绝提交
+    MYSQL_RES* cntRes = conn->query(
+        "SELECT COUNT(*) FROM file_chunk WHERE file_id=" + std::to_string(fileId));
+    int chunkRows = 0;
+    if (cntRes != nullptr) {
+        MYSQL_ROW row = mysql_fetch_row(cntRes);
+        if (row != nullptr && row[0] != nullptr) {
+            parseNonNegativeInt(row[0], chunkRows);
+        }
+        mysql_free_result(cntRes);
+    }
+    if (chunkRows != request->chunks_size()) {
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("chunk count mismatch");
+        done->Run();
+        return;
+    }
+
+    // 逐块登记校验和/偏移/大小
+    bool ok = true;
     for (int i = 0; i < request->chunks_size() && ok; ++i) {
         const auto& c = request->chunks(i);
         std::string checksum = escapeSql(conn->getConn(), c.checksum());
@@ -612,10 +723,14 @@ void MetaService::CommitUpload(::google::protobuf::RpcController* controller,
             ", size=" + std::to_string(c.size()) +
             " WHERE file_id=" + std::to_string(fileId) + " AND chunk_index=" +
             std::to_string(c.chunk_index()));
+        // 块数已核对齐全，affected==0 只可能是 chunk_index 越界
+        ok = ok && conn->affectedRows() > 0;
+    }
+    if (ok) {
+        ok = conn->update("UPDATE file_meta SET status=1 WHERE id=" + std::to_string(fileId));
     }
 
-    if (ok) {
-        conn->update("COMMIT");
+    if (ok && conn->update("COMMIT")) {
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
     } else {
@@ -632,6 +747,13 @@ void MetaService::CancelUpload(::google::protobuf::RpcController* controller,
                                ::filestore::CancelUploadResponse* response,
                                ::google::protobuf::Closure* done)
 {
+    int userId = authenticate(request->token());
+    if (userId == 0) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("not logged in");
+        done->Run();
+        return;
+    }
     auto conn = ConnectionPool::getInstance().getConnection();
     if (!conn) {
         response->mutable_result()->set_errcode(1);
@@ -641,15 +763,73 @@ void MetaService::CancelUpload(::google::protobuf::RpcController* controller,
     }
     int32_t fileId = request->file_id();
 
-    // 事务：删除 PENDING 状态的元数据（三表）
-    conn->update("START TRANSACTION");
-    conn->update("DELETE FROM file_meta WHERE id=" + std::to_string(fileId) + " AND status=0");
-    conn->update("DELETE FROM file_chunk WHERE file_id=" + std::to_string(fileId));
-    conn->update("DELETE FROM file_node WHERE file_id=" + std::to_string(fileId));
-    conn->update("COMMIT");
+    if (!conn->update("START TRANSACTION")) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("begin transaction failed");
+        done->Run();
+        return;
+    }
 
-    response->mutable_result()->set_errcode(0);
-    response->mutable_result()->set_errmsg("");
+    int status = 0;
+    std::string reason;
+    if (!lockOwnedFile(*conn, userId, fileId, status, reason)) {
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg(reason);
+        done->Run();
+        return;
+    }
+    if (status == 1) {
+        // 已 COMPLETE 的文件不能走取消路径：原先此处会无条件删掉 file_chunk/file_node，
+        // 只留下带 status=1 的 file_meta 与目录项，下载端会拿到一个 0 字节文件。
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("file already committed");
+        done->Run();
+        return;
+    }
+
+    // 取该文件涉及的各存储节点。必须在删 file_chunk 之前取；客户端回滚时不再直连删块
+    // （它只有上传票据，没有删除票据），已落盘的块统一交给待清理队列，失败可退避重试。
+    std::vector<std::pair<std::string, int>> nodes;
+    MYSQL_RES* nodeRes = conn->query(
+        "SELECT DISTINCT ip, port FROM file_chunk WHERE file_id=" + std::to_string(fileId));
+    if (nodeRes != nullptr) {
+        MYSQL_ROW nrow;
+        while ((nrow = mysql_fetch_row(nodeRes)) != nullptr) {
+            if (nrow[0] == nullptr || nrow[1] == nullptr) {
+                continue;
+            }
+            int port = 0;
+            if (parseNonNegativeInt(nrow[1], port)) {
+                nodes.push_back({nrow[0], port});
+            }
+        }
+        mysql_free_result(nodeRes);
+    }
+
+    // 仅 PENDING 状态：删除三表中的元数据记录
+    bool ok = conn->update("DELETE FROM file_meta WHERE id=" + std::to_string(fileId));
+    if (!conn->update("DELETE FROM file_chunk WHERE file_id=" + std::to_string(fileId))) {
+        ok = false;
+    }
+    if (!conn->update("DELETE FROM file_node WHERE file_id=" + std::to_string(fileId))) {
+        ok = false;
+    }
+
+    if (ok && conn->update("COMMIT")) {
+        // 提交后再入队：避免在持锁事务内做 Redis I/O；若此间进程退出，
+        // 残留块会由分片扫描按「不在 file_meta」兜底清理
+        for (const auto& node : nodes) {
+            enqueueCleanup(node.first, node.second, fileId);
+        }
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+    } else {
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("cancel upload failed");
+    }
     done->Run();
 }
 
@@ -717,6 +897,8 @@ void MetaService::QueryFile(::google::protobuf::RpcController* controller,
     response->set_file_id(fileId);
     response->set_filesize(filesize);
     response->set_chunk_count(chunkCount);
+    // 下载块用的票据
+    response->set_ticket(makeStorageTicket(userId, fileId, "get"));
 
     MYSQL_ROW crow;
     while ((crow = mysql_fetch_row(chunkRes)) != nullptr) {
@@ -754,18 +936,40 @@ void MetaService::DeleteFile(::google::protobuf::RpcController* controller,
     }
     int32_t fileId = request->file_id();
 
-    // 事务：删 file_meta / file_chunk / file_node
-    conn->update("START TRANSACTION");
-    bool ok1 = conn->update("DELETE FROM file_meta WHERE id=" + std::to_string(fileId));
-    bool ok2 = conn->update("DELETE FROM file_chunk WHERE file_id=" + std::to_string(fileId));
-    conn->update("DELETE FROM file_node WHERE file_id=" + std::to_string(fileId));
-    conn->update("COMMIT");
+    if (!conn->update("START TRANSACTION")) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("begin transaction failed");
+        done->Run();
+        return;
+    }
 
-    if (ok1 && ok2) {
+    // 锁定并校验归属：file_id 由客户端给出，不校验归属则任意登录用户可越权删除他人文件
+    int status = 0;
+    std::string reason;
+    if (!lockOwnedFile(*conn, userId, fileId, status, reason)) {
+        conn->update("ROLLBACK");
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg(reason);
+        done->Run();
+        return;
+    }
+
+    // 事务：删 file_meta / file_chunk / file_node
+    bool ok = conn->update("DELETE FROM file_meta WHERE id=" + std::to_string(fileId));
+    if (!conn->update("DELETE FROM file_chunk WHERE file_id=" + std::to_string(fileId))) {
+        ok = false;
+    }
+    if (!conn->update("DELETE FROM file_node WHERE file_id=" + std::to_string(fileId))) {
+        ok = false;
+    }
+
+    if (ok && conn->update("COMMIT")) {
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
         std::cout << "delete file index id:" << fileId << std::endl;
     } else {
+        // 失败必须回滚，否则已执行的删除会被提交，而客户端看到的是失败
+        conn->update("ROLLBACK");
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("delete file index failed");
     }
@@ -816,6 +1020,8 @@ void MetaService::GetFileNodes(::google::protobuf::RpcController* controller,
     response->mutable_result()->set_errcode(0);
     response->mutable_result()->set_errmsg("");
     response->set_file_id(fileId);
+    // 删除块用的票据（客户端拿到后直连各存储节点删数据）
+    response->set_ticket(makeStorageTicket(userId, fileId, "del"));
     MYSQL_ROW row;
     while ((row = mysql_fetch_row(res)) != nullptr) {
         filestore::StorageNode* n = response->add_nodes();
@@ -832,6 +1038,23 @@ void MetaService::AddCleanupTask(::google::protobuf::RpcController* controller,
                                  ::filestore::AddCleanupTaskResponse* response,
                                  ::google::protobuf::Closure* done)
 {
+    int userId = authenticate(request->token());
+    if (userId == 0) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("not logged in");
+        done->Run();
+        return;
+    }
+
+    // 必须限制在活跃存储节点内：否则调用者可让元数据服务代替自己向任意 ip:port
+    // 发起 DeleteFile（SSRF），而该请求携带的是元数据签发的合法票据。
+    if (!isActiveStorageNode(request->node_ip(), request->node_port())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("unknown node");
+        done->Run();
+        return;
+    }
+
     enqueueCleanup(request->node_ip(), request->node_port(), request->file_id());
     response->mutable_result()->set_errcode(0);
     response->mutable_result()->set_errmsg("");
@@ -847,7 +1070,30 @@ int MetaService::authenticate(const std::string& token)
         return 0;
     }
     std::string val = m_redis.get(kSessionPrefix + token);
-    return val.empty() ? 0 : std::stoi(val);
+    int userId = 0;
+    if (val.empty() || !parseNonNegativeInt(val, userId)) {
+        // 会话值异常一律视为未登录，不能在此抛异常（调用方在 muduo I/O 线程上）
+        return 0;
+    }
+    return userId;
+}
+
+// 签发存储访问票据：存储节点用同一密钥离线验签，无需访问 Redis
+std::string MetaService::makeStorageTicket(int userId, int32_t fileId, const std::string& op) const
+{
+    return makeTicket(m_ticketSecret, userId, fileId, op, kTicketTtlSec);
+}
+
+// 校验 (ip, port) 是否在当前活跃存储节点集合内（AddCleanupTask 防 SSRF）
+bool MetaService::isActiveStorageNode(const std::string& ip, int port)
+{
+    std::lock_guard<std::mutex> lock(m_ringMutex);
+    for (const StorageNode& node : m_nodes) {
+        if (node.port == port && node.ip == ip) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // 按路径沿 parent_id 逐级查找节点，返回末尾节点的 id/file_id/isDir（不存在 id=0）
@@ -921,6 +1167,38 @@ bool MetaService::nodeExists(Connection& conn, int userId, int parentId, const s
         mysql_free_result(res);
     }
     return exists;
+}
+
+// 事务内锁定 file_meta 行并校验归属。
+// file_meta 本身没有 user_id，归属关系存在 file_node.user_id；
+// 必须先校验归属再按 file_id 操作，否则任意登录用户枚举 file_id 即可越权删改他人文件。
+bool MetaService::lockOwnedFile(Connection& conn, int userId, int32_t fileId,
+                                int& status, std::string& reason)
+{
+    MYSQL_RES* res = conn.query(
+        "SELECT fm.status FROM file_meta fm JOIN file_node fn ON fn.file_id = fm.id "
+        "WHERE fm.id=" + std::to_string(fileId) +
+        " AND fn.user_id=" + std::to_string(userId) + " FOR UPDATE");
+    if (res == nullptr) {
+        reason = "query failed";
+        return false;
+    }
+
+    bool found = false;
+    if (mysql_num_rows(res) > 0) {
+        MYSQL_ROW row = mysql_fetch_row(res);
+        if (row != nullptr && row[0] != nullptr) {
+            parseNonNegativeInt(row[0], status);
+            found = true;
+        }
+    }
+    mysql_free_result(res);
+
+    if (!found) {
+        // 不区分「不存在」与「不属于当前用户」，避免泄露他人 file_id 是否存在
+        reason = "file not found or permission denied";
+    }
+    return found;
 }
 
 // 递归删除目录：BFS 收集后代 -> 删元数据 -> 块数据入待清理队列异步清理
@@ -1050,6 +1328,24 @@ void MetaService::createTablesIfNotExist()
         "UNIQUE KEY uk_task (node_ip, node_port, file_id), "
         "KEY idx_status_retry (status, next_retry_at)"
         ") ENGINE=InnoDB COMMENT='待清理任务队列（删块失败的孤儿块）'");
+
+    // 迁移：file_node.file_id 索引。CREATE TABLE IF NOT EXISTS 对已存在的表不生效，
+    // 而按 file_id 删节点（删除文件/取消上传）会因缺索引退化为全表扫描。
+    MYSQL_RES* idxRes = conn->query(
+        "SELECT COUNT(*) FROM information_schema.statistics "
+        "WHERE table_schema = DATABASE() AND table_name = 'file_node' "
+        "AND index_name = 'idx_file_id'");
+    int idxCount = 0;
+    if (idxRes != nullptr) {
+        MYSQL_ROW row = mysql_fetch_row(idxRes);
+        if (row != nullptr && row[0] != nullptr) {
+            parseNonNegativeInt(row[0], idxCount);
+        }
+        mysql_free_result(idxRes);
+    }
+    if (idxCount == 0) {
+        conn->update("ALTER TABLE file_node ADD KEY idx_file_id (file_id)");
+    }
 }
 
 // 后台线程：轮询 ZK 临时节点，动态维护活跃存储节点集合（P11 动态扩缩容）
@@ -1117,6 +1413,77 @@ void MetaService::enqueueCleanup(const std::string& ip, int port, int fileId)
     }
 }
 
+// 回收超时未提交的 PENDING 上传。
+// 客户端上传中途崩溃会留下 status=0 的 file_meta、file_node 行与已落盘的块；
+// 这些 file_id 在 file_meta 里「存在」，分片扫描的孤儿判定不会碰它们，于是永久残留，
+// 且同名文件从此无法重新上传（UploadFile 的同目录查重只看 file_node，不看状态）。
+void MetaService::reclaimStalePending()
+{
+    std::vector<int> staleIds;
+    {
+        auto conn = ConnectionPool::getInstance().getConnection();
+        if (!conn) {
+            return;
+        }
+        MYSQL_RES* res = conn->query(
+            "SELECT id FROM file_meta WHERE status=0 AND created_at < NOW() - INTERVAL " +
+            std::to_string(kPendingTtlMinutes) + " MINUTE");
+        if (res == nullptr) {
+            return;
+        }
+        MYSQL_ROW row;
+        while ((row = mysql_fetch_row(res)) != nullptr) {
+            int fileId = 0;
+            if (row[0] == nullptr || !parseNonNegativeInt(row[0], fileId)) {
+                continue;
+            }
+            staleIds.push_back(fileId);
+
+            // 先把各存储节点的删块任务入队（失败可由队列退避重试），再删元数据
+            MYSQL_RES* nodeRes = conn->query(
+                "SELECT DISTINCT ip, port FROM file_chunk WHERE file_id=" + std::to_string(fileId));
+            if (nodeRes != nullptr) {
+                MYSQL_ROW nrow;
+                while ((nrow = mysql_fetch_row(nodeRes)) != nullptr) {
+                    if (nrow[0] == nullptr || nrow[1] == nullptr) {
+                        continue;
+                    }
+                    int port = 0;
+                    if (parseNonNegativeInt(nrow[1], port)) {
+                        enqueueCleanup(nrow[0], port, fileId);
+                    }
+                }
+                mysql_free_result(nodeRes);
+            }
+        }
+        mysql_free_result(res);
+    }
+
+    if (staleIds.empty()) {
+        return;
+    }
+
+    auto conn = ConnectionPool::getInstance().getConnection();
+    if (!conn) {
+        return;
+    }
+    for (int fileId : staleIds) {
+        conn->update("DELETE FROM file_chunk WHERE file_id=" + std::to_string(fileId));
+        conn->update("DELETE FROM file_node WHERE file_id=" + std::to_string(fileId));
+        conn->update("DELETE FROM file_meta WHERE id=" + std::to_string(fileId));
+        std::cout << "[meta] reclaim stale pending upload file_id:" << fileId << std::endl;
+    }
+}
+
+// 后台线程：定期回收超时 PENDING 上传
+void MetaService::pendingReclaimLoop()
+{
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(kPendingReclaimIntervalSec));
+        reclaimStalePending();
+    }
+}
+
 // 处理单个待清理任务：查信息 -> 检查退避到期 -> 直连删数据 -> 成功标完成 / 失败退避或终态
 void MetaService::processCleanupTask(int taskId)
 {
@@ -1147,6 +1514,8 @@ void MetaService::processCleanupTask(int taskId)
     filestore::StorageServiceRpc_Stub stub(&channel);
     filestore::DeleteFileRequest dreq;
     dreq.set_file_id(fileId);
+    // 每次尝试都重新签发（退避最长可达小时级，不能复用上一次的票据）
+    dreq.set_ticket(makeStorageTicket(0, fileId, "del"));
     filestore::DeleteFileResponse dresp;
     MprpcController dctl;
     stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);
@@ -1279,6 +1648,8 @@ void MetaService::scanShard(int shard)
         filestore::ListFilesRequest lreq;
         lreq.set_shard(shard);
         lreq.set_shard_count(kShardCount);
+        // GC 没有用户会话，用同一密钥自签票据（file_id=0 表示非文件维度操作）
+        lreq.set_ticket(makeStorageTicket(0, 0, "list"));
         filestore::ListFilesResponse lresp;
         MprpcController lctl;
         stub.ListFiles(&lctl, &lreq, &lresp, nullptr);
@@ -1288,10 +1659,16 @@ void MetaService::scanShard(int shard)
 
         // 逐节点 ListFiles，删「不在 file_meta 且不在队列」的孤儿
         for (const std::string& name : lresp.filenames()) {
-            int fid = std::stoi(name);
+            // 文件名来自存储节点的数据目录，可能是任意内容（调试残留、编辑器临时文件等）；
+            // 这里跑在 detach 的线程里，std::stoi 抛异常会直接终止元数据进程，故必须宽松解析
+            int fid = 0;
+            if (!parseNonNegativeInt(name, fid)) {
+                continue;
+            }
             if (knownIds.find(fid) == knownIds.end() && queuedIds.find(fid) == queuedIds.end()) {
                 filestore::DeleteFileRequest dreq;
                 dreq.set_file_id(fid);
+                dreq.set_ticket(makeStorageTicket(0, fid, "del"));
                 filestore::DeleteFileResponse dresp;
                 MprpcController dctl;
                 stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);

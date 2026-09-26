@@ -1,19 +1,30 @@
 #include "storage_service.h"
 
+#include <cerrno>
 #include <cstdio>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include "common/common.h"
+#include "common/ticket.h"
 #include "logger.h"
 #include "mprpc_application.h"
 
-// 构造：读取 data_dir 配置，并确保数据目录存在
+// 构造：读取 data_dir 与票据密钥，并确保数据目录存在
 StorageService::StorageService()
 {
     m_dataDir = MprpcApplication::getConfig().load("data_dir");
     // 确保数据目录存在（忽略已存在的错误）
     mkdir(m_dataDir.c_str(), 0755);
+
+    m_ticketSecret = resolveTicketSecret(MprpcApplication::getConfig().load("ticket_secret"));
+    if (m_ticketSecret.empty()) {
+        // 没有密钥就无法验签，任何块读写都会被拒；显式失败退出好过带着空密钥对外服务
+        LOG_ERROR("storage ticket secret is not configured; set MPRPC_TICKET_SECRET "
+                  "(recommended) or ticket_secret in the config file");
+        exit(EXIT_FAILURE);
+    }
 }
 
 // 上传单块：紧凑追加写到 data_dir/<file_id> 末尾，返回 (offset, size, checksum)
@@ -22,6 +33,12 @@ void StorageService::PutChunk(::google::protobuf::RpcController* controller,
                               ::filestore::PutChunkResponse* response,
                               ::google::protobuf::Closure* done)
 {
+    if (!checkTicket(request->file_id(), "put", request->ticket())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid or expired ticket");
+        done->Run();
+        return;
+    }
     if (!isValidFileId(request->file_id())) {
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("invalid file_id");
@@ -43,11 +60,35 @@ void StorageService::PutChunk(::google::protobuf::RpcController* controller,
         return;
     }
 
-    // 定位到文件末尾，紧凑追加写
-    fseek(fp, 0, SEEK_END);
+    // 定位到文件末尾，紧凑追加写。fseek/ftell/fwrite 的返回值都要检查：
+    // 磁盘满或配额超限时 fwrite 会少写，若不检查就会返回成功并附上一个
+    // 与实际落盘内容不符的 checksum，元数据据此登记出一个损坏的文件。
+    if (fseek(fp, 0, SEEK_END) != 0) {
+        fclose(fp);
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("seek to end failed");
+        done->Run();
+        return;
+    }
     int64_t offset = static_cast<int64_t>(ftell(fp));
+    if (offset < 0) {
+        fclose(fp);
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("tell failed");
+        done->Run();
+        return;
+    }
     int32_t size = static_cast<int32_t>(request->data().size());
-    fwrite(request->data().data(), 1, request->data().size(), fp);
+    if (!request->data().empty() &&
+        fwrite(request->data().data(), 1, request->data().size(), fp) != request->data().size()) {
+        // 回退到本次写入前的位置，避免在文件尾部留下半块垃圾（客户端会重试整批）
+        ftruncate(fileno(fp), static_cast<off_t>(offset));
+        fclose(fp);
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("write chunk failed");
+        done->Run();
+        return;
+    }
     fclose(fp);
 
     response->mutable_result()->set_errcode(0);
@@ -68,9 +109,23 @@ void StorageService::GetChunk(::google::protobuf::RpcController* controller,
                               ::filestore::GetChunkResponse* response,
                               ::google::protobuf::Closure* done)
 {
+    if (!checkTicket(request->file_id(), "get", request->ticket())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid or expired ticket");
+        done->Run();
+        return;
+    }
     if (!isValidFileId(request->file_id())) {
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("invalid file_id");
+        done->Run();
+        return;
+    }
+    // 读取范围由客户端给出，必须有界：负 size 会让 std::string 构造抛 length_error，
+    // 异常逃出 muduo 工作线程会直接终止进程；超大 size 则是无上限的内存分配。
+    if (request->offset() < 0 || request->size() < 0 || request->size() > CHUNK_SIZE) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid offset or size");
         done->Run();
         return;
     }
@@ -85,10 +140,26 @@ void StorageService::GetChunk(::google::protobuf::RpcController* controller,
         return;
     }
 
-    fseek(fp, static_cast<long>(request->offset()), SEEK_SET);
+    if (fseek(fp, static_cast<long>(request->offset()), SEEK_SET) != 0) {
+        fclose(fp);
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("seek failed");
+        done->Run();
+        return;
+    }
     std::string buf(request->size(), '\0');
-    size_t nread = fread(&buf[0], 1, request->size(), fp);
-    buf.resize(nread);
+    size_t nread = 0;
+    if (request->size() > 0) {
+        nread = fread(&buf[0], 1, request->size(), fp);
+        if (nread != static_cast<size_t>(request->size())) {
+            // 短读说明元数据记录的 (offset,size) 与实际数据文件不符，不能当作正常响应返回
+            fclose(fp);
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("read chunk failed");
+            done->Run();
+            return;
+        }
+    }
     fclose(fp);
 
     response->mutable_result()->set_errcode(0);
@@ -107,6 +178,12 @@ void StorageService::PutChunksBatch(::google::protobuf::RpcController* controlle
                                     ::filestore::PutChunksBatchResponse* response,
                                     ::google::protobuf::Closure* done)
 {
+    if (!checkTicket(request->file_id(), "put", request->ticket())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid or expired ticket");
+        done->Run();
+        return;
+    }
     if (!isValidFileId(request->file_id())) {
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("invalid file_id");
@@ -127,13 +204,47 @@ void StorageService::PutChunksBatch(::google::protobuf::RpcController* controlle
         return;
     }
 
-    // 顺序紧凑追加写，逐块返回 (offset, size, checksum)
-    fseek(fp, 0, SEEK_END);
+    // 顺序紧凑追加写，逐块返回 (offset, size, checksum)。
+    // 全程检查 fseek/ftell/fwrite：写失败时若仍返回成功，客户端会把一个
+    // 内容损坏的文件提交进元数据，且录入的 checksum 与实际落盘内容不符。
+    if (fseek(fp, 0, SEEK_END) != 0) {
+        fclose(fp);
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("seek to end failed");
+        done->Run();
+        return;
+    }
+    int64_t batchStart = static_cast<int64_t>(ftell(fp));
+    if (batchStart < 0) {
+        fclose(fp);
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("tell failed");
+        done->Run();
+        return;
+    }
+
     for (int i = 0; i < request->chunks_size(); ++i) {
         const auto& chunk = request->chunks(i);
         int64_t offset = static_cast<int64_t>(ftell(fp));
+        if (offset < 0) {
+            ftruncate(fileno(fp), static_cast<off_t>(batchStart));
+            fclose(fp);
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("tell failed");
+            done->Run();
+            return;
+        }
         int32_t size = static_cast<int32_t>(chunk.data().size());
-        fwrite(chunk.data().data(), 1, chunk.data().size(), fp);
+        if (!chunk.data().empty() &&
+            fwrite(chunk.data().data(), 1, chunk.data().size(), fp) != chunk.data().size()) {
+            // 整批回退到批首：客户端会重试整批，留下半块会让重试后的数据文件夹带垃圾
+            ftruncate(fileno(fp), static_cast<off_t>(batchStart));
+            fclose(fp);
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("write chunks batch failed");
+            done->Run();
+            return;
+        }
 
         filestore::ChunkResult* r = response->add_chunks();
         r->set_chunk_index(chunk.chunk_index());
@@ -156,6 +267,12 @@ void StorageService::GetChunksBatch(::google::protobuf::RpcController* controlle
                                     ::filestore::GetChunksBatchResponse* response,
                                     ::google::protobuf::Closure* done)
 {
+    if (!checkTicket(request->file_id(), "get", request->ticket())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid or expired ticket");
+        done->Run();
+        return;
+    }
     if (!isValidFileId(request->file_id())) {
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("invalid file_id");
@@ -173,13 +290,34 @@ void StorageService::GetChunksBatch(::google::protobuf::RpcController* controlle
         return;
     }
 
-    // 逐块按 (offset, size) 定位读取
+    // 逐块按 (offset, size) 定位读取。范围由客户端给出，必须逐块校验（理由同 GetChunk）
     for (int i = 0; i < request->chunks_size(); ++i) {
         const auto& spec = request->chunks(i);
-        fseek(fp, static_cast<long>(spec.offset()), SEEK_SET);
+        if (spec.offset() < 0 || spec.size() < 0 || spec.size() > CHUNK_SIZE) {
+            fclose(fp);
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("invalid offset or size");
+            done->Run();
+            return;
+        }
+        if (fseek(fp, static_cast<long>(spec.offset()), SEEK_SET) != 0) {
+            fclose(fp);
+            response->mutable_result()->set_errcode(1);
+            response->mutable_result()->set_errmsg("seek failed");
+            done->Run();
+            return;
+        }
         std::string buf(spec.size(), '\0');
-        size_t nread = fread(&buf[0], 1, spec.size(), fp);
-        buf.resize(nread);
+        if (spec.size() > 0) {
+            size_t nread = fread(&buf[0], 1, spec.size(), fp);
+            if (nread != static_cast<size_t>(spec.size())) {
+                fclose(fp);
+                response->mutable_result()->set_errcode(1);
+                response->mutable_result()->set_errmsg("read chunk failed");
+                done->Run();
+                return;
+            }
+        }
 
         filestore::GetChunkData* d = response->add_chunks();
         d->set_chunk_index(spec.chunk_index());
@@ -200,6 +338,12 @@ void StorageService::DeleteFile(::google::protobuf::RpcController* controller,
                                 ::filestore::DeleteFileResponse* response,
                                 ::google::protobuf::Closure* done)
 {
+    if (!checkTicket(request->file_id(), "del", request->ticket())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid or expired ticket");
+        done->Run();
+        return;
+    }
     if (!isValidFileId(request->file_id())) {
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("invalid file_id");
@@ -212,9 +356,16 @@ void StorageService::DeleteFile(::google::protobuf::RpcController* controller,
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
         LOG_INFO("delete file_id:%d", request->file_id());
+    } else if (errno == ENOENT) {
+        // 文件本就不存在：删除的目标已达成，按成功处理（幂等删除）。
+        // 若把「不存在」当失败，上传回滚时那些压根没落盘的块会让待清理队列
+        // 无谓地反复重试并最终升级为 status=3（需人工），把正常流程变成告警。
+        response->mutable_result()->set_errcode(0);
+        response->mutable_result()->set_errmsg("");
+        LOG_INFO("delete file_id:%d skipped (already absent)", request->file_id());
     } else {
         response->mutable_result()->set_errcode(1);
-        response->mutable_result()->set_errmsg("file not found or remove failed");
+        response->mutable_result()->set_errmsg("remove failed");
     }
     done->Run();
 }
@@ -225,6 +376,13 @@ void StorageService::ListFiles(::google::protobuf::RpcController* controller,
                                ::filestore::ListFilesResponse* response,
                                ::google::protobuf::Closure* done)
 {
+    // ListFiles 不是文件维度的操作，票据以 file_id=0 绑定 op=list（仅元数据服务的 GC 持有）
+    if (!checkTicket(0, "list", request->ticket())) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid or expired ticket");
+        done->Run();
+        return;
+    }
     int shard = request->shard();
     int shardCount = request->shard_count();
 
@@ -263,6 +421,19 @@ void StorageService::ListFiles(::google::protobuf::RpcController* controller,
 bool StorageService::isValidFileId(int32_t file_id)
 {
     return file_id > 0;
+}
+
+// 校验存储访问票据：由元数据服务用共享密钥签发，绑定本次的 file_id 与操作。
+// 存储节点直连暴露端口，没有这层校验时任何能访问端口的人都能读写删任意 file_id。
+bool StorageService::checkTicket(int32_t file_id, const std::string& op,
+                                 const std::string& ticket) const
+{
+    int userId = 0;
+    if (verifyTicket(m_ticketSecret, ticket, file_id, op, userId)) {
+        return true;
+    }
+    LOG_ERROR("storage ticket rejected! file_id:%d op:%s", file_id, op.c_str());
+    return false;
 }
 
 // 数据文件路径：data_dir/<file_id>
