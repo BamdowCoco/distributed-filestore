@@ -120,13 +120,11 @@ private:
     // 命中返回 true 并输出 status（0=PENDING/1=COMPLETE），否则返回 false 且 reason 说明原因
     bool lockOwnedFile(Connection& conn, int userId, int32_t fileId, int& status, std::string& reason);
 
-    // 递归删除目录：收集后代 -> 删元数据 -> 块数据入待清理队列
-    void removeDirRecursive(Connection& conn, int userId, int rootDirId);
+    // 递归删除目录：收集后代 -> 事务内删元数据 -> 提交后块数据入待清理队列。
+    // 返回 false 表示未提交（已回滚）
+    bool removeDirRecursive(Connection& conn, int userId, int rootDirId);
 
-    // 建表（幂等）
-    void createTablesIfNotExist();
-
-    // 后台线程：动态发现 + 待清理队列 + 分片扫描 + 超时 PENDING 回收
+    // 后台线程：动态发现 + 待清理队列 + 孤儿对账 + 超时 PENDING 回收
     void nodeWatchLoop();
     void enqueueCleanup(const std::string& ip, int port, int fileId);
     void processCleanupTask(int taskId);

@@ -10,6 +10,12 @@ add_executable(meta_callee
     callee/meta/main.cc
     callee/database/Connection.cc
     callee/database/CommonConnectionPool.cc
+    callee/database/dao/schema.cc
+    callee/database/dao/user_dao.cc
+    callee/database/dao/file_meta_dao.cc
+    callee/database/dao/file_node_dao.cc
+    callee/database/dao/file_chunk_dao.cc
+    callee/database/dao/cleanup_queue_dao.cc
     callee/redis/redis.cpp
     file_storage.pb.cc
 )
