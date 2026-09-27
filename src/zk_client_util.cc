@@ -105,23 +105,72 @@ void ZKClient::create(const std::string path, const std::string data, bool isEph
 }
 
 // 获取指定节点路径的值
-std::string ZKClient::getData(const std::string path)
+//
+// 为什么不能给 zoo_get 一个固定大小的栈缓冲区：zoo_get 在数据超过缓冲区时会
+// **静默截断**，并把 *buffer_len 置为截断后的长度（见 zookeeper.c 的 COMPLETION_DATA
+// 分支：len = min(res.data.len, buff_len)）。旧实现用 `char buffer[64]` 且忽略返回
+// 的长度，任何 ≥64 字节的值都会被读成残缺串——而且不会报错。
+// 这里改为先 zoo_exists 拿 Stat.dataLength（唯一可信的长度），再按需分配读取。
+std::string ZKClient::getData(const std::string& path, GetResult* result)
 {
     if(nullptr == m_zhandle) {
         LOG_ERROR("failed to get node data, please execute ZKClient::start()! path:%s", path.c_str());
+        if (result != nullptr) {
+            *result = GET_ERROR;
+        }
         return std::string();
     }
-    
-    char buffer[64] = {0};
-    int bufferLen = sizeof(buffer);
-    int flag;
-    flag = zoo_get(m_zhandle, path.c_str(), 0, buffer, &bufferLen, nullptr);
-    if(ZOK != flag) {
+
+    struct Stat stat;
+    int flag = zoo_exists(m_zhandle, path.c_str(), 0, &stat);
+    if (ZNONODE == flag) {
+        // 节点不存在不是错误，但对调用方是「没有数据」——必须与读失败区分开
+        if (result != nullptr) {
+            *result = GET_NOT_FOUND;
+        }
+        return std::string();
+    }
+    if (ZOK != flag) {
+        LOG_ERROR("failed to stat node! path:%s flag:%d", path.c_str(), flag);
+        if (result != nullptr) {
+            *result = GET_ERROR;
+        }
+        return std::string();
+    }
+
+    int32_t len = stat.dataLength;
+    if (len <= 0) {
+        if (result != nullptr) {
+            *result = GET_OK;
+        }
+        return std::string();
+    }
+
+    std::vector<char> buffer(static_cast<size_t>(len) + 1, '\0');
+    int bufferLen = len;
+    flag = zoo_get(m_zhandle, path.c_str(), 0, buffer.data(), &bufferLen, nullptr);
+    if (ZOK != flag) {
         LOG_ERROR("failed to get node data! path:%s flag:%d", path.c_str(), flag);
+        if (result != nullptr) {
+            *result = GET_ERROR;
+        }
         return std::string();
     }
-    LOG_INFO("get node data success! path:%s data:%s", path.c_str(), buffer);
-    return std::string(buffer);
+    if (bufferLen != len) {
+        // 两次调用之间数据被改动（长度已变），宁可报错让调用方重试，也不要返回半截内容。
+        // 注意此处**不打印数据内容**：节点值可能是凭据类信息，不该进日志。
+        LOG_ERROR("node data changed while reading! path:%s expect:%d got:%d",
+                  path.c_str(), len, bufferLen);
+        if (result != nullptr) {
+            *result = GET_ERROR;
+        }
+        return std::string();
+    }
+
+    if (result != nullptr) {
+        *result = GET_OK;
+    }
+    return std::string(buffer.data(), static_cast<size_t>(bufferLen));
 }
 
 // 获取指定节点路径 的 所有孩子名字

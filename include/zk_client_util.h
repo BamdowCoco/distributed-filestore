@@ -20,8 +20,16 @@ public:
     void start();
     // 在zkserver上指定路径创建znode节点
     void create(const std::string path, const std::string data="", bool isEphemeral = false);
-    // 获取指定节点路径的值
-    std::string getData(const std::string path);
+    // 读取节点数据的结果：调用方据此区分两种「返回空串」——节点不存在 vs 读失败
+    enum GetResult
+    {
+        GET_OK,
+        GET_NOT_FOUND,
+        GET_ERROR
+    };
+    // 获取指定节点路径的值（按节点实际长度读取，**不会**被截断）。
+    // 节点不存在或读失败时返回空串，用 result 出参区分两者——不要靠空串判断。
+    std::string getData(const std::string& path, GetResult* result = nullptr);
     // 获取指定节点路径 的 所有孩子名字
     std::vector<std::string> getChildren(const std::string path);
 private:
