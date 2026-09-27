@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "common/common.h"
+#include "common/password.h"
 #include "common/ticket.h"
 #include "database/CommonConnectionPool.hpp"
 #include "logger.h"
@@ -172,7 +173,17 @@ void MetaService::Register(::google::protobuf::RpcController* controller,
         return;
     }
     std::string username = escapeSql(conn->getConn(), request->username());
-    std::string hash = sha256Hex(request->password());
+
+    // 带随机盐的 PBKDF2 散列（早期版本是裸 SHA256，可离线爆破）
+    std::string hash = password::hashPassword(request->password());
+    if (hash.empty()) {
+        // 取随机数或派生失败：必须当作注册失败，绝不降级去存弱散列
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("hash password failed");
+        done->Run();
+        return;
+    }
+    std::string hashEsc = escapeSql(conn->getConn(), hash);
 
     // 查重：用户名已存在则拒绝
     MYSQL_RES* res = conn->query("SELECT id FROM user WHERE username='" + username + "'");
@@ -212,23 +223,45 @@ void MetaService::Login(::google::protobuf::RpcController* controller,
         return;
     }
     std::string username = escapeSql(conn->getConn(), request->username());
-    std::string hash = sha256Hex(request->password());
 
-    // 校验账号密码
+    // 取出存储的散列后在 C++ 侧校验：PBKDF2 没法在 SQL 里算，而且盐是每用户不同的
     MYSQL_RES* res = conn->query(
-        "SELECT id FROM user WHERE username='" + username + "' AND password_hash='" + hash + "'");
+        "SELECT id, password_hash FROM user WHERE username='" + username + "'");
     if (res == nullptr || mysql_num_rows(res) == 0) {
         if (res != nullptr) {
             mysql_free_result(res);
         }
+        // 与「口令错误」返回同一句话，避免暴露某个用户名是否存在
         response->mutable_result()->set_errcode(1);
         response->mutable_result()->set_errmsg("invalid username or password");
         done->Run();
         return;
     }
     MYSQL_ROW row = mysql_fetch_row(res);
-    int userId = std::stoi(row[0]);
+    int userId = 0;
+    bool idOk = (row[0] != nullptr) && parseNonNegativeInt(row[0], userId);
+    // 必须在 mysql_free_result 之前把列拷出来：free 之后 MYSQL_ROW 的内容即失效
+    std::string stored = (row[1] != nullptr) ? row[1] : "";
     mysql_free_result(res);
+
+    password::VerifyResult vr = idOk ? password::verifyPassword(request->password(), stored)
+                                     : password::VerifyResult::Mismatch;
+    if (vr == password::VerifyResult::Mismatch) {
+        response->mutable_result()->set_errcode(1);
+        response->mutable_result()->set_errmsg("invalid username or password");
+        done->Run();
+        return;
+    }
+    if (vr == password::VerifyResult::OkNeedsRehash) {
+        // 存储值是历史遗留的无盐 SHA256（或迭代数偏低）：趁本次已拿到明文顺手升级。
+        // 升级失败不影响这次登录，下次登录会再试一次。
+        std::string upgraded = password::hashPassword(request->password());
+        if (!upgraded.empty()) {
+            conn->update("UPDATE user SET password_hash='" +
+                         escapeSql(conn->getConn(), upgraded) + "' WHERE id=" +
+                         std::to_string(userId));
+        }
+    }
 
     // 签发随机 token 存 Redis（TTL 1 天）
     std::string token = generateToken();
@@ -1345,6 +1378,27 @@ void MetaService::createTablesIfNotExist()
     }
     if (idxCount == 0) {
         conn->update("ALTER TABLE file_node ADD KEY idx_file_id (file_id)");
+    }
+
+    // 迁移：password_hash 需容纳带盐散列。格式 pbkdf2-sha256$<iter>$<b64盐>$<b64散列>
+    // 约 90 字符，而早期版本是 VARCHAR(64)。按与上面 idx_file_id 相同的幂等模式处理：
+    // 只扩不缩，且不做数据重写——旧值在下次登录验证通过时由 Login 顺手升级。
+    MYSQL_RES* colRes = conn->query(
+        "SELECT CHARACTER_MAXIMUM_LENGTH FROM information_schema.columns "
+        "WHERE table_schema = DATABASE() AND table_name = 'user' "
+        "AND column_name = 'password_hash'");
+    int colLen = 0;
+    if (colRes != nullptr) {
+        MYSQL_ROW colRow = mysql_fetch_row(colRes);
+        if (colRow != nullptr && colRow[0] != nullptr) {
+            parseNonNegativeInt(colRow[0], colLen);
+        }
+        mysql_free_result(colRes);
+    }
+    if (colLen > 0 && colLen < 160) {
+        conn->update(
+            "ALTER TABLE user MODIFY password_hash VARCHAR(160) NOT NULL "
+            "COMMENT '密码散列(PBKDF2-SHA256 带盐; 兼容历史无盐 SHA256)'");
     }
 }
 
