@@ -1741,6 +1741,11 @@ void MetaService::reconcileOrphans()
         MprpcController lctl;
         stub.ListFiles(&lctl, &lreq, &lresp, nullptr);
         if (lctl.Failed() || lresp.result().errcode() != 0) {
+            // 必须记下来：静默 continue 会让「票据被拒 / 节点不可达」看起来和「没有孤儿」
+            // 一模一样——曾因此让整条 GC 静默失效很久没被发现。
+            std::cerr << "[meta] gc ListFiles failed on " << node.ip << ":" << node.port
+                      << " err:" << (lctl.Failed() ? lctl.ErrorText() : lresp.result().errmsg())
+                      << std::endl;
             continue;
         }
 

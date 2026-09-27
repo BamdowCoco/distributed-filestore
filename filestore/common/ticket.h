@@ -305,7 +305,11 @@ inline bool verifyTicket(const std::vector<TicketKey>& trustedKeys, const std::s
         !parseNonNegativeInt64(parts[4], ticketFileId)) {
         return false;
     }
-    if (ticketFileId != fileId || ticketUserId <= 0) {
+    // 只校验 file_id 绑定。**不要**在这里要求 userId > 0：GC 没有用户身份，
+    // 它签发的 list / del 票据 userId 就是 0，要求 > 0 会把整条 GC 路径全部拒掉
+    // （曾经真的这样回归过：存储端每轮静默拒绝 op=list，GC 一次都没成功执行）。
+    // 授权语义由「签名 + (fileId, op, 有效期)」承担，userId 段仅用于审计与日志。
+    if (ticketFileId != fileId) {
         return false;
     }
     // 留出时钟偏差容忍：元数据与存储节点的时钟不会完全一致
