@@ -3,6 +3,7 @@
 #include <cerrno>
 #include <cstdio>
 #include <dirent.h>
+#include <sstream>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -18,13 +19,41 @@ StorageService::StorageService()
     // 确保数据目录存在（忽略已存在的错误）
     mkdir(m_dataDir.c_str(), 0755);
 
-    m_ticketSecret = resolveTicketSecret(MprpcApplication::getConfig().load("ticket_secret"));
-    if (m_ticketSecret.empty()) {
-        // 没有密钥就无法验签，任何块读写都会被拒；显式失败退出好过带着空密钥对外服务
-        LOG_ERROR("storage ticket secret is not configured; set MPRPC_TICKET_SECRET "
-                  "(recommended) or ticket_secret in the config file");
+    // 可信票据公钥：Ed25519 的 PEM 文件**路径**，可逗号分隔多把（用于手动轮换）。
+    // 公钥不是机密——写进配置文件本来就安全，这正是改用非对称签名的收益之一：
+    // 需要保密的只有元数据服务那一把私钥。
+    std::string pubPaths = MprpcApplication::getConfig().load("ticket_pubkey");
+    const char* envPubPath = std::getenv("MPRPC_TICKET_PUBKEY");
+    if (envPubPath != nullptr && *envPubPath != '\0') {
+        pubPaths = envPubPath;
+    }
+    {
+        std::stringstream ss(pubPaths);
+        std::string item;
+        while (std::getline(ss, item, ',')) {
+            size_t begin = item.find_first_not_of(" \t");
+            if (begin == std::string::npos) {
+                continue;   // 空项（如结尾多余的逗号）
+            }
+            size_t end = item.find_last_not_of(" \t");
+            std::string path = item.substr(begin, end - begin + 1);
+            ticket::TicketKey key;
+            if (!key.loadPublicPem(path)) {
+                // 单把加载失败不算致命：可能是轮换期间某把已下线，其余仍可用
+                LOG_ERROR("failed to load ticket public key, skipped. path:%s", path.c_str());
+                continue;
+            }
+            m_ticketKeys.push_back(std::move(key));
+        }
+    }
+    if (m_ticketKeys.empty()) {
+        // 一把可信公钥都没有就什么都验不过：显式失败退出，不要带着空集合对外服务
+        LOG_ERROR("no usable storage ticket public key; set ticket_pubkey in the config file "
+                  "(or MPRPC_TICKET_PUBKEY) to one or more Ed25519 PEM paths. configured:%s",
+                  pubPaths.c_str());
         exit(EXIT_FAILURE);
     }
+    LOG_INFO("storage ticket keys loaded, count:%zu", m_ticketKeys.size());
 }
 
 // 上传单块：紧凑追加写到 data_dir/<file_id> 末尾，返回 (offset, size, checksum)
@@ -423,13 +452,14 @@ bool StorageService::isValidFileId(int32_t file_id)
     return file_id > 0;
 }
 
-// 校验存储访问票据：由元数据服务用共享密钥签发，绑定本次的 file_id 与操作。
-// 存储节点直连暴露端口，没有这层校验时任何能访问端口的人都能读写删任意 file_id。
+// 校验存储访问票据：由元数据服务用 Ed25519 私钥签发，绑定本次的 file_id 与操作，
+// 本节点只用公钥验签（拿不到签发能力）。存储节点直连暴露端口，没有这层校验时
+// 任何能访问端口的人都能读写删任意 file_id。
 bool StorageService::checkTicket(int32_t file_id, const std::string& op,
                                  const std::string& ticket) const
 {
     int userId = 0;
-    if (verifyTicket(m_ticketSecret, ticket, file_id, op, userId)) {
+    if (ticket::verifyTicket(m_ticketKeys, ticket, file_id, op, userId)) {
         return true;
     }
     LOG_ERROR("storage ticket rejected! file_id:%d op:%s", file_id, op.c_str());

@@ -34,3 +34,10 @@ add_executable(fs_caller
     file_storage.pb.cc
 )
 target_link_libraries(fs_caller mprpc protobuf::libprotobuf crypto)
+
+# 票据密钥生成工具：产出 Ed25519 密钥对并打印 kid（kid 的算法与元数据/存储节点
+# 共用 ticket::TicketKey 这一份实现，避免两边漂移）
+add_executable(ticket_keygen
+    tools/ticket_keygen.cc
+)
+target_link_libraries(ticket_keygen crypto)

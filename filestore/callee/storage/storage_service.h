@@ -2,7 +2,9 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
+#include "common/ticket.h"
 #include "file_storage.pb.h"
 
 // 存储服务：负责文件块的落盘、读取与删除。
@@ -59,5 +61,7 @@ private:
     std::string dataPath(int32_t file_id) const;
 
     std::string m_dataDir;
-    std::string m_ticketSecret;
+    // 可信票据公钥集合（Ed25519）。元数据持私钥签发，本节点只持公钥验签——
+    // 因此本节点被攻破也拿不到签发能力。可配多把以支持手动轮换。
+    std::vector<ticket::TicketKey> m_ticketKeys;
 };

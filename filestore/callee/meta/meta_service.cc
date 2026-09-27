@@ -41,8 +41,12 @@ constexpr int32_t kMaxChunkCount = 25600;
 constexpr int kPendingTtlMinutes = 60;
 constexpr int kPendingReclaimIntervalSec = 300;
 
-// 存储访问票据有效期（秒）。大文件上传可能持续较久，故给足余量。
-constexpr int kTicketTtlSec = 3600;
+// 存储访问票据有效期（秒）。
+// 客户端目前是「一次取票据、全程复用」（put 票据用于整次上传、get 用于整次下载），
+// 没有刷新逻辑，因此 TTL **必须长于最长一次上传/下载**——实测 5GB 上传约 112s，
+// 600s 留了约 5 倍余量。之所以不取更长，是因为无 TLS 时票据可被原样重放，
+// 缩短 TTL 是当前最便宜的重放窗口压缩手段。
+constexpr int kTicketTtlSec = 600;
 
 namespace {
 
@@ -138,14 +142,22 @@ MetaService::MetaService()
         m_nodes = seedNodes;
     }
 
-    m_ticketSecret = resolveTicketSecret(MprpcApplication::getConfig().load("ticket_secret"));
-    if (m_ticketSecret.empty()) {
-        // 没有密钥就签不出存储节点能验签的票据，服务起来也没用；
-        // 显式失败退出，避免用占位值跑起来、等到每个上传请求才暴露问题。
-        LOG_ERROR("storage ticket secret is not configured; set MPRPC_TICKET_SECRET "
-                  "(recommended) or ticket_secret in the config file");
+    // 票据签发私钥：Ed25519 的 PEM 文件**路径**（不是密钥本身）。
+    // 只有元数据服务持私钥；路径可用环境变量 MPRPC_TICKET_PRIVKEY 覆盖。
+    std::string privPath = MprpcApplication::getConfig().load("ticket_privkey");
+    const char* envPrivPath = std::getenv("MPRPC_TICKET_PRIVKEY");
+    if (envPrivPath != nullptr && *envPrivPath != '\0') {
+        privPath = envPrivPath;
+    }
+    if (privPath.empty() || !m_ticketKey.loadPrivatePem(privPath)) {
+        // 没有私钥就签不出存储节点能验签的票据，服务起来也没用：显式失败退出，
+        // 不要用占位值跑起来、等到每个上传请求才暴露问题。
+        LOG_ERROR("storage ticket private key is not loadable; set ticket_privkey in the config "
+                  "file (or MPRPC_TICKET_PRIVKEY) to an Ed25519 PEM path. path:%s",
+                  privPath.c_str());
         exit(EXIT_FAILURE);
     }
+    LOG_INFO("ticket signing key loaded, kid:%s", m_ticketKey.kid().c_str());
 
     std::thread([this]() { nodeWatchLoop(); }).detach();
     std::thread([this]() { cleanupQueueLoop(); }).detach();
@@ -1111,10 +1123,11 @@ int MetaService::authenticate(const std::string& token)
     return userId;
 }
 
-// 签发存储访问票据：存储节点用同一密钥离线验签，无需访问 Redis
+// 签发存储访问票据：用 Ed25519 私钥签名；存储节点用配置里的公钥按 kid 验签，
+// 因此不需要任何共享密钥，也不依赖外部服务
 std::string MetaService::makeStorageTicket(int userId, int32_t fileId, const std::string& op) const
 {
-    return makeTicket(m_ticketSecret, userId, fileId, op, kTicketTtlSec);
+    return ticket::makeTicket(m_ticketKey.raw(), userId, fileId, op, kTicketTtlSec);
 }
 
 // 校验 (ip, port) 是否在当前活跃存储节点集合内（AddCleanupTask 防 SSRF）

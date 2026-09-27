@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "common/consistent_hash.h"
+#include "common/ticket.h"
 #include "file_storage.pb.h"
 #include "redis/redis.hpp"
 
@@ -141,5 +142,6 @@ private:
     ConsistentHash m_ring;
     std::vector<StorageNode> m_nodes;
     Redis m_redis;
-    std::string m_ticketSecret;
+    // 票据签发私钥（Ed25519）。只有元数据服务持有；存储节点只持公钥。
+    ticket::TicketKey m_ticketKey;
 };

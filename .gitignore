@@ -17,6 +17,10 @@ test/**/build/
 test/**/.clangd
 config/mysql.cnf
 
+# 票据密钥（Ed25519）：私钥是机密，绝不入库；公钥虽非机密但也随目录一起忽略，
+# 由各机器自行用 ./bin/ticket_keygen 生成或分发
+config/keys/
+
 # 日志文件
 **/*.log
 zookeeper.out

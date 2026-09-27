@@ -43,6 +43,8 @@ ConnectionPool::ConnectionPool()
     scanner.detach();
 }
 
+// 注意：按 getInstance 里的说明，这个单例在进程退出时**不会被析构**，
+// 因此本函数实际上不会被执行（保留它是为了表达"池拥有这些连接"的语义）。
 ConnectionPool::~ConnectionPool()
 {
     // 释放队列中残留连接
@@ -55,9 +57,15 @@ ConnectionPool::~ConnectionPool()
 
 ConnectionPool& ConnectionPool::getInstance()
 {
-    // 局部静态变量，线程安全
-    static ConnectionPool pool;
-    return pool;
+    // 有意**不析构**这个单例：池内那两个 detach 的后台线程会一直等在没有停止谓词的
+    // _cvProducer/_cvConsumer 上，若在进程退出时析构单例，成员条件变量的
+    // pthread_cond_destroy 会等到等待者离开——而它们永远不会离开，于是 exit() 永久挂住。
+    // 连接池是进程级生命周期对象，退出时交给 OS 回收即可（这也是带后台线程的单例常见做法）。
+    //
+    // 这条路径只在 exit() 时才会走到，且此前一直没被触发：直到元数据服务「缺票据私钥就
+    // 拒绝启动」的 fail-closed 在构造函数里调用 exit()（见 meta_service.cc）。
+    static ConnectionPool* pool = new ConnectionPool();
+    return *pool;
 }
 
 std::shared_ptr<Connection> ConnectionPool::getConnection()
