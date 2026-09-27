@@ -399,7 +399,11 @@ void StorageService::DeleteFile(::google::protobuf::RpcController* controller,
     done->Run();
 }
 
-// 列出 data_dir 下的 file_id（按分片过滤，供孤儿块 GC 扫描）
+// 列出 data_dir 下的全部 file_id（供元数据服务的孤儿块**全量对账**）
+//
+// 早期版本按分片过滤，代价是每次调用都要遍历整个目录、并对每个文件名算一次 MD5
+// （1440 分片轮转下等于每轮都重走一遍全目录 → O(文件数 × 分片数)）。现在直接把
+// 目录念一遍返回，分片与差集判断交给元数据侧——总代价降为 O(文件数)。
 void StorageService::ListFiles(::google::protobuf::RpcController* controller,
                                const ::filestore::ListFilesRequest* request,
                                ::filestore::ListFilesResponse* response,
@@ -412,8 +416,6 @@ void StorageService::ListFiles(::google::protobuf::RpcController* controller,
         done->Run();
         return;
     }
-    int shard = request->shard();
-    int shardCount = request->shard_count();
 
     DIR* dir = opendir(m_dataDir.c_str());
     if (dir == nullptr) {
@@ -428,16 +430,9 @@ void StorageService::ListFiles(::google::protobuf::RpcController* controller,
 
     struct dirent* entry;
     while ((entry = readdir(dir)) != nullptr) {
-        // 跳过 . / .. / 隐藏文件（数据文件都是纯数字 file_id）
+        // 跳过 . / ..（以及任何隐藏文件）
         if (entry->d_name[0] == '.') {
             continue;
-        }
-        // 分片过滤：只返回本分片的文件（分片哈希与 ConsistentHash::hashKey 同算法）
-        if (shardCount > 1) {
-            uint32_t h = static_cast<uint32_t>(std::stoul(md5Hex(entry->d_name).substr(0, 8), nullptr, 16));
-            if (static_cast<int>(h % static_cast<uint32_t>(shardCount)) != shard) {
-                continue;
-            }
         }
         response->add_filenames(entry->d_name);
     }

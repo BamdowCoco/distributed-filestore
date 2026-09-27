@@ -24,8 +24,13 @@
 constexpr const char* kCleanupStream = "cleanup_queue";
 constexpr const char* kCleanupGroup = "cleanup-group";
 constexpr const char* kCleanupConsumer = "meta-cleanup";
-// P20 分片扫描参数（60s/轮 → 24h 覆盖全量；验证可临时改小）
-constexpr int kShardCount = 1440;
+// 孤儿块全量对账的周期（秒）。
+// 早期是「每 60s 扫一个分片、1440 片轮完一轮要 24h」，但每轮都要全表读两张表、且存储端
+// 每次 ListFiles 都要重走整个数据目录并逐文件名算 MD5 → 总代价 O(文件数 × 分片数)。
+// 改成每周期做一次全量对账后，单轮更重但总代价降到 O(文件数)，所以周期取长一些。
+constexpr int kGcIntervalSec = 600;
+// 单轮删除上限：给对账设个界，避免孤儿积压时长时间占住元数据服务
+constexpr int kGcMaxDeletesPerRound = 1000;
 // P20 待清理任务最大重试次数，达到后进入终态 status=3（需人工）
 constexpr int kMaxRetry = 10;
 
@@ -75,6 +80,17 @@ std::string escapeSql(MYSQL* conn, const std::string& s)
     std::vector<char> buf(s.size() * 2 + 1, '\0');
     unsigned long len = mysql_real_escape_string(conn, buf.data(), s.c_str(), s.size());
     return std::string(buf.data(), len);
+}
+
+// 读取正整数配置；缺失、含非数字或为 0 时回退默认值
+int loadPositiveIntConfig(const char* key, int fallback)
+{
+    std::string v = MprpcApplication::getConfig().load(key);
+    int out = 0;
+    if (!v.empty() && parseNonNegativeInt(v, out) && out > 0) {
+        return out;
+    }
+    return fallback;
 }
 
 // 按 '/' 切分虚拟路径（忽略空段，如 "/a/b" -> ["a","b"]）
@@ -162,7 +178,7 @@ MetaService::MetaService()
     std::thread([this]() { nodeWatchLoop(); }).detach();
     std::thread([this]() { cleanupQueueLoop(); }).detach();
     std::thread([this]() { cleanupRetryLoop(); }).detach();
-    std::thread([this]() { shardScanLoop(); }).detach();
+    std::thread([this]() { reconcileLoop(); }).detach();
     std::thread([this]() { pendingReclaimLoop(); }).detach();
 
     // 启动时先清一次上次运行遗留的超时 PENDING 上传
@@ -1652,70 +1668,72 @@ void MetaService::cleanupRetryLoop()
     }
 }
 
-// 分片扫描线程：每轮扫一个分片，K 轮覆盖全量（兜底清理未跟踪的孤儿块）
-void MetaService::shardScanLoop()
+// 孤儿块回收线程：周期性做一次**全量对账**（兜底清理未被任何索引跟踪的孤儿块）
+void MetaService::reconcileLoop()
 {
-    int shard = 0;
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    // 周期可配（gc_interval_sec）：既方便按机器规模调整，也便于验证时调短
+    const int intervalSec = loadPositiveIntConfig("gc_interval_sec", kGcIntervalSec);
+    // 启动后先等一会再首扫，避开与服务注册/建表的资源竞争
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     while (true) {
-        scanShard(shard % kShardCount);
-        ++shard;
-        std::this_thread::sleep_for(std::chrono::seconds(60));
+        reconcileOrphans();
+        std::this_thread::sleep_for(std::chrono::seconds(intervalSec));
     }
 }
 
-// 扫描一个分片：取该分片在册 file_id -> 逐节点 ListFiles(shard) -> 删孤儿（跳过队列在管的）
-void MetaService::scanShard(int shard)
+// 一次全量对账：在册 file_id 与队列在管的 file_id 各读一次，逐节点列出完整文件列表，
+// 删掉「两边都没有」的孤儿
+void MetaService::reconcileOrphans()
 {
     std::vector<StorageNode> nodes;
     {
         std::lock_guard<std::mutex> lock(m_ringMutex);
         nodes = m_nodes;
     }
-
-    // 取该分片内的在册 file_id（hash(file_id) % K == shard）
-    std::set<int> knownIds;
-    {
-        auto conn = ConnectionPool::getInstance().getConnection();
-        if (conn) {
-            MYSQL_RES* res = conn->query("SELECT id FROM file_meta");
-            if (res != nullptr) {
-                MYSQL_ROW row;
-                while ((row = mysql_fetch_row(res)) != nullptr) {
-                    int fid = std::stoi(row[0]);
-                    if (static_cast<int>(ConsistentHash::hashKey(std::to_string(fid)) % static_cast<uint32_t>(kShardCount)) == shard) {
-                        knownIds.insert(fid);
-                    }
-                }
-                mysql_free_result(res);
-            }
-        }
+    if (nodes.empty()) {
+        return;
     }
 
-    // 取队列在管的 file_id（无论待清理/终态，扫描都不碰）
-    std::set<int> queuedIds;
+    std::set<int> knownIds;    // 在册 file_id（**含 PENDING**：上传中的文件必须保护）
+    std::set<int> queuedIds;   // 队列在管的 file_id（待清理或终态，对账都不碰）
     {
         auto conn = ConnectionPool::getInstance().getConnection();
-        if (conn) {
-            MYSQL_RES* res = conn->query("SELECT file_id FROM cleanup_queue");
-            if (res != nullptr) {
-                MYSQL_ROW row;
-                while ((row = mysql_fetch_row(res)) != nullptr) {
-                    queuedIds.insert(std::stoi(row[0]));
-                }
-                mysql_free_result(res);
+        if (!conn) {
+            return;   // 拿不到连接就整轮跳过，下个周期再试
+        }
+        MYSQL_RES* res = conn->query("SELECT id FROM file_meta");
+        if (res == nullptr) {
+            return;
+        }
+        MYSQL_ROW row;
+        while ((row = mysql_fetch_row(res)) != nullptr) {
+            int fid = 0;
+            if (row[0] != nullptr && parseNonNegativeInt(row[0], fid)) {
+                knownIds.insert(fid);
             }
         }
+        mysql_free_result(res);
+
+        res = conn->query("SELECT file_id FROM cleanup_queue");
+        if (res == nullptr) {
+            return;
+        }
+        while ((row = mysql_fetch_row(res)) != nullptr) {
+            int fid = 0;
+            if (row[0] != nullptr && parseNonNegativeInt(row[0], fid)) {
+                queuedIds.insert(fid);
+            }
+        }
+        mysql_free_result(res);
     }
 
+    int removed = 0;
     for (const StorageNode& node : nodes) {
         MprpcChannel channel(node.ip, static_cast<uint16_t>(node.port));
         filestore::StorageServiceRpc_Stub stub(&channel);
 
         filestore::ListFilesRequest lreq;
-        lreq.set_shard(shard);
-        lreq.set_shard_count(kShardCount);
-        // GC 没有用户会话，用同一密钥自签票据（file_id=0 表示非文件维度操作）
+        // GC 没有用户会话，用私钥自签票据（file_id=0 表示非文件维度操作）
         lreq.set_ticket(makeStorageTicket(0, 0, "list"));
         filestore::ListFilesResponse lresp;
         MprpcController lctl;
@@ -1724,28 +1742,40 @@ void MetaService::scanShard(int shard)
             continue;
         }
 
-        // 逐节点 ListFiles，删「不在 file_meta 且不在队列」的孤儿
         for (const std::string& name : lresp.filenames()) {
             // 文件名来自存储节点的数据目录，可能是任意内容（调试残留、编辑器临时文件等）；
-            // 这里跑在 detach 的线程里，std::stoi 抛异常会直接终止元数据进程，故必须宽松解析
+            // 这里跑在 detach 的线程里，解析必须宽松——抛异常会直接终止元数据进程
             int fid = 0;
             if (!parseNonNegativeInt(name, fid)) {
                 continue;
             }
-            if (knownIds.find(fid) == knownIds.end() && queuedIds.find(fid) == queuedIds.end()) {
-                filestore::DeleteFileRequest dreq;
-                dreq.set_file_id(fid);
-                dreq.set_ticket(makeStorageTicket(0, fid, "del"));
-                filestore::DeleteFileResponse dresp;
-                MprpcController dctl;
-                stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);
-                if (dctl.Failed() || dresp.result().errcode() != 0) {
-                    enqueueCleanup(node.ip, node.port, fid);
-                } else {
-                    std::cerr << "[meta] gc remove orphan file_id:" << fid
-                              << " on " << node.ip << ":" << node.port << std::endl;
+            if (knownIds.find(fid) != knownIds.end() || queuedIds.find(fid) != queuedIds.end()) {
+                continue;   // 在册或队列在管，不是孤儿
+            }
+
+            filestore::DeleteFileRequest dreq;
+            dreq.set_file_id(fid);
+            dreq.set_ticket(makeStorageTicket(0, fid, "del"));
+            filestore::DeleteFileResponse dresp;
+            MprpcController dctl;
+            stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);
+            if (dctl.Failed() || dresp.result().errcode() != 0) {
+                enqueueCleanup(node.ip, node.port, fid);
+            } else {
+                ++removed;
+                std::cerr << "[meta] gc remove orphan file_id:" << fid
+                          << " on " << node.ip << ":" << node.port << std::endl;
+                if (removed >= kGcMaxDeletesPerRound) {
+                    // 单轮删除上限：孤儿积压时不要把元数据服务长时间占住，剩下的下轮再做
+                    std::cerr << "[meta] gc hit per-round delete cap:" << kGcMaxDeletesPerRound
+                              << ", remaining handled next round" << std::endl;
+                    return;
                 }
             }
         }
+    }
+
+    if (removed > 0) {
+        std::cerr << "[meta] gc reconcile done, removed:" << removed << std::endl;
     }
 }

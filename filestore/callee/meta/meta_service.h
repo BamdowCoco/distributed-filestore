@@ -132,8 +132,9 @@ private:
     void processCleanupTask(int taskId);
     void cleanupQueueLoop();
     void cleanupRetryLoop();
-    void shardScanLoop();
-    void scanShard(int shard);
+    // 孤儿块回收：周期性全量对账（替代早期的分片轮转扫描）
+    void reconcileLoop();
+    void reconcileOrphans();
     // 回收超时未提交的 PENDING 上传（客户端中途崩溃残留的记录与已落盘块）
     void reclaimStalePending();
     void pendingReclaimLoop();

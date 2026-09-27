@@ -323,12 +323,14 @@ message GetChunksBatchResponse
     repeated GetChunkData chunks = 2;
 }
 
-// 列出本节点 data_dir 下的文件唯一标识（P20 孤儿块 GC 用，按分片过滤）
+// 列出本节点 data_dir 下的文件唯一标识（P20 孤儿块 GC 用）
+//
+// 早期设计带 shard/shard_count 做「分片轮转扫描」，但那样每轮都要重走整个数据目录、并对
+// 每个文件名算一次 MD5 才能过滤，总代价是 O(文件数 × 分片数)。现在改为周期性**全量对账**：
+// 一次读全量在册集合 + 每个节点取一次完整文件列表，代价降为 O(文件数)。
 message ListFilesRequest
 {
-    int32 shard = 1;        // 要扫描的分片号（0 ~ shard_count-1）
-    int32 shard_count = 2;  // 总分片数 K
-    string ticket = 3;      // 存储访问票据（op=list，仅元数据服务的 GC 持有）
+    string ticket = 1;      // 存储访问票据（op=list，仅元数据服务的 GC 持有）
 }
 
 message ListFilesResponse

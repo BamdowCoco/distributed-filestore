@@ -2831,11 +2831,9 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
 
   // accessors -------------------------------------------------------
   enum : int {
-    kTicketFieldNumber = 3,
-    kShardFieldNumber = 1,
-    kShardCountFieldNumber = 2,
+    kTicketFieldNumber = 1,
   };
-  // string ticket = 3;
+  // string ticket = 1;
   void clear_ticket() ;
   [[nodiscard]] const ::std::string& ticket() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2850,31 +2848,11 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
   ::std::string* PROTOBUF_NONNULL _internal_mutable_ticket();
 
   public:
-  // int32 shard = 1;
-  void clear_shard() ;
-  [[nodiscard]] ::int32_t shard() const;
-  void set_shard(::int32_t value);
-
-  private:
-  ::int32_t _internal_shard() const;
-  void _internal_set_shard(::int32_t value);
-
-  public:
-  // int32 shard_count = 2;
-  void clear_shard_count() ;
-  [[nodiscard]] ::int32_t shard_count() const;
-  void set_shard_count(::int32_t value);
-
-  private:
-  ::int32_t _internal_shard_count() const;
-  void _internal_set_shard_count(::int32_t value);
-
-  public:
   // @@protoc_insertion_point(class_scope:filestore.ListFilesRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<2, 3,
+      ::google::protobuf::internal::TcParseTable<0, 1,
                           0, 41,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
@@ -2904,8 +2882,6 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr ticket_;
-    ::int32_t shard_;
-    ::int32_t shard_count_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -16791,55 +16767,7 @@ GetChunksBatchResponse::_internal_mutable_chunks() {
 
 // ListFilesRequest
 
-// int32 shard = 1;
-inline void ListFilesRequest::clear_shard() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.shard_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-}
-inline ::int32_t ListFilesRequest::shard() const {
-  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.shard)
-  return _internal_shard();
-}
-inline void ListFilesRequest::set_shard(::int32_t value) {
-  _internal_set_shard(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.shard)
-}
-inline ::int32_t ListFilesRequest::_internal_shard() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.shard_;
-}
-inline void ListFilesRequest::_internal_set_shard(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.shard_ = value;
-}
-
-// int32 shard_count = 2;
-inline void ListFilesRequest::clear_shard_count() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.shard_count_ = 0;
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-}
-inline ::int32_t ListFilesRequest::shard_count() const {
-  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.shard_count)
-  return _internal_shard_count();
-}
-inline void ListFilesRequest::set_shard_count(::int32_t value) {
-  _internal_set_shard_count(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.shard_count)
-}
-inline ::int32_t ListFilesRequest::_internal_shard_count() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.shard_count_;
-}
-inline void ListFilesRequest::_internal_set_shard_count(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.shard_count_ = value;
-}
-
-// string ticket = 3;
+// string ticket = 1;
 inline void ListFilesRequest::clear_ticket() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.ticket_.ClearToEmpty();
