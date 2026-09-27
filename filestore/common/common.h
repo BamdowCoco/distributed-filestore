@@ -1,6 +1,7 @@
 #pragma once
 
 #include <climits>
+#include <cstdint>
 #include <string>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
@@ -8,24 +9,32 @@
 // 文件分块大小（存储服务端与客户端共享，避免两处定义漂移）
 constexpr int CHUNK_SIZE = 4 * 1024 * 1024;
 
-// 宽松解析非负十进制整数：含非数字字符、超长、或超出 int 范围均返回 false。
-// 用于处理**不可信来源**的数字（数据目录里的文件名、Redis 会话值等）——
-// std::stoi 在这些输入上会抛 std::invalid_argument / std::out_of_range，
-// 而调用方常在 detached 线程里，异常逃逸会直接 terminate 掉整个进程。
-// 注意仅靠「位数 ≤ 10」不足以拦住溢出：7000000847 是 10 位但已超过 INT_MAX。
-inline bool parseNonNegativeInt(const std::string& s, int& out)
+// 宽松解析非负十进制整数（int64 版）：含非数字字符或超长均返回 false。
+// 实现用**逐位累加 + 位数上限**，既不抛异常也不会在累加过程中溢出
+// （stdlib 的 std::stoi/std::stoll 对畸形/超长输入会抛，而调用方常在 detached 线程里，
+// 异常逃逸会直接 terminate 掉整个进程——本项目已因此踩过两次）。
+inline bool parseNonNegativeInt64(const std::string& s, int64_t& out)
 {
-    if (s.empty() || s.size() > 10) {
-        return false;
+    if (s.empty() || s.size() > 18) {
+        return false;   // 18 位以内，累加不会溢出 int64
     }
+    int64_t v = 0;
     for (char c : s) {
         if (c < '0' || c > '9') {
             return false;
         }
+        v = v * 10 + (c - '0');
     }
-    // 10 位十进制最大 9999999999，用 long long 承接不会溢出，随后显式判 int 范围
-    long long v = std::stoll(s);
-    if (v > INT_MAX) {
+    out = v;
+    return true;
+}
+
+// int 版：在 int64 版基础上额外要求不超过 INT_MAX。
+// 注意仅靠「位数 ≤ 10」不足以拦住溢出：7000000847 是 10 位但已超过 INT_MAX。
+inline bool parseNonNegativeInt(const std::string& s, int& out)
+{
+    int64_t v = 0;
+    if (!parseNonNegativeInt64(s, v) || v > INT_MAX) {
         return false;
     }
     out = static_cast<int>(v);

@@ -15,6 +15,28 @@
 #include <cstring>
 #include <cerrno>
 
+// 解析十进制端口（1..65535），失败返回 false 且不抛异常。
+// 框架层不能依赖 filestore 的辅助函数（层次相反），故这里自带一份最小实现；
+// 用裸 std::stoi 解析外部数据（ZK 子节点名）会因脏数据抛异常，这是本项目反复踩到的坑。
+static bool parsePort(const std::string& s, uint16_t& out)
+{
+    if (s.empty() || s.size() > 5) {
+        return false;
+    }
+    int v = 0;
+    for (char c : s) {
+        if (c < '0' || c > '9') {
+            return false;
+        }
+        v = v * 10 + (c - '0');
+    }
+    if (v <= 0 || v > 65535) {
+        return false;
+    }
+    out = static_cast<uint16_t>(v);
+    return true;
+}
+
 // 从 fd 循环读取恰好 n 字节，返回 false 表示连接中断/读不足
 static bool recvAll(int fd, void* buf, size_t n)
 {
@@ -186,7 +208,13 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                 continue;
             }
             std::string ip = hostStr.substr(0, colonIdx);
-            uint16_t port = std::stoi(hostStr.substr(colonIdx + 1));
+            uint16_t port = 0;
+            // ZK 里的子节点名是外部数据：用裸 std::stoi 解析，遇到脏数据会抛异常，
+            // 而这里在调用方的线程上、没有兜底 → 直接冒到业务代码。跳过非法项即可。
+            if (!parsePort(hostStr.substr(colonIdx + 1), port)) {
+                LOG_ERROR("invalid zk node name (expect ip:port), skipped. name:%s", hostStr.c_str());
+                continue;
+            }
 
             fd = tcpConnect(ip, port);
             if (fd != -1) {

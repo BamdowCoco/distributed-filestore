@@ -68,7 +68,13 @@ std::vector<StorageNode> parseStorageNodes(const std::string& str)
         }
         StorageNode node;
         node.ip = item.substr(0, colon);
-        node.port = std::stoi(item.substr(colon + 1));
+        // 非抛异常解析：配置里写错一个端口不该让进程在启动时抛异常退出，跳过该项即可
+        int port = 0;
+        if (!parseNonNegativeInt(item.substr(colon + 1), port) || port <= 0 || port > 65535) {
+            LOG_ERROR("invalid storage_nodes entry (expect ip:port), skipped. entry:%s", item.c_str());
+            continue;
+        }
+        node.port = port;
         nodes.push_back(node);
     }
     return nodes;
@@ -80,17 +86,6 @@ std::string escapeSql(MYSQL* conn, const std::string& s)
     std::vector<char> buf(s.size() * 2 + 1, '\0');
     unsigned long len = mysql_real_escape_string(conn, buf.data(), s.c_str(), s.size());
     return std::string(buf.data(), len);
-}
-
-// 读取正整数配置；缺失、含非数字或为 0 时回退默认值
-int loadPositiveIntConfig(const char* key, int fallback)
-{
-    std::string v = MprpcApplication::getConfig().load(key);
-    int out = 0;
-    if (!v.empty() && parseNonNegativeInt(v, out) && out > 0) {
-        return out;
-    }
-    return fallback;
 }
 
 // 按 '/' 切分虚拟路径（忽略空段，如 "/a/b" -> ["a","b"]）
@@ -1454,7 +1449,14 @@ void MetaService::nodeWatchLoop()
                 }
                 StorageNode node;
                 node.ip = host.substr(0, colon);
-                node.port = std::stoi(host.substr(colon + 1));
+                // 非抛异常解析：本函数跑在 detached 线程里，畸形子节点名一旦抛异常就会
+                // **终止整个元数据进程**；ZK 里的脏数据不该有这个能力，跳过即可。
+                int port = 0;
+                if (!parseNonNegativeInt(host.substr(colon + 1), port) || port <= 0 || port > 65535) {
+                    LOG_ERROR("invalid zk storage node name, skipped. name:%s", host.c_str());
+                    continue;
+                }
+                node.port = port;
                 nodes.push_back(node);
             }
             if (!nodes.empty()) {
@@ -1672,7 +1674,7 @@ void MetaService::cleanupRetryLoop()
 void MetaService::reconcileLoop()
 {
     // 周期可配（gc_interval_sec）：既方便按机器规模调整，也便于验证时调短
-    const int intervalSec = loadPositiveIntConfig("gc_interval_sec", kGcIntervalSec);
+    const int intervalSec = MprpcApplication::getConfig().getPositiveInt("gc_interval_sec", kGcIntervalSec);
     // 启动后先等一会再首扫，避开与服务注册/建表的资源竞争
     std::this_thread::sleep_for(std::chrono::seconds(5));
     while (true) {

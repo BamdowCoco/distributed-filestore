@@ -162,20 +162,8 @@ private:
     mutable std::string m_kid;
 };
 
-// 宽松解析非负十进制整数（票据里的 expiry/userId/fileId）
-inline bool ticketParseInt(const std::string& s, int64_t& out)
-{
-    if (s.empty() || s.size() > 18) {
-        return false;
-    }
-    for (char c : s) {
-        if (c < '0' || c > '9') {
-            return false;
-        }
-    }
-    out = std::stoll(s);
-    return true;
-}
+// 票据里 expiry/userId/fileId 的解析直接用 common.h 的 parseNonNegativeInt64，
+// 不再在这里另写一份（早期版本两者各有一份，语义略有差异，属无谓重复）。
 
 inline bool isLowerHex(const std::string& s, size_t expectedLen)
 {
@@ -313,8 +301,8 @@ inline bool verifyTicket(const std::vector<TicketKey>& trustedKeys, const std::s
     int64_t expiry = 0;
     int64_t ticketUserId = 0;
     int64_t ticketFileId = 0;
-    if (!ticketParseInt(parts[2], expiry) || !ticketParseInt(parts[3], ticketUserId) ||
-        !ticketParseInt(parts[4], ticketFileId)) {
+    if (!parseNonNegativeInt64(parts[2], expiry) || !parseNonNegativeInt64(parts[3], ticketUserId) ||
+        !parseNonNegativeInt64(parts[4], ticketFileId)) {
         return false;
     }
     if (ticketFileId != fileId || ticketUserId <= 0) {

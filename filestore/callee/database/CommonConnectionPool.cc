@@ -104,15 +104,26 @@ bool ConnectionPool::loadConfigFile()
         return false;
     }
 
-    _ip = cfg.load("ip");
-    _port = static_cast<unsigned short>(std::stoi(cfg.load("port")));
-    _username = cfg.load("username");
-    _password = cfg.load("password");
-    _dbname = cfg.load("dbname");
-    _initSize = std::stoi(cfg.load("init_size"));
-    _maxSize = std::stoi(cfg.load("max_size"));
-    _maxIdleTime = std::stoi(cfg.load("max_idle_time"));
-    _connectionTimeout = std::stoi(cfg.load("connection_timeout"));
+    _ip = cfg.getString("ip", "127.0.0.1");
+    _port = static_cast<unsigned short>(cfg.getPositiveInt("port", 3306));
+    _username = cfg.getString("username");
+    _password = cfg.getString("password");
+    _dbname = cfg.getString("dbname");
+    // 数值项走配置类的带默认值取值（不抛异常）：默认值取 config/mysql.cnf.example 里
+    // 文档化的那一组。下面把生效值打出来，避免"配置写错→静默用默认值"没人发现。
+    // 连接数也是"数量类"配置：上限 1024，避免一个语法合法但离谱的值让启动时疯狂建连接
+    _initSize = cfg.getIntInRange("init_size", 2, 1, 1024);
+    _maxSize = cfg.getIntInRange("max_size", 8, 1, 1024);
+    _maxIdleTime = cfg.getPositiveInt("max_idle_time", 300);
+    _connectionTimeout = cfg.getPositiveInt("connection_timeout", 3000);
+
+    if (_dbname.empty()) {
+        LOG_ERROR("dbname is not configured in config/mysql.cnf");
+        return false;
+    }
+    LOG_INFO("mysql pool: %s:%u db:%s init_size:%d max_size:%d max_idle_time:%d timeout_ms:%d",
+             _ip.c_str(), static_cast<unsigned>(_port), _dbname.c_str(),
+             _initSize, _maxSize, _maxIdleTime, _connectionTimeout);
 
     return true;
 }

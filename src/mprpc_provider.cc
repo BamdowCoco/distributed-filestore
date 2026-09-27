@@ -20,24 +20,9 @@ constexpr double kIdleCheckInterval = 5.0;
 constexpr int kDefaultWorkerThreads = 4;
 // 在途任务上限（背压护栏，防止排队深度 × 单请求最大 64MB 无界增长）
 constexpr size_t kMaxPendingTasks = 4096;
-
-// 读取整数配置。返回值语义：
-//   - 配置缺失或非法（含非数字/过长）→ 返回 fallback（不让一个笔误把功能关掉）
-//   - 显式配成 "0" → 返回 0，表示「明确要求禁用」（用于 rpc_worker_threads=0 退回旧行为）
-// 不直接用 std::stoi：它对超长数字会抛 out_of_range（本项目在别处已吃过这个亏）。
-int loadIntConfig(const char* key, int fallback)
-{
-    std::string v = MprpcApplication::getConfig().load(key);
-    if (v.empty() || v.size() > 6) {
-        return fallback;
-    }
-    for (char c : v) {
-        if (c < '0' || c > '9') {
-            return fallback;
-        }
-    }
-    return std::stoi(v);   // 位数已限，不会溢出
-}
+// 工作线程数上界。数量类配置即使语法合法、过大也会在运行时炸：
+// 70000 会让线程池真的去创建 7 万个线程，std::thread 抛 std::system_error 且无人捕获 → abort。
+constexpr int kMaxWorkerThreads = 256;
 
 /*
 service_name => service描述 => Service* 服务对象
@@ -76,8 +61,22 @@ void RpcProvider::notifyService(google::protobuf::Service* service)
 // 启动rpc服务节点 开始提供rpc远程过程调用网络服务
 void RpcProvider::run()
 {
-    std::string ip = MprpcApplication::getConfig().load("rpc_server_ip");
-    uint16_t port = std::stoi(MprpcApplication::getConfig().load("rpc_server_port"));
+    std::string ip = MprpcApplication::getConfig().getString("rpc_server_ip");
+    if (ip.empty()) {
+        // 不默认绑 0.0.0.0：配置漏了就明确失败，而不是把服务暴露到所有网卡上
+        LOG_ERROR("rpc_server_ip is not configured");
+        exit(EXIT_FAILURE);
+    }
+    // 端口必须落在合法区间：getPositiveInt 已挡住"非数字"，这里再校验范围——
+    // 否则 70000 会被静默截断成 4464（uint16_t）、缺失则变成 0（绑随机端口），
+    // 两者都是"看起来起来了、实际监听到意料之外的端口"。
+    // 端口没有合理默认值，所以这里选择**明确报错退出**（而不是回退默认值）。
+    int portNum = MprpcApplication::getConfig().getPositiveInt("rpc_server_port", 0);
+    if (portNum <= 0 || portNum > 65535) {
+        LOG_ERROR("invalid rpc_server_port (must be 1..65535), got:%d", portNum);
+        exit(EXIT_FAILURE);
+    }
+    uint16_t port = static_cast<uint16_t>(portNum);
     muduo::net::InetAddress addr(ip, port);
 
     // 创建TcpServer对象
@@ -136,7 +135,9 @@ void RpcProvider::run()
     // 启动业务处理线程池（handler 从这里起不再占用 I/O 线程）。
     // rpc_worker_threads=0 表示**明确禁用**：handler 退回在 I/O 线程上同步执行（旧行为）。
     m_workerPool.setMaxPending(kMaxPendingTasks);
-    int workerThreads = loadIntConfig("rpc_worker_threads", kDefaultWorkerThreads);
+    // 数量类配置用带区间的取值：过大直接回默认值，而不是让线程池去申请那么多线程
+    int workerThreads = MprpcApplication::getConfig().getIntInRange(
+        "rpc_worker_threads", kDefaultWorkerThreads, 0, kMaxWorkerThreads);
     if (workerThreads > 0) {
         m_workerPool.start(workerThreads);
     }
