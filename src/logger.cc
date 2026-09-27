@@ -30,7 +30,6 @@ std::string Logger::levelToString(Level level)
 
 Logger::Logger()
 {
-    m_logLevel = INFO;
     // 启动写日志线程
     std::thread writeLogTask([this]() {
         // 确保 logs/ 目录存在
@@ -125,16 +124,6 @@ Logger& Logger::getInstance()
 {
     static Logger logger;
     return logger;
-}
-
-void Logger::setLogLevel(Level level)
-{
-    m_logLevel = level;
-}
-
-Logger::Level Logger::getLogLevel()
-{
-    return m_logLevel;
 }
 
 // 外部接口-把日志写入lockQueue缓冲区中
