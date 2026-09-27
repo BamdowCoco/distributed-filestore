@@ -112,7 +112,7 @@ flowchart TB
     subgraph UP[上传]
       A1[流式读取本地文件] --> A2[按 4MB 分块]
       A2 --> A3[UploadFile：查重 + 登记 PENDING]
-      A3 --> A4[按节点分组 PutChunksBatch<br/>直连 + 单批 ≤64MB + 逐块 MD5]
+      A3 --> A4[按节点分组 PutChunksBatch<br/>直连 + 单批载荷 ≤60MB + 逐块 MD5]
       A4 --> A5[CommitUpload：PENDING → COMPLETE]
       A4 -.任一块失败.-> A6[回滚：CancelUpload + 删已传块]
     end
