@@ -70,24 +70,6 @@ bool FileMetaDao::deleteById(int fileId)
     return m_conn.update("DELETE FROM file_meta WHERE id=" + Sql::num(fileId));
 }
 
-bool FileMetaDao::listAllIds(std::vector<int>& out) const
-{
-    out.clear();
-    MYSQL_RES* res = m_conn.query("SELECT id FROM file_meta");
-    if (res == nullptr) {
-        return false;
-    }
-    MYSQL_ROW row;
-    while ((row = mysql_fetch_row(res)) != nullptr) {
-        int id = 0;
-        if (colInt(row, 0, id)) {
-            out.push_back(id);
-        }
-    }
-    mysql_free_result(res);
-    return true;
-}
-
 bool FileMetaDao::listIdsInRange(int lo, int hi, std::vector<int>& out) const
 {
     out.clear();

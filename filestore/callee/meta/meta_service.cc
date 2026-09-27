@@ -31,13 +31,20 @@
 constexpr const char* kCleanupStream = "cleanup_queue";
 constexpr const char* kCleanupGroup = "cleanup-group";
 constexpr const char* kCleanupConsumer = "meta-cleanup";
-// 孤儿块全量对账的周期（秒）。
-// 早期是「每 60s 扫一个分片、1440 片轮完一轮要 24h」，但每轮都要全表读两张表、且存储端
-// 每次 ListFiles 都要重走整个数据目录并逐文件名算 MD5 → 总代价 O(文件数 × 分片数)。
-// 改成每周期做一次全量对账后，单轮更重但总代价降到 O(文件数)，所以周期取长一些。
+// 孤儿块对账的周期（秒）。
+// 演化史：早期是「每 60s 扫一个分片、1440 片轮完一轮要 24h」，且每轮全表读两张表、
+// 存储端每次 ListFiles 都要重走整个数据目录 → 代价 O(文件数 × 分片数)；随后改为周期性
+// 全量对账（代价降到 O(文件数)，但每轮仍是两张**全表** + 每节点传一个完整文件列表）；
+// 现在改为**按 id 区间推进游标**：每轮只处理一个宽度为 gc_range_width 的区间，
+// 工作量由区间封顶，全量覆盖靠游标多轮推进完成。
 constexpr int kGcIntervalSec = 600;
-// 单轮删除上限：给对账设个界，避免孤儿积压时长时间占住元数据服务
-constexpr int kGcMaxDeletesPerRound = 1000;
+// 每轮对账推进的 id 区间宽度（可用 gc_range_width 覆盖）。
+// 它同时是"每轮 DB 读多少行、每节点扫多少 id"的上界——取代了原先"单轮删除条数上限"
+// 那个既不封顶（读仍是全表）又不完整的界（命中上限时整轮 return，后面的节点被完全跳过）。
+constexpr int kGcRangeWidth = 10000;
+// 对每个节点单次 ListFiles 请求的页大小。取 = 区间宽度则一个区间一次调用即可；
+// 存储端另有自己的返回上限，最终以两者较小者为准。
+constexpr int kGcListPageSize = 10000;
 // P20 待清理任务最大重试次数，达到后进入终态 status=3（需人工）
 constexpr int kMaxRetry = 10;
 
@@ -1474,7 +1481,8 @@ void MetaService::cleanupRetryLoop()
     }
 }
 
-// 孤儿块回收线程：周期性做一次**全量对账**（兜底清理未被任何索引跟踪的孤儿块）
+// 孤儿块回收线程：每周期推进**一个 id 区间**（兜底清理未被任何索引跟踪的孤儿块）。
+// 区间是逐轮挪的，所以清理全部 id 需要 ceil(max_id / gc_range_width) 个周期才走完一遍。
 void MetaService::reconcileLoop()
 {
     // 周期可配（gc_interval_sec）：既方便按机器规模调整，也便于验证时调短
@@ -1491,8 +1499,14 @@ void MetaService::reconcileLoop()
     }
 }
 
-// 一次全量对账：在册 file_id 与队列在管的 file_id 各读一次，逐节点列出完整文件列表，
-// 删掉「两边都没有」的孤儿
+// 一次对账：只处理**一个 id 区间** [lo, hi)，靠 m_gcCursor 逐轮推进，多轮合起来覆盖全域。
+//
+// 三份集合都限定在这个区间内取，因此每轮的工作量（DB 行数、每节点返回条数、RPC 次数）
+// 都被区间宽度封顶：
+//   - 在册 file_id（`file_meta`，**含 PENDING**——上传中的文件必须保护）
+//   - 队列在管的 file_id（`cleanup_queue`）
+//   - 各节点索引里落在该区间的 file_id
+// 前两者里没有、第三个里有的，就是孤儿 → 删除（失败则入队重试）。
 void MetaService::reconcileOrphans()
 {
     std::vector<StorageNode> nodes;
@@ -1504,82 +1518,113 @@ void MetaService::reconcileOrphans()
         return;
     }
 
+    const int rangeWidth =
+        MprpcApplication::getConfig().getPositiveInt("gc_range_width", kGcRangeWidth);
+
     std::set<int> knownIds;    // 在册 file_id（**含 PENDING**：上传中的文件必须保护）
     std::set<int> queuedIds;   // 队列在管的 file_id（待清理或终态，对账都不碰）
+    int lo = m_gcCursor;
+    int hi = 0;
     {
         auto conn = ConnectionPool::getInstance().getConnection();
         if (!conn) {
             return;   // 拿不到连接就整轮跳过，下个周期再试
         }
-        std::vector<int> ids;
+
+        // 先看主键上界（MAX(id) 走主键索引，O(1)），判断游标是否已越过表尾
         FileMetaDao metas(*conn);
-        if (!metas.listAllIds(ids)) {
+        int maxId = 0;
+        if (!metas.maxId(maxId)) {
+            return;
+        }
+        if (lo > maxId) {
+            // 上一轮已经推过尾部 → 说明 [0, 上一个 lo) 都覆盖过了，这一轮从 0 重新开始
+            std::cerr << "[meta] gc full sweep complete, cursor reset to 0 (max_id:" << maxId << ")" << std::endl;
+            lo = 0;
+        }
+        hi = lo + rangeWidth;
+        if (hi < lo) {
+            // 溢出保护：id 上界逼近 INT_MAX 且区间宽度较大时，lo + rangeWidth 会翻负，
+            // 那样区间会变成空的、游标还会往回跳。夹到 INT_MAX 即可覆盖到尾部。
+            hi = INT_MAX;
+        }
+
+        std::vector<int> ids;
+        if (!metas.listIdsInRange(lo, hi, ids)) {
             return;
         }
         knownIds.insert(ids.begin(), ids.end());
 
         CleanupQueueDao tasks(*conn);
         ids.clear();
-        if (!tasks.listAllFileIds(ids)) {
+        if (!tasks.listFileIdsInRange(lo, hi, ids)) {
             return;
         }
         queuedIds.insert(ids.begin(), ids.end());
     }
 
     int removed = 0;
+    int listed = 0;
     for (const StorageNode& node : nodes) {
         MprpcChannel channel(node.ip, static_cast<uint16_t>(node.port));
         filestore::StorageServiceRpc_Stub stub(&channel);
 
-        filestore::ListFilesRequest lreq;
-        // GC 没有用户会话，用私钥自签票据（file_id=0 表示非文件维度操作）
-        lreq.set_ticket(makeStorageTicket(0, 0, "list"));
-        filestore::ListFilesResponse lresp;
-        MprpcController lctl;
-        stub.ListFiles(&lctl, &lreq, &lresp, nullptr);
-        if (lctl.Failed() || lresp.result().errcode() != 0) {
-            // 必须记下来：静默 continue 会让「票据被拒 / 节点不可达」看起来和「没有孤儿」
-            // 一模一样——曾因此让整条 GC 静默失效很久没被发现。
-            std::cerr << "[meta] gc ListFiles failed on " << node.ip << ":" << node.port
-                      << " err:" << (lctl.Failed() ? lctl.ErrorText() : lresp.result().errmsg())
-                      << std::endl;
-            continue;
-        }
+        // 区间内可能有多页：存储端返回升序 id + has_more，下一页把 start 推到上一页末位+1
+        int pageStart = lo;
+        while (pageStart < hi) {
+            filestore::ListFilesRequest lreq;
+            // GC 没有用户会话，用私钥自签票据（file_id=0 表示非文件维度操作）
+            lreq.set_ticket(makeStorageTicket(0, 0, "list"));
+            lreq.set_start_file_id(pageStart);
+            lreq.set_end_file_id(hi);
+            lreq.set_max_count(kGcListPageSize);
 
-        for (const std::string& name : lresp.filenames()) {
-            // 文件名来自存储节点的数据目录，可能是任意内容（调试残留、编辑器临时文件等）；
-            // 这里跑在 detach 的线程里，解析必须宽松——抛异常会直接终止元数据进程
-            int fid = 0;
-            if (!parseNonNegativeInt(name, fid)) {
-                continue;
-            }
-            if (knownIds.find(fid) != knownIds.end() || queuedIds.find(fid) != queuedIds.end()) {
-                continue;   // 在册或队列在管，不是孤儿
+            filestore::ListFilesResponse lresp;
+            MprpcController lctl;
+            stub.ListFiles(&lctl, &lreq, &lresp, nullptr);
+            if (lctl.Failed() || lresp.result().errcode() != 0) {
+                // 必须记下来：静默 continue 会让「票据被拒 / 节点不可达」看起来和「没有孤儿」
+                // 一模一样——曾因此让整条 GC 静默失效很久没被发现。
+                std::cerr << "[meta] gc ListFiles failed on " << node.ip << ":" << node.port
+                          << " err:" << (lctl.Failed() ? lctl.ErrorText() : lresp.result().errmsg())
+                          << std::endl;
+                break;   // 该节点本轮放弃，下个周期再试
             }
 
-            filestore::DeleteFileRequest dreq;
-            dreq.set_file_id(fid);
-            dreq.set_ticket(makeStorageTicket(0, fid, "del"));
-            filestore::DeleteFileResponse dresp;
-            MprpcController dctl;
-            stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);
-            if (dctl.Failed() || dresp.result().errcode() != 0) {
-                enqueueCleanup(node.ip, node.port, fid);
-            } else {
-                ++removed;
-                std::cerr << "[meta] gc remove orphan file_id:" << fid
-                          << " on " << node.ip << ":" << node.port << std::endl;
-                if (removed >= kGcMaxDeletesPerRound) {
-                    // 单轮删除上限：孤儿积压时不要把元数据服务长时间占住，剩下的下轮再做
-                    std::cerr << "[meta] gc hit per-round delete cap:" << kGcMaxDeletesPerRound
-                              << ", remaining handled next round" << std::endl;
-                    return;
+            for (const int32_t fid : lresp.file_ids()) {
+                ++listed;
+                if (knownIds.find(fid) != knownIds.end() || queuedIds.find(fid) != queuedIds.end()) {
+                    continue;   // 在册或队列在管，不是孤儿
+                }
+
+                filestore::DeleteFileRequest dreq;
+                dreq.set_file_id(fid);
+                dreq.set_ticket(makeStorageTicket(0, fid, "del"));
+                filestore::DeleteFileResponse dresp;
+                MprpcController dctl;
+                stub.DeleteFile(&dctl, &dreq, &dresp, nullptr);
+                if (dctl.Failed() || dresp.result().errcode() != 0) {
+                    enqueueCleanup(node.ip, node.port, fid);
+                } else {
+                    ++removed;
+                    std::cerr << "[meta] gc remove orphan file_id:" << fid
+                              << " on " << node.ip << ":" << node.port << std::endl;
                 }
             }
+
+            if (!lresp.has_more() || lresp.file_ids_size() == 0) {
+                break;
+            }
+            pageStart = lresp.file_ids(lresp.file_ids_size() - 1) + 1;
         }
     }
 
-    if (removed > 0) {
-        std::cerr << "[meta] gc reconcile done, removed:" << removed << std::endl;
+    // 游标推进到下个区间。本轮的界只由区间宽度决定，与"删了多少"无关——
+    // 原先的"单轮删除条数上限"会在命中时整轮 return，把后面的节点整个跳过。
+    m_gcCursor = hi;
+
+    if (removed > 0 || listed > 0) {
+        std::cerr << "[meta] gc reconcile range [" << lo << "," << hi << ") scanned:" << listed
+                  << " removed:" << removed << std::endl;
     }
 }

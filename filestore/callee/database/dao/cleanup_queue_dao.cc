@@ -75,24 +75,6 @@ bool CleanupQueueDao::listDueIds(std::vector<int>& out) const
     return true;
 }
 
-bool CleanupQueueDao::listAllFileIds(std::vector<int>& out) const
-{
-    out.clear();
-    MYSQL_RES* res = m_conn.query("SELECT file_id FROM cleanup_queue");
-    if (res == nullptr) {
-        return false;
-    }
-    MYSQL_ROW row;
-    while ((row = mysql_fetch_row(res)) != nullptr) {
-        int fileId = 0;
-        if (colInt(row, 0, fileId)) {
-            out.push_back(fileId);
-        }
-    }
-    mysql_free_result(res);
-    return true;
-}
-
 bool CleanupQueueDao::listFileIdsInRange(int lo, int hi, std::vector<int>& out) const
 {
     out.clear();

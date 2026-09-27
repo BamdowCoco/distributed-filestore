@@ -1,7 +1,9 @@
 #include "storage_service.h"
 
 #include <cerrno>
+#include <climits>
 #include <cstdio>
+#include <ctime>
 #include <dirent.h>
 #include <sstream>
 #include <sys/stat.h>
@@ -12,7 +14,15 @@
 #include "logger.h"
 #include "mprpc_application.h"
 
-// 构造：读取 data_dir 与票据密钥，并确保数据目录存在
+// ListFiles 单次返回条数上限：请求里的 max_count 会被夹到 [1, kMaxListPage]。
+// 响应体大小必须由存储端自己封顶——否则调用方给个 max_count=INT32_MAX
+// 就能让本节点拼出一个无上限的响应（内存 + 网络都不可控）。
+constexpr int kMaxListPage = 10000;
+// 内存索引的重建周期（秒，可用 index_rebuild_sec 覆盖）。
+// 正常读走内存索引，重建只是"自愈"：修正被外部改动过的数据目录。
+constexpr int kIndexRebuildSec = 3600;
+
+// 构造：读取 data_dir 与票据密钥，确保数据目录存在，并建立 file_id 内存索引
 StorageService::StorageService()
 {
     m_dataDir = MprpcApplication::getConfig().load("data_dir");
@@ -54,6 +64,9 @@ StorageService::StorageService()
         exit(EXIT_FAILURE);
     }
     LOG_INFO("storage ticket keys loaded, count:%zu", m_ticketKeys.size());
+
+    // 建索引：一次 readdir 把本节点已有的 file_id 收进内存
+    rebuildIndex();
 }
 
 // 上传单块：紧凑追加写到 data_dir/<file_id> 末尾，返回 (offset, size, checksum)
@@ -119,6 +132,9 @@ void StorageService::PutChunk(::google::protobuf::RpcController* controller,
         return;
     }
     fclose(fp);
+
+    // 数据文件此刻已存在（可能是新建，也可能是追加），登记进索引
+    addFileId(request->file_id());
 
     response->mutable_result()->set_errcode(0);
     response->mutable_result()->set_errmsg("");
@@ -283,6 +299,9 @@ void StorageService::PutChunksBatch(::google::protobuf::RpcController* controlle
     }
     fclose(fp);
 
+    // 同 PutChunk：批量写成功后登记索引
+    addFileId(request->file_id());
+
     response->mutable_result()->set_errcode(0);
     response->mutable_result()->set_errmsg("");
     LOG_INFO("put chunks batch file_id:%d count:%d", request->file_id(), request->chunks_size());
@@ -382,6 +401,7 @@ void StorageService::DeleteFile(::google::protobuf::RpcController* controller,
 
     std::string path = dataPath(request->file_id());
     if (std::remove(path.c_str()) == 0) {
+        removeFileId(request->file_id());
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
         LOG_INFO("delete file_id:%d", request->file_id());
@@ -389,6 +409,8 @@ void StorageService::DeleteFile(::google::protobuf::RpcController* controller,
         // 文件本就不存在：删除的目标已达成，按成功处理（幂等删除）。
         // 若把「不存在」当失败，上传回滚时那些压根没落盘的块会让待清理队列
         // 无谓地反复重试并最终升级为 status=3（需人工），把正常流程变成告警。
+        // 索引也要一并删掉——它可能还记着这个 id（例如文件被外部删掉了）
+        removeFileId(request->file_id());
         response->mutable_result()->set_errcode(0);
         response->mutable_result()->set_errmsg("");
         LOG_INFO("delete file_id:%d skipped (already absent)", request->file_id());
@@ -399,11 +421,11 @@ void StorageService::DeleteFile(::google::protobuf::RpcController* controller,
     done->Run();
 }
 
-// 列出 data_dir 下的全部 file_id（供元数据服务的孤儿块**全量对账**）
+// 列出 data_dir 下落在 [start_file_id, end_file_id) 内的 file_id（供元数据服务的孤儿块 GC）
 //
-// 早期版本按分片过滤，代价是每次调用都要遍历整个目录、并对每个文件名算一次 MD5
-// （1440 分片轮转下等于每轮都重走一遍全目录 → O(文件数 × 分片数)）。现在直接把
-// 目录念一遍返回，分片与差集判断交给元数据侧——总代价降为 O(文件数)。
+// 走内存索引的 lower_bound，代价 O(log n + k)：不再 opendir/readdir 整个数据目录，
+// 响应里也只有区间内的 id（不再是整个目录的字符串列表）。
+// 索引由 startup/周期性重建 + 三处写入点共同维护，漂移是安全的（见头文件说明）。
 void StorageService::ListFiles(::google::protobuf::RpcController* controller,
                                const ::filestore::ListFilesRequest* request,
                                ::filestore::ListFilesResponse* response,
@@ -417,16 +439,70 @@ void StorageService::ListFiles(::google::protobuf::RpcController* controller,
         return;
     }
 
-    DIR* dir = opendir(m_dataDir.c_str());
-    if (dir == nullptr) {
-        response->mutable_result()->set_errcode(1);
-        response->mutable_result()->set_errmsg("failed to open data dir");
-        done->Run();
-        return;
+    // 自愈：距上次重建够久就先重建一次（外部改动过数据目录时才起作用）
+    maybeRebuildIndex();
+
+    // 区间必须由本端夹紧：调用方给的 end 可能为 0（未设），max_count 可能极大
+    int32_t start = request->start_file_id();
+    if (start < 0) {
+        start = 0;
+    }
+    int32_t end = request->end_file_id();
+    if (end <= 0) {
+        end = INT32_MAX;   // 未给上界 = 到尾部
+    }
+    int page = request->max_count();
+    if (page <= 0 || page > kMaxListPage) {
+        page = kMaxListPage;
     }
 
     response->mutable_result()->set_errcode(0);
     response->mutable_result()->set_errmsg("");
+    if (end <= start) {
+        done->Run();
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(m_fileIdsMutex);
+    for (auto it = m_fileIds.lower_bound(start); it != m_fileIds.end() && *it < end; ++it) {
+        if (response->file_ids_size() >= page) {
+            // 本页装满而区间还没走完：告知调用方还有，让它把 start 推到 file_ids.back()+1
+            response->set_has_more(true);
+            break;
+        }
+        response->add_file_ids(*it);
+    }
+
+    done->Run();
+}
+
+// 把 file_id 登记进内存索引
+void StorageService::addFileId(int32_t file_id)
+{
+    std::lock_guard<std::mutex> lock(m_fileIdsMutex);
+    m_fileIds.insert(file_id);
+}
+
+// 从内存索引中摘掉 file_id（不在索引里也无所谓）
+void StorageService::removeFileId(int32_t file_id)
+{
+    std::lock_guard<std::mutex> lock(m_fileIdsMutex);
+    m_fileIds.erase(file_id);
+}
+
+// 一次 readdir 重建索引。
+// 整个扫描持锁：必须在一致的目录快照上重建，否则并发写入的 id 会被这次重建抹掉
+// （那会让该文件这一轮不被 GC 看到——方向安全，但没必要留这个口子）。
+// 重建是「小时级 + 启动一次」的路径，短暂阻塞写操作可以接受。
+void StorageService::rebuildIndex()
+{
+    std::set<int32_t> ids;
+    DIR* dir = opendir(m_dataDir.c_str());
+    if (dir == nullptr) {
+        // 打开失败**保留旧索引**：重建失败不该把索引清空（那会让 GC 看不到任何文件）
+        LOG_ERROR("failed to open data dir for index rebuild: %s", m_dataDir.c_str());
+        return;
+    }
 
     struct dirent* entry;
     while ((entry = readdir(dir)) != nullptr) {
@@ -434,11 +510,33 @@ void StorageService::ListFiles(::google::protobuf::RpcController* controller,
         if (entry->d_name[0] == '.') {
             continue;
         }
-        response->add_filenames(entry->d_name);
+        // 解析不了的名字（编辑器临时文件、调试残留……）**不进索引**，
+        // 于是它们永远不会被当成在册文件报给 GC，也就不会被 GC 误删
+        int fid = 0;
+        if (!parseNonNegativeInt(entry->d_name, fid) || !isValidFileId(fid)) {
+            continue;
+        }
+        ids.insert(fid);
     }
     closedir(dir);
 
-    done->Run();
+    std::lock_guard<std::mutex> lock(m_fileIdsMutex);
+    m_fileIds.swap(ids);
+    m_lastIndexRebuild = std::time(nullptr);
+    LOG_INFO("file id index rebuilt, count:%zu dir:%s", m_fileIds.size(), m_dataDir.c_str());
+}
+
+// 距上次重建超过 index_rebuild_sec 才真的重建
+void StorageService::maybeRebuildIndex()
+{
+    const int intervalSec =
+        MprpcApplication::getConfig().getPositiveInt("index_rebuild_sec", kIndexRebuildSec);
+    const std::time_t now = std::time(nullptr);
+    const std::time_t last = m_lastIndexRebuild;
+    if (now - last < intervalSec) {
+        return;
+    }
+    rebuildIndex();
 }
 
 // 校验 file_id 合法性（>0）

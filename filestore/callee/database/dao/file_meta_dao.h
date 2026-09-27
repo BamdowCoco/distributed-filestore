@@ -28,9 +28,6 @@ public:
 
     bool deleteById(int fileId);
 
-    // 在册的全部 file_id（孤儿块回收用）
-    bool listAllIds(std::vector<int>& out) const;
-
     // 主键区间 [lo, hi) 内的 file_id（分区间对账用；主键上有索引，页内有界）
     bool listIdsInRange(int lo, int hi, std::vector<int>& out) const;
 

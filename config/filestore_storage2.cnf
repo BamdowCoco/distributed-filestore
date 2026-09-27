@@ -13,6 +13,9 @@ zookeeper_port=2181
 [storage]
 # 本存储节点的数据落盘目录
 data_dir=filestore/data_node2
+# file_id 内存索引的重建周期（秒）。索引平时由写入点维护，这里只是"自愈"：
+# 数据目录被外部改动过时才靠它纠正。调小更灵敏，调大更省 IO。
+index_rebuild_sec=3600
 
 [auth]
 # 可信票据公钥（Ed25519）的 PEM 文件路径。公钥**不是机密**，写在本文件里是安全的——

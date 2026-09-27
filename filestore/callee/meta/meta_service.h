@@ -139,7 +139,7 @@ private:
     void processCleanupTask(int taskId);
     void cleanupQueueLoop();
     void cleanupRetryLoop();
-    // 孤儿块回收：周期性全量对账（替代早期的分片轮转扫描）
+    // 孤儿块回收：按 id 区间游标推进（替代早期的分片轮转扫描与全量对账）
     void reconcileLoop();
     void reconcileOrphans();
     // 回收超时未提交的 PENDING 上传（客户端中途崩溃残留的记录与已落盘块）
@@ -152,6 +152,11 @@ private:
     Redis m_redis;
     // 票据签发私钥（Ed25519）。只有元数据服务持有；存储节点只持公钥。
     ticket::TicketKey m_ticketKey;
+
+    // 孤儿对账的 id 区间游标：每轮处理 [m_gcCursor, m_gcCursor + gc_range_width)，
+    // 多轮合起来覆盖全域；下一轮从 0 重新开始时记一条「完成一轮全量覆盖」。
+    // 只被 reconcileLoop 这一个后台线程使用，无需加锁。
+    int m_gcCursor = 0;
 
     // ---- 优雅退出 ----
     // 5 个后台循环原先各自 detach：进程退出时它们还在跑，无法 join，只能靠信号直接杀。

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <ctime>
+#include <mutex>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -44,7 +47,8 @@ public:
                     ::filestore::DeleteFileResponse* response,
                     ::google::protobuf::Closure* done) override;
 
-    // 列出本节点 data_dir 下的文件唯一标识（孤儿块 GC 用，按分片过滤）
+    // 列出本节点 data_dir 下的文件唯一标识（孤儿块 GC 用），**按 id 区间分页**返回。
+    // 数据来源是内存索引，不再 readdir；见 m_fileIds 的说明。
     void ListFiles(::google::protobuf::RpcController* controller,
                    const ::filestore::ListFilesRequest* request,
                    ::filestore::ListFilesResponse* response,
@@ -59,6 +63,31 @@ private:
 
     // 数据文件路径：data_dir/<file_id>
     std::string dataPath(int32_t file_id) const;
+
+    // ---- 本节点 file_id 内存索引 ----
+    //
+    // 为什么能维护得起：本节点**只有三处**会改数据文件——PutChunk / PutChunksBatch
+    // （创建 + 追加）、DeleteFile（删除），全部经过 dataPath(file_id)，每处加一行即可。
+    //
+    // 为什么需要它：GC 的 ListFiles 若每次都 opendir/readdir 整个数据目录，代价是
+    // O(文件数) 的目录遍历 + 一整个字符串列表的传输；有了索引，区间查询退化成
+    // lower_bound（O(log n + k)），响应里也只有区间内的 id。
+    //
+    // 为什么漂移是安全的：索引多出某个 id → 元数据发起一次删除，而 DeleteFile 对不存在的
+    // 文件按成功返回（幂等）；索引少掉某个 id → 这一轮不回收它，下次重建即补齐。
+    // 两个方向都不会误删在册文件，所以重建只是"自愈"而不是正确性依赖。
+    std::set<int32_t> m_fileIds;
+    // handler 跑在框架的工作线程上（rpc_worker_threads>1 时并发），索引必须加锁
+    std::mutex m_fileIdsMutex;
+    // 上次重建索引的时刻（见 maybeRebuildIndex）
+    std::time_t m_lastIndexRebuild = 0;
+
+    void addFileId(int32_t file_id);
+    void removeFileId(int32_t file_id);
+    // 一次 readdir 重建索引。**解析不了的名字不进索引**——它们也就永远不会被当成在册文件报给 GC
+    void rebuildIndex();
+    // 距上次重建超过 index_rebuild_sec 才真的重建（自愈路径，正常读走内存索引）
+    void maybeRebuildIndex();
 
     std::string m_dataDir;
     // 可信票据公钥集合（Ed25519）。元数据持私钥签发，本节点只持公钥验签——

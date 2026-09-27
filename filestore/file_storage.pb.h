@@ -2832,6 +2832,9 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
   // accessors -------------------------------------------------------
   enum : int {
     kTicketFieldNumber = 1,
+    kStartFileIdFieldNumber = 2,
+    kEndFileIdFieldNumber = 3,
+    kMaxCountFieldNumber = 4,
   };
   // string ticket = 1;
   void clear_ticket() ;
@@ -2848,11 +2851,41 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
   ::std::string* PROTOBUF_NONNULL _internal_mutable_ticket();
 
   public:
+  // int32 start_file_id = 2;
+  void clear_start_file_id() ;
+  [[nodiscard]] ::int32_t start_file_id() const;
+  void set_start_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_start_file_id() const;
+  void _internal_set_start_file_id(::int32_t value);
+
+  public:
+  // int32 end_file_id = 3;
+  void clear_end_file_id() ;
+  [[nodiscard]] ::int32_t end_file_id() const;
+  void set_end_file_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_end_file_id() const;
+  void _internal_set_end_file_id(::int32_t value);
+
+  public:
+  // int32 max_count = 4;
+  void clear_max_count() ;
+  [[nodiscard]] ::int32_t max_count() const;
+  void set_max_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_max_count() const;
+  void _internal_set_max_count(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:filestore.ListFilesRequest)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<0, 1,
+      ::google::protobuf::internal::TcParseTable<2, 4,
                           0, 41,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
@@ -2882,6 +2915,9 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesRequest final : public ::g
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr ticket_;
+    ::int32_t start_file_id_;
+    ::int32_t end_file_id_;
+    ::int32_t max_count_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -8165,33 +8201,27 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesResponse final : public ::
 
   // accessors -------------------------------------------------------
   enum : int {
-    kFilenamesFieldNumber = 2,
+    kFileIdsFieldNumber = 2,
     kResultFieldNumber = 1,
+    kHasMoreFieldNumber = 3,
   };
-  // repeated string filenames = 2;
-  [[nodiscard]] int filenames_size() const;
+  // repeated int32 file_ids = 2;
+  [[nodiscard]] int file_ids_size() const;
   private:
-  int _internal_filenames_size() const;
+  int _internal_file_ids_size() const;
 
   public:
-  void clear_filenames() ;
-  [[nodiscard]] const ::std::string& filenames(int index) const;
-  ::std::string* PROTOBUF_NONNULL mutable_filenames(int index);
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_filenames(int index, Arg_&& value, Args_... args);
-  ::std::string* PROTOBUF_NONNULL add_filenames();
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void add_filenames(Arg_&& value, Args_... args);
-  [[nodiscard]] const
-      ::google::protobuf::RepeatedPtrField<::std::string>&
-      filenames() const;
-  [[nodiscard]] ::google::protobuf::RepeatedPtrField<::std::string>*
-      PROTOBUF_NONNULL
-      mutable_filenames();
+  void clear_file_ids() ;
+  [[nodiscard]] ::int32_t file_ids(int index) const;
+  void set_file_ids(int index, ::int32_t value);
+  void add_file_ids(::int32_t value);
+  [[nodiscard]] const ::google::protobuf::RepeatedField<::int32_t>& file_ids()
+      const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL mutable_file_ids();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_filenames() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_filenames();
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_file_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_file_ids();
 
   public:
   // .filestore.ResultCode result = 1;
@@ -8209,12 +8239,22 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesResponse final : public ::
   ::filestore::ResultCode* PROTOBUF_NONNULL _internal_mutable_result();
 
   public:
+  // bool has_more = 3;
+  void clear_has_more() ;
+  [[nodiscard]] bool has_more() const;
+  void set_has_more(bool value);
+
+  private:
+  bool _internal_has_more() const;
+  void _internal_set_has_more(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:filestore.ListFilesResponse)
  private:
   class _Internal;
   using ParseTableT_ =
-      ::google::protobuf::internal::TcParseTable<1, 2,
-                          1, 45,
+      ::google::protobuf::internal::TcParseTable<2, 3,
+                          1, 0,
                           2>;
   static constexpr ParseTableT_ InternalGenerateParseTable_(
       const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL class_data);
@@ -8242,8 +8282,10 @@ class  PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED ListFilesResponse final : public ::
         const ListFilesResponse& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<::std::string> filenames_;
+    ::google::protobuf::RepeatedField<::int32_t> file_ids_;
+    ::google::protobuf::internal::CachedSize _file_ids_cached_byte_size_;
     ::filestore::ResultCode* PROTOBUF_NULLABLE result_;
+    bool has_more_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -16831,6 +16873,78 @@ inline void ListFilesRequest::set_allocated_ticket(::std::string* PROTOBUF_NULLA
   // @@protoc_insertion_point(field_set_allocated:filestore.ListFilesRequest.ticket)
 }
 
+// int32 start_file_id = 2;
+inline void ListFilesRequest::clear_start_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.start_file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+}
+inline ::int32_t ListFilesRequest::start_file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.start_file_id)
+  return _internal_start_file_id();
+}
+inline void ListFilesRequest::set_start_file_id(::int32_t value) {
+  _internal_set_start_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.start_file_id)
+}
+inline ::int32_t ListFilesRequest::_internal_start_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.start_file_id_;
+}
+inline void ListFilesRequest::_internal_set_start_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.start_file_id_ = value;
+}
+
+// int32 end_file_id = 3;
+inline void ListFilesRequest::clear_end_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_file_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline ::int32_t ListFilesRequest::end_file_id() const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.end_file_id)
+  return _internal_end_file_id();
+}
+inline void ListFilesRequest::set_end_file_id(::int32_t value) {
+  _internal_set_end_file_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.end_file_id)
+}
+inline ::int32_t ListFilesRequest::_internal_end_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.end_file_id_;
+}
+inline void ListFilesRequest::_internal_set_end_file_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.end_file_id_ = value;
+}
+
+// int32 max_count = 4;
+inline void ListFilesRequest::clear_max_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.max_count_ = 0;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+}
+inline ::int32_t ListFilesRequest::max_count() const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesRequest.max_count)
+  return _internal_max_count();
+}
+inline void ListFilesRequest::set_max_count(::int32_t value) {
+  _internal_set_max_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesRequest.max_count)
+}
+inline ::int32_t ListFilesRequest::_internal_max_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.max_count_;
+}
+inline void ListFilesRequest::_internal_set_max_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.max_count_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ListFilesResponse
@@ -16933,76 +17047,79 @@ inline void ListFilesResponse::set_allocated_result(::filestore::ResultCode* PRO
   // @@protoc_insertion_point(field_set_allocated:filestore.ListFilesResponse.result)
 }
 
-// repeated string filenames = 2;
-inline int ListFilesResponse::_internal_filenames_size() const {
-  return _internal_filenames().size();
+// repeated int32 file_ids = 2;
+inline int ListFilesResponse::_internal_file_ids_size() const {
+  return _internal_file_ids().size();
 }
-inline int ListFilesResponse::filenames_size() const {
-  return _internal_filenames_size();
+inline int ListFilesResponse::file_ids_size() const {
+  return _internal_file_ids_size();
 }
-inline void ListFilesResponse::clear_filenames() {
+inline void ListFilesResponse::clear_file_ids() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.filenames_.Clear();
+  _impl_.file_ids_.Clear();
   ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
 }
-inline ::std::string* PROTOBUF_NONNULL ListFilesResponse::add_filenames()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t ListFilesResponse::file_ids(int index) const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesResponse.file_ids)
+  return _internal_file_ids().Get(index);
+}
+inline void ListFilesResponse::set_file_ids(int index, ::int32_t value) {
+  _internal_mutable_file_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesResponse.file_ids)
+}
+inline void ListFilesResponse::add_file_ids(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::std::string* _s =
-      _internal_mutable_filenames()->InternalAddWithArena(
-          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  _internal_mutable_file_ids()
+      ->InternalAddWithArena<const ::google::protobuf::MessageLite*>(
+          internal_visibility(), this, value);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add_mutable:filestore.ListFilesResponse.filenames)
-  return _s;
+  // @@protoc_insertion_point(field_add:filestore.ListFilesResponse.file_ids)
 }
-inline const ::std::string& ListFilesResponse::filenames(int index) const
+inline const ::google::protobuf::RepeatedField<::int32_t>& ListFilesResponse::file_ids() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:filestore.ListFilesResponse.filenames)
-  return _internal_filenames().Get(index);
+  // @@protoc_insertion_point(field_list:filestore.ListFilesResponse.file_ids)
+  return _internal_file_ids();
 }
-inline ::std::string* PROTOBUF_NONNULL ListFilesResponse::mutable_filenames(int index)
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL ListFilesResponse::mutable_file_ids()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:filestore.ListFilesResponse.filenames)
-  return _internal_mutable_filenames()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void ListFilesResponse::set_filenames(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(
-      *_internal_mutable_filenames()->Mutable(index),
-      ::std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:filestore.ListFilesResponse.filenames)
-}
-template <typename Arg_, typename... Args_>
-inline void ListFilesResponse::add_filenames(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(
-      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
-      *_internal_mutable_filenames(), ::std::forward<Arg_>(value),
-      args... );
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add:filestore.ListFilesResponse.filenames)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>& ListFilesResponse::filenames()
-    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:filestore.ListFilesResponse.filenames)
-  return _internal_filenames();
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-ListFilesResponse::mutable_filenames() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_mutable_list:filestore.ListFilesResponse.filenames)
+  // @@protoc_insertion_point(field_mutable_list:filestore.ListFilesResponse.file_ids)
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_filenames();
+  return _internal_mutable_file_ids();
 }
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-ListFilesResponse::_internal_filenames() const {
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+ListFilesResponse::_internal_file_ids() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.filenames_;
+  return _impl_.file_ids_;
 }
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-ListFilesResponse::_internal_mutable_filenames() {
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL
+ListFilesResponse::_internal_mutable_file_ids() {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.filenames_;
+  return &_impl_.file_ids_;
+}
+
+// bool has_more = 3;
+inline void ListFilesResponse::clear_has_more() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_more_ = false;
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+}
+inline bool ListFilesResponse::has_more() const {
+  // @@protoc_insertion_point(field_get:filestore.ListFilesResponse.has_more)
+  return _internal_has_more();
+}
+inline void ListFilesResponse::set_has_more(bool value) {
+  _internal_set_has_more(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:filestore.ListFilesResponse.has_more)
+}
+inline bool ListFilesResponse::_internal_has_more() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.has_more_;
+}
+inline void ListFilesResponse::_internal_set_has_more(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_more_ = value;
 }
 
 #ifdef __GNUC__

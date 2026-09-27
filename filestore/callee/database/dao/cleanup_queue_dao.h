@@ -34,9 +34,6 @@ public:
     // 列出所有「到期且待清理」的任务 id
     bool listDueIds(std::vector<int>& out) const;
 
-    // 队列在管的全部 file_id（孤儿回收时据此跳过）
-    bool listAllFileIds(std::vector<int>& out) const;
-
     // 队列在管的、落在 [lo, hi) 内的 file_id（分区间对账用）
     bool listFileIdsInRange(int lo, int hi, std::vector<int>& out) const;
 
