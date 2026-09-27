@@ -8,6 +8,8 @@
 #include <string>
 #include <mutex>
 
+#include "thread_pool.h"
+
 
 // 框架提供的 专门发布rpc服务的网络对象类
 class RpcProvider
@@ -21,6 +23,14 @@ public:
     
 private:
     muduo::net::EventLoop m_eventLoop;
+
+    // 业务处理器线程池：handler 不再跑在 I/O 线程上，避免一次慢查询 / 大块 MD5 / 磁盘 IO
+    // 阻塞该 loop 上的所有连接（head-of-line blocking）。
+    //
+    // **必须声明在 m_eventLoop 之后**：成员按逆序析构，线程池要先于 EventLoop 停止。
+    // 另注意 run() 里没有 quit()，所以 ~RpcProvider 当前实际不可达（进程靠信号退出），
+    // run() 返回前的 m_workerPool.stop() 才是真正生效的停止路径。
+    ThreadPool m_workerPool;
 
     // service 服务信息
     struct ServiceInfo
@@ -41,16 +51,26 @@ private:
                    muduo::Timestamp time);
 
     // Closure回调函数 用于序列化rpc响应并发送回客户端
-    void sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, const google::protobuf::Message* response);
+    //
+    // 形参是**按值**的 TcpConnectionPtr，不能改成 const&：见 .cc 里 NewCallback 处的说明——
+    // protobuf 的闭包会把模板参数原样存成成员，写成引用就只存引用、闭包不持有连接所有权，
+    // 而 handler 现在在工作线程上执行，闭包可能在 onMessage 返回之后才跑。
+    void sendRpcResponse(muduo::net::TcpConnectionPtr conn, const google::protobuf::Message* response);
 
     // 扫描并关闭空闲超时的连接（P18，由 run() 的定时器周期性触发）
     void checkIdleConnections();
+
+    // 连接的在途任务完成后递减计数（在连接所属 loop 线程上执行）
+    void decrementInFlight(const muduo::net::TcpConnectionPtr& conn);
 
     // P18 空闲连接追踪：连接名 -> 连接对象 + 最后活跃时间（onMessage 更新，定时器线程扫描）
     struct ConnectionInfo
     {
         muduo::net::TcpConnectionPtr conn;
         muduo::Timestamp lastActivity;
+        // 已投递但尚未回响应的 handler 数。>0 表示 handler 正在工作线程里执行，
+        // 此时**不得**按空闲关闭——否则会把响应从 handler 脚下截掉。
+        int inFlight = 0;
     };
     std::mutex m_connMutex;
     std::unordered_map<std::string, ConnectionInfo> m_connections;

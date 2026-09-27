@@ -14,6 +14,31 @@ constexpr double kIdleTimeout = 30.0;
 // P18 空闲扫描间隔
 constexpr double kIdleCheckInterval = 5.0;
 
+// 业务处理线程池默认大小（可用配置 rpc_worker_threads 覆盖）。
+// 注意与 server.setThreadNum() 的 I/O 线程是两回事：后者只管网络收发，
+// 这里跑的是业务 handler（MySQL/Redis/磁盘/MD5）。
+constexpr int kDefaultWorkerThreads = 4;
+// 在途任务上限（背压护栏，防止排队深度 × 单请求最大 64MB 无界增长）
+constexpr size_t kMaxPendingTasks = 4096;
+
+// 读取整数配置。返回值语义：
+//   - 配置缺失或非法（含非数字/过长）→ 返回 fallback（不让一个笔误把功能关掉）
+//   - 显式配成 "0" → 返回 0，表示「明确要求禁用」（用于 rpc_worker_threads=0 退回旧行为）
+// 不直接用 std::stoi：它对超长数字会抛 out_of_range（本项目在别处已吃过这个亏）。
+int loadIntConfig(const char* key, int fallback)
+{
+    std::string v = MprpcApplication::getConfig().load(key);
+    if (v.empty() || v.size() > 6) {
+        return fallback;
+    }
+    for (char c : v) {
+        if (c < '0' || c > '9') {
+            return fallback;
+        }
+    }
+    return std::stoi(v);   // 位数已限，不会溢出
+}
+
 /*
 service_name => service描述 => Service* 服务对象
 服务下的method_name => method方法对象
@@ -108,10 +133,24 @@ void RpcProvider::run()
     // 周期性扫描空闲连接，关闭超时僵尸连接（P18）
     m_eventLoop.runEvery(kIdleCheckInterval, std::bind(&RpcProvider::checkIdleConnections, this));
 
+    // 启动业务处理线程池（handler 从这里起不再占用 I/O 线程）。
+    // rpc_worker_threads=0 表示**明确禁用**：handler 退回在 I/O 线程上同步执行（旧行为）。
+    m_workerPool.setMaxPending(kMaxPendingTasks);
+    int workerThreads = loadIntConfig("rpc_worker_threads", kDefaultWorkerThreads);
+    if (workerThreads > 0) {
+        m_workerPool.start(workerThreads);
+    }
+    LOG_INFO("worker threads:%d (0 = 禁用线程池，handler 在 I/O 线程上执行)", workerThreads);
+
     // 启动网络服务
     server.start();
     m_eventLoop.loop();
 
+    // 只有有人调用 quit() 才会走到这里（当前没有任何地方调，进程靠信号退出）。
+    // 必须**先**停线程池：server 是本函数的局部变量，其内部 I/O loop 即将析构，
+    // 而工作线程持有的 conn->getLoop() 正指向它们——晚停就是悬垂指针。
+    m_workerPool.stop();
+    LOG_INFO("worker pool stopped, rpc provider exiting");
 }
 
 // 处理连接回调函数
@@ -140,8 +179,18 @@ void RpcProvider::checkIdleConnections()
     {
         std::lock_guard<std::mutex> lock(m_connMutex);
         for (const auto& kv : m_connections) {
-            if (muduo::timeDifference(now, kv.second.lastActivity) > kIdleTimeout) {
-                toShutdown.push_back(kv.second.conn);
+            const ConnectionInfo& info = kv.second;
+            if (!info.conn) {
+                continue;   // 防御：map 可能被默认插入过空连接
+            }
+            // handler 正在工作线程里执行时不得按空闲关闭——否则响应会被从 handler
+            // 脚下截掉。这是把 handler 移出 I/O 线程后必须补的一环：原先 handler
+            // 阻塞着 loop，定时器根本不可能在 handler 执行期间触发。
+            if (info.inFlight > 0) {
+                continue;
+            }
+            if (muduo::timeDifference(now, info.lastActivity) > kIdleTimeout) {
+                toShutdown.push_back(info.conn);
             }
         }
     }
@@ -149,6 +198,19 @@ void RpcProvider::checkIdleConnections()
         LOG_INFO("close idle connection: %s", conn->name().c_str());
         conn->shutdown();
     }
+}
+
+// 在途任务完成：递减计数。marshal 回连接所属 loop 执行——m_connections 会被多个
+// loop 线程并发访问，故一律加锁（同线程调用时 runInLoop 会立即执行）。
+void RpcProvider::decrementInFlight(const muduo::net::TcpConnectionPtr& conn)
+{
+    conn->getLoop()->runInLoop([this, conn]() {
+        std::lock_guard<std::mutex> lock(m_connMutex);
+        auto it = m_connections.find(conn->name());
+        if (it != m_connections.end() && it->second.inFlight > 0) {
+            --it->second.inFlight;
+        }
+    });
 }
 
 // 处理读写事件回调函数
@@ -239,42 +301,112 @@ void RpcProvider::onMessage(const muduo::net::TcpConnectionPtr& conn,
         google::protobuf::Service* service = serviceInfoIt->second.m_service;
         const google::protobuf::MethodDescriptor* method = methodIt->second;
 
+        // 每个连接最多一个在途请求。客户端是严格 lockstep 的（发一个、等一个响应），
+        // 同一连接上并发第二个请求本身就是协议违约；强制这一点同时消除了
+        // 「多个工作线程完成顺序不定 → 响应乱序」的风险。
+        {
+            std::lock_guard<std::mutex> lock(m_connMutex);
+            auto connIt = m_connections.find(conn->name());
+            if (connIt == m_connections.end()) {
+                LOG_ERROR("connection not tracked, drop request. conn:%s", conn->name().c_str());
+                conn->shutdown();
+                return;
+            }
+            if (connIt->second.inFlight > 0) {
+                LOG_ERROR("second in-flight request on one connection (protocol violation), closing. conn:%s",
+                          conn->name().c_str());
+                conn->shutdown();
+                return;
+            }
+            ++connIt->second.inFlight;
+        }
+
         // 生成rpc远程过程调用的请求request和响应response
         google::protobuf::Message* request = service->GetRequestPrototype(method).New();
         if (!request->ParseFromString(argsStr)) {
             LOG_ERROR("failed to parse from string to request! content:%s", argsStr.c_str());
             delete request;
+            decrementInFlight(conn);
             conn->shutdown();
             return;
         }
         google::protobuf::Message* response = service->GetResponsePrototype(method).New();
 
         // 绑定Closure回调函数
+        //
+        // 这里踩过一个坑，值得记下来：protobuf 的 MethodClosure2 会把显式模板参数**原样**存成
+        // 成员。原先写的是 `const TcpConnectionPtr&`，于是闭包里存的是一个**引用成员**——
+        // 闭包并不持有连接的所有权。handler 在本函数内同步执行时那个引用一直有效，看不出问题；
+        // 一旦 handler 被挪到工作线程（见下方 submit），闭包会在 onMessage 返回、muduo 的
+        // 回调状态销毁之后才执行，引用随即悬垂，表现为 sendRpcResponse 里读 TcpConnection
+        // 的 heap-use-after-free（由 ASAN 定位）。
+        // 因此模板参数与方法形参都用**按值**的 TcpConnectionPtr：闭包持有一份 shared_ptr 拷贝，
+        // 连接在响应真正发出前不会被释放。
         google::protobuf::Closure* done =
             google::protobuf::NewCallback<RpcProvider,
-                                          const muduo::net::TcpConnectionPtr&,
+                                          muduo::net::TcpConnectionPtr,
                                           const google::protobuf::Message*>(this,
                                                                             &RpcProvider::sendRpcResponse,
                                                                             conn,
                                                                             response);
 
-        // 执行相应的rpc方法
-        service->CallMethod(method, nullptr, request, response, done);
+        // handler 执行体
+        auto runHandler = [this, conn, service, method, request, response, done]() {
+            // handler 必须同步执行完毕并调用 done->Run()（现有 handler 全部如此）。
+            // 本框架不支持延迟响应——request/response 的生命周期依赖这个约定。
+            try {
+                service->CallMethod(method, nullptr, request, response, done);
+            } catch (const std::exception& e) {
+                // 单个请求里的异常不应终止整个进程（handler 会解析来自外部的数据）
+                LOG_ERROR("handler threw an exception: %s", e.what());
+                conn->getLoop()->runInLoop([conn]() { conn->shutdown(); });
+            } catch (...) {
+                LOG_ERROR("handler threw an unknown exception");
+                conn->getLoop()->runInLoop([conn]() { conn->shutdown(); });
+            }
+            // request 生命周期结束（handler 同步执行完毕），释放，避免大请求泄漏；
+            // response 由 sendRpcResponse 释放、done 由 protobuf 自删除，均不在此处理
+            delete request;
+            decrementInFlight(conn);
+        };
 
-        // request 生命周期结束（handler 同步执行完毕），释放，避免大请求（批量上传）泄漏
-        delete request;
+        if (!m_workerPool.running()) {
+            // 线程池被显式禁用（rpc_worker_threads=0）：退回原行为，在 I/O 线程上同步执行
+            runHandler();
+            continue;
+        }
+        if (!m_workerPool.submit(runHandler)) {
+            // 已达背压上限：不执行该请求，就地释放并关闭连接。
+            // 框架不知道 response 的具体类型，回不了结构化错误，只能关连接（客户端会重试）。
+            LOG_ERROR("worker pool rejected request (pending:%zu), closing connection. conn:%s",
+                      m_workerPool.pending(), conn->name().c_str());
+            delete request;
+            delete response;
+            delete done;
+            decrementInFlight(conn);
+            conn->shutdown();
+            return;
+        }
     }
 }
 
 // Closure回调函数 用于序列化rpc响应并发送回客户端
-void RpcProvider::sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, const google::protobuf::Message* response)
+// 注意：本函数现在是在**工作线程**上被调用的（handler 在池里执行并调用 done->Run()），
+// 因此不能直接操作连接：
+//   - TcpConnection::send() 本身线程安全（muduo 内部会 runInLoop marshal，且整段消息在
+//     sendInLoop 里一次性追加到 outputBuffer_，不会与其它响应交错）；
+//   - 但 TcpConnection::shutdown() 在 muduo 头文件里被明确标注
+//     "NOT thread safe, no simultaneous calling"，且 TcpConnection::state_ 是非原子成员，
+//     工作线程直接调用会与 loop 线程的 handleClose / 空闲定时器 / onConnection 竞争。
+// 故把 send + shutdown 作为一整段 marshal 回该连接所属的 loop 执行。
+void RpcProvider::sendRpcResponse(muduo::net::TcpConnectionPtr conn, const google::protobuf::Message* response)
 {
     // rpc响应序列化
     std::string responseStr;
     if (!response->SerializeToString(&responseStr)) {
         LOG_ERROR("failed to serialize to string ! content:%s", responseStr.c_str());
-        conn->shutdown();
         delete response;   // 序列化失败也需释放
+        conn->getLoop()->runInLoop([conn]() { conn->shutdown(); });
         return;
     }
 
@@ -284,11 +416,14 @@ void RpcProvider::sendRpcResponse(const muduo::net::TcpConnectionPtr& conn, cons
     sendStr.append((char*)&respSize, 4);
     sendStr.append(responseStr);
 
-    // 将响应发送到rpc调用端
-    conn->send(sendStr);
-    // 响应后关闭连接（短连接），避免服务器累积空闲连接
-    conn->shutdown();
-
-    // 释放 response，避免批量大响应（批量下载）泄漏
+    // 释放 response，避免批量大响应（批量下载）泄漏（此后不再需要它）
     delete response;
+
+    // send + shutdown 必须在连接所属 loop 上**整段**执行，见函数上方说明。
+    // 用移动初始化捕获，避免把整个响应体再拷一份。
+    conn->getLoop()->runInLoop([conn, sendStr = std::move(sendStr)]() {
+        conn->send(sendStr);
+        // 响应后关闭连接（短连接），避免服务器累积空闲连接
+        conn->shutdown();
+    });
 }

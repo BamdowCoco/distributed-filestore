@@ -9,3 +9,10 @@ rpc_server_port=8000
 zookeeper_ip=127.0.0.1
 # zookeeper的端口号
 zookeeper_port= 2181
+
+# 业务处理器线程池大小（可选，默认 4）。
+# handler 在这个池里执行，不再占用 muduo 的 I/O 线程——避免一次慢查询/大块 MD5/
+# 磁盘 IO 阻塞该 I/O loop 上的所有连接（head-of-line blocking）。
+# 注意与框架内部 I/O 线程数（setThreadNum）是两回事：后者只做网络收发。
+# 配成 0 表示**禁用线程池**，handler 退回在 I/O 线程上同步执行（旧行为）。
+rpc_worker_threads=4
