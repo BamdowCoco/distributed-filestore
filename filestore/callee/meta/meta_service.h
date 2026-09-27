@@ -1,8 +1,11 @@
 #pragma once
 
+#include <atomic>
+#include <condition_variable>
 #include <cstdint>
 #include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "common/consistent_hash.h"
@@ -18,6 +21,12 @@ class MetaService : public filestore::MetaServiceRpc
 {
 public:
     MetaService();
+
+    // 停止后台线程并等待它们归队（幂等）。必须由 main 在 provider.run() 返回后调用——
+    // 5 个后台循环都持有 this，晚于对象销毁就晚了。析构函数里也会兜底调一次。
+    void stop();
+
+    ~MetaService() override;
 
     // 鉴权
 
@@ -143,4 +152,16 @@ private:
     Redis m_redis;
     // 票据签发私钥（Ed25519）。只有元数据服务持有；存储节点只持公钥。
     ticket::TicketKey m_ticketKey;
+
+    // ---- 优雅退出 ----
+    // 5 个后台循环原先各自 detach：进程退出时它们还在跑，无法 join，只能靠信号直接杀。
+    // 现在改为**可打断**（waitForStop 取代 sleep_for）+ **可 join**，stop() 里统一收尾。
+    std::vector<std::thread> m_bgThreads;
+    std::atomic<bool> m_stopping{false};
+    std::mutex m_stopMutex;
+    std::condition_variable m_stopCv;
+
+    // 可被打断的等待：最多等 seconds 秒，m_stopping 置位则立即返回。
+    // 返回 true 表示「该退出了」，循环据此 break/return。
+    bool waitForStop(int seconds);
 };

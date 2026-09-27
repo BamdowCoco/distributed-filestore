@@ -5,9 +5,15 @@
 #include "zk_client_util.h"
 
 #include <functional>
+#include <cerrno>
 #include <cstring>
+#include <memory>
 #include <vector>
 #include <muduo/base/Timestamp.h>
+#include <muduo/net/Channel.h>
+#include <signal.h>
+#include <sys/signalfd.h>
+#include <unistd.h>
 
 // P18 空闲连接超时：超过该时长无请求则关闭（会话式长连接下清理僵尸连接）
 constexpr double kIdleTimeout = 30.0;
@@ -92,20 +98,21 @@ void RpcProvider::run()
 
     LOG_INFO("RpcProvider start service ip:%s port:%d", ip.c_str(), port);
 
-    // 把当前节点的服务和方法 注册到ZooKeeper上
-    ZKClient zkClient;
-    zkClient.start();
+    // 把当前节点的服务和方法 注册到ZooKeeper上。
+    // m_zkClient 是成员（原先是局部对象）：它注册的临时节点必须在 run() 返回前主动关闭，
+    // 让节点立刻消失，而不是等 ZK 会话超时（~30s）。
+    m_zkClient.start();
     for(auto& serviceInfoPair : m_serviceInfoMap) {
         //  /service_name
         std::string servicePath = '/'+serviceInfoPair.first;
-        zkClient.create(servicePath);
+        m_zkClient.create(servicePath);
         for(auto& methodPtrPair : serviceInfoPair.second.m_methodMap) {
             // /service_name/method_name
             std::string methodPath = servicePath + '/'+methodPtrPair.first;
-            zkClient.create(methodPath);
+            m_zkClient.create(methodPath);
             // 创建临时性节点 /service_name/method_name/ip:port
             std::string hostPath = methodPath+'/'+ip+':'+std::to_string(port);
-            zkClient.create(hostPath, "", true);
+            m_zkClient.create(hostPath, "", true);
         }
     }
 
@@ -143,13 +150,47 @@ void RpcProvider::run()
     }
     LOG_INFO("worker threads:%d (0 = 禁用线程池，handler 在 I/O 线程上执行)", workerThreads);
 
+    // 优雅退出：用 signalfd 把 SIGINT/SIGTERM 变成事件循环上的可读事件。
+    //
+    // 不在信号处理器里直接调 quit()：处理器里只允许做 async-signal-safe 的事，而
+    // "唤醒事件循环"这一动作在 signalfd 方案下变成普通的 fd 可读回调，整段都在事件循环
+    // 线程里执行，天然安全。
+    //
+    // 前提：SIGINT/SIGTERM 已被**屏蔽**（MprpcApplication::init() 在建任何线程之前做的）。
+    // 阻塞后信号不再按默认处置终止进程，而是挂起为 pending，signalfd 即可读到它。
+    sigset_t sigMask;
+    sigemptyset(&sigMask);
+    sigaddset(&sigMask, SIGINT);
+    sigaddset(&sigMask, SIGTERM);
+    int sigFd = ::signalfd(-1, &sigMask, SFD_NONBLOCK | SFD_CLOEXEC);
+    std::unique_ptr<muduo::net::Channel> sigChannel;
+    if (sigFd < 0) {
+        // 拿不到 signalfd 只是失去优雅退出（退回旧的"被信号直接杀死"行为），不该拒绝服务
+        LOG_ERROR("signalfd failed, graceful shutdown unavailable: %s", std::strerror(errno));
+    } else {
+        sigChannel.reset(new muduo::net::Channel(&m_eventLoop, sigFd));
+        sigChannel->setReadCallback([this](muduo::Timestamp) { m_eventLoop.quit(); });
+        sigChannel->enableReading();
+    }
+
     // 启动网络服务
     server.start();
     m_eventLoop.loop();
 
-    // 只有有人调用 quit() 才会走到这里（当前没有任何地方调，进程靠信号退出）。
-    // 必须**先**停线程池：server 是本函数的局部变量，其内部 I/O loop 即将析构，
-    // 而工作线程持有的 conn->getLoop() 正指向它们——晚停就是悬垂指针。
+    // 走到这里说明 quit() 被调用过 = 收到了 SIGINT/SIGTERM。
+    // 先注销 Channel（它要去 eventLoop 的 poller 里摘 fd）再关 fd——Channel 不持有 fd 所有权。
+    if (sigChannel) {
+        sigChannel.reset();
+        ::close(sigFd);
+    }
+
+    // 1) 关 ZK：zookeeper_close 会立刻删除本节点注册的**临时节点**，不必再等会话超时。
+    //    这正是优雅退出的目的——元数据服务的 ZK 轮询下一拍就能把死节点从环上摘掉。
+    m_zkClient.close();
+    LOG_INFO("zk client closed, ephemeral nodes removed");
+
+    // 2) 再停业务线程池：server 是 run() 的局部变量，其内部 I/O loop 即将析构，而工作线程
+    //    持有的 conn->getLoop() 正指向它们——晚停就是悬垂指针。
     m_workerPool.stop();
     LOG_INFO("worker pool stopped, rpc provider exiting");
 }

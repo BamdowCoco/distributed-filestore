@@ -177,14 +177,51 @@ MetaService::MetaService()
     }
     LOG_INFO("ticket signing key loaded, kid:%s", m_ticketKey.kid().c_str());
 
-    std::thread([this]() { nodeWatchLoop(); }).detach();
-    std::thread([this]() { cleanupQueueLoop(); }).detach();
-    std::thread([this]() { cleanupRetryLoop(); }).detach();
-    std::thread([this]() { reconcileLoop(); }).detach();
-    std::thread([this]() { pendingReclaimLoop(); }).detach();
+    // 后台线程一律**不 detach**：存进 m_bgThreads 以便 stop() 能 join。
+    // 此前全部 detach，进程退出时它们仍在跑 -> 无法收尾，只能靠信号直接杀死。
+    m_bgThreads.emplace_back([this]() { nodeWatchLoop(); });
+    m_bgThreads.emplace_back([this]() { cleanupQueueLoop(); });
+    m_bgThreads.emplace_back([this]() { cleanupRetryLoop(); });
+    m_bgThreads.emplace_back([this]() { reconcileLoop(); });
+    m_bgThreads.emplace_back([this]() { pendingReclaimLoop(); });
 
     // 启动时先清一次上次运行遗留的超时 PENDING 上传
     reclaimStalePending();
+}
+
+MetaService::~MetaService()
+{
+    // 兜底：main 忘了调 stop() 时，joinable 的 std::thread 在析构里会直接 std::terminate。
+    // stop() 幂等，重复调用无副作用。
+    stop();
+}
+
+// 可被打断的等待：最多等 seconds 秒；m_stopping 置位时立即唤醒并返回 true
+bool MetaService::waitForStop(int seconds)
+{
+    std::unique_lock<std::mutex> lock(m_stopMutex);
+    m_stopCv.wait_for(lock, std::chrono::seconds(seconds), [this]() { return m_stopping.load(); });
+    return m_stopping.load();
+}
+
+void MetaService::stop()
+{
+    if (m_stopping.exchange(true)) {
+        return;   // 幂等：已经停过（或正在停）
+    }
+    // 唤醒所有卡在 waitForStop 里的循环
+    m_stopCv.notify_all();
+    for (std::thread& t : m_bgThreads) {
+        if (t.joinable()) {
+            t.join();
+        }
+    }
+    m_bgThreads.clear();
+
+    // 连接池也有后台线程（生产者 + 空闲回收）：它是进程级单例且**析构被有意绕开**
+    // （见 CommonConnectionPool::getInstance 的说明），不主动停就只能随进程一起消失。
+    ConnectionPool::getInstance().stop();
+    LOG_INFO("[meta] background threads stopped");
 }
 
 // ===================== 鉴权 =====================
@@ -1226,7 +1263,7 @@ void MetaService::nodeWatchLoop()
     std::string serviceName(filestore::StorageServiceRpc::descriptor()->name());
     std::string nodePath = "/" + serviceName + "/PutChunk";
 
-    while (true) {
+    while (!m_stopping.load()) {
         std::vector<std::string> children = zk.getChildren(nodePath);
         if (children.empty()) {
             std::cerr << "[meta] no storage node from ZK, keep current ring" << std::endl;
@@ -1257,8 +1294,11 @@ void MetaService::nodeWatchLoop()
                 std::cerr << "[meta] refreshed storage nodes, count:" << nodes.size() << std::endl;
             }
         }
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        if (waitForStop(3)) {
+            break;
+        }
     }
+    zk.close();   // 显式关闭：本线程的句柄活到函数返回为止，不必等析构
 }
 
 // 待清理任务入队：MySQL 幂等插入 + Redis Stream 推任务 ID
@@ -1343,8 +1383,8 @@ void MetaService::reclaimStalePending()
 // 后台线程：定期回收超时 PENDING 上传
 void MetaService::pendingReclaimLoop()
 {
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(kPendingReclaimIntervalSec));
+    // 先等一个周期再开工（原行为）；waitForStop 让它可被打断
+    while (!waitForStop(kPendingReclaimIntervalSec)) {
         reclaimStalePending();
     }
 }
@@ -1394,7 +1434,7 @@ void MetaService::processCleanupTask(int taskId)
 // 消费线程：Redis 消费者组拉任务 ID（先重领 PEL 再读新），处理并 XACK
 void MetaService::cleanupQueueLoop()
 {
-    while (true) {
+    while (!m_stopping.load()) {
         // 1. 先重领本消费者 PEL 未确认消息（崩溃恢复）
         auto pending = m_redis.xreadGroup(kCleanupStream, kCleanupGroup, kCleanupConsumer, "0", 100);
         for (const auto& e : pending) {
@@ -1407,14 +1447,16 @@ void MetaService::cleanupQueueLoop()
             processCleanupTask(e.second);
             m_redis.xack(kCleanupStream, kCleanupGroup, e.first);
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        if (waitForStop(1)) {
+            break;
+        }
     }
 }
 
 // 退避线程：低频从 MySQL 捞「到期且待清理」的任务直接处理（next_retry_at 控制重试时机）
 void MetaService::cleanupRetryLoop()
 {
-    while (true) {
+    while (!m_stopping.load()) {
         auto conn = ConnectionPool::getInstance().getConnection();
         if (conn) {
             // 捞「到期且待清理」的任务
@@ -1426,7 +1468,9 @@ void MetaService::cleanupRetryLoop()
                 }
             }
         }
-        std::this_thread::sleep_for(std::chrono::seconds(60));
+        if (waitForStop(60)) {
+            break;
+        }
     }
 }
 
@@ -1436,10 +1480,14 @@ void MetaService::reconcileLoop()
     // 周期可配（gc_interval_sec）：既方便按机器规模调整，也便于验证时调短
     const int intervalSec = MprpcApplication::getConfig().getPositiveInt("gc_interval_sec", kGcIntervalSec);
     // 启动后先等一会再首扫，避开与服务注册/建表的资源竞争
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    while (true) {
+    if (waitForStop(5)) {
+        return;
+    }
+    while (!m_stopping.load()) {
         reconcileOrphans();
-        std::this_thread::sleep_for(std::chrono::seconds(intervalSec));
+        if (waitForStop(intervalSec)) {
+            break;
+        }
     }
 }
 

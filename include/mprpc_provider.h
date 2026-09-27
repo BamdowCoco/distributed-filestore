@@ -9,6 +9,7 @@
 #include <mutex>
 
 #include "thread_pool.h"
+#include "zk_client_util.h"
 
 
 // 框架提供的 专门发布rpc服务的网络对象类
@@ -18,18 +19,24 @@ public:
     // 提供给外部 发布rpc方法的接口
     void notifyService(google::protobuf::Service* service);
 
-    // 启动rpc服务节点 开始提供rpc远程过程调用网络服务
+    // 启动rpc服务节点 开始提供rpc远程过程调用网络服务。
+    // **收到 SIGINT/SIGTERM 后会返回**（signalfd 唤醒事件循环），返回前已关闭 ZK 连接
+    // （临时节点立即删除）并停掉业务线程池。
     void run();
-    
+
 private:
     muduo::net::EventLoop m_eventLoop;
+
+    // 本节点向 ZK 注册的句柄。**成员而非 run() 的局部对象**：run() 现在会在收到信号后
+    // 返回，需要在返回前显式 close() 让临时节点立刻消失；并且它必须**早于** m_workerPool
+    // 被析构（成员按逆序析构）——先停线程池、再断 ZK，保证没有 handler 还在用连接。
+    ZKClient m_zkClient;
 
     // 业务处理器线程池：handler 不再跑在 I/O 线程上，避免一次慢查询 / 大块 MD5 / 磁盘 IO
     // 阻塞该 loop 上的所有连接（head-of-line blocking）。
     //
     // **必须声明在 m_eventLoop 之后**：成员按逆序析构，线程池要先于 EventLoop 停止。
-    // 另注意 run() 里没有 quit()，所以 ~RpcProvider 当前实际不可达（进程靠信号退出），
-    // run() 返回前的 m_workerPool.stop() 才是真正生效的停止路径。
+    // run() 返回前会显式 m_workerPool.stop()，那是真正生效的停止路径。
     ThreadPool m_workerPool;
 
     // service 服务信息

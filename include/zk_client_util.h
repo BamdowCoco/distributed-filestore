@@ -18,6 +18,10 @@ public:
 
     // 启动zkclient 连接zkserver
     void start();
+    // 主动关闭连接。会**立即**删除本客户端注册的临时节点（不必等 30s 会话超时），
+    // 这是优雅退出的关键一步：服务进程收到 SIGINT 后主动调它，元数据服务的节点轮询
+    // 下一拍就能摘掉这个节点。幂等；不调用则由析构兜底。
+    void close();
     // 在zkserver上指定路径创建znode节点
     void create(const std::string path, const std::string data="", bool isEphemeral = false);
     // 读取节点数据的结果：调用方据此区分两种「返回空串」——节点不存在 vs 读失败
