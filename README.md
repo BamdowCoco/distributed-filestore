@@ -9,9 +9,6 @@
 
 ![系统架构图](diagrams/filestore-architecture.png)
 
-> 图片待导出：把 `docs/filestore/diagrams/architecture.drawio` 导出为 `diagrams/filestore-architecture.png`。
-> drawio 源在本仓库，导出图未就位前以下 mermaid 版本即为当前架构。
-
 ```mermaid
 graph TB
     Client[客户端 fs_caller]
@@ -54,7 +51,7 @@ graph TB
 - **文件分块存储** — 客户端把文件切成 4MB 的块（单文件上限 `chunk_count ≤ 25600`，即 100GB），按节点分组批量传输
 - **网盘式虚拟文件树** — `file_id` 全局唯一 + `file_node` 目录树，支持 `mkdir` / `rmdir` / `ls` / `cd`；深度 ≤64 层、总路径 ≤1024 字符
 - **用户鉴权** — 注册/登录用 **PBKDF2-HMAC-SHA256**（100000 次迭代 + 每用户 16 字节随机盐）存口令；登录签发 Redis 会话 token，元数据校验身份与文件归属
-- **存储访问票据** — 元数据用 **Ed25519 私钥**签发 `v2:<kid>:<expiry>:<userId>:<fileId>:<op>:<sig>` 票据（TTL 600s），存储节点用**公钥**离线验签。非对称的意义：存储节点**能验不能签**，一台节点被攻破不再等于拿到签发能力；公钥可逗号分隔多把，便于轮换
+- **存储访问票据** — 元数据用 **Ed25519 私钥**签发 `v2:<kid>:<expiry>:<userId>:<fileId>:<op>:<sigHex>` 票据（TTL 600s），存储节点用**公钥**离线验签。非对称的意义：存储节点**能验不能签**，一台节点被攻破不再等于拿到签发能力；公钥可逗号分隔多把，便于轮换
 - **元数据持久化** — MySQL 存储，SQL 全部收敛进 DAO 层（转义唯一入口 + RAII 事务）；上传走 PENDING→COMPLETE 状态机，中途失败可补偿回滚
 - **块分布多节点** — 一致性哈希环（每物理节点 150 虚拟节点）分配块，节点增删仅约 1/N 的块需重映射
 - **服务注册与发现** — 存储节点经 ZooKeeper **临时节点**自动注册；元数据后台每 3s `getChildren` 动态重建哈希环，扩容零重启、宕机自动摘除
@@ -69,8 +66,6 @@ graph TB
 ### 上传时序
 
 ![上传时序图](diagrams/filestore-upload-sequence.png)
-
-> 图片待导出：把 `docs/filestore/diagrams/upload-sequence.drawio` 导出为 `diagrams/filestore-upload-sequence.png`。
 
 ```mermaid
 sequenceDiagram
@@ -105,8 +100,6 @@ sequenceDiagram
 
 ![文件生命周期流程图](diagrams/filestore-flowchart.png)
 
-> 图片待导出：把 `docs/filestore/diagrams/flowchart.drawio` 导出为 `diagrams/filestore-flowchart.png`。
-
 ```mermaid
 flowchart TB
     subgraph UP[上传]
@@ -137,8 +130,6 @@ flowchart TB
 ### 核心类图
 
 ![核心类图](diagrams/filestore-class-diagram.png)
-
-> 图片待导出：把 `docs/filestore/diagrams/class-diagram.drawio` 导出为 `diagrams/filestore-class-diagram.png`。
 
 ## 快速开始
 
