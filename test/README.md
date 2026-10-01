@@ -130,7 +130,7 @@ bash test/integration/run_new_tests.sh
 3. **循环上传极限（3 节点）**：起 3 个 `storage_callee` + 1 个 `meta_callee`，循环上传 **1MB 文件**，次数按 `UPLOAD_SEQ=(100 500 1000 2000 5000 10000)` 循序渐进，**某档出现失败即停，取上一个 100% 成功的次数**为最大成功规模。
 4. **大文件极限（3 节点）**：大文件按 `BIGFILE_SEQ_MB=(64 256 512 1024)` 循序渐进（到 1GB），每档上传 → 下载 → `md5sum` 比对，**取最大成功且 md5 一致的大小**，并计时吞吐。
 
-**大文件为什么能到 1GB**（[filestore/common/common.h](../filestore/common/common.h) 分块 4MB + [filestore/caller/fs_caller.cc](../filestore/caller/fs_caller.cc) 拆批 + 会话复用）：框架层有 64MB 请求/响应上限，若「每节点一个巨型批量请求」则大文件封顶在 ~192MB。故分块取 4MB（1GB=256 块），并把每节点的块按 `MAX_BATCH_CHUNKS=15`（60MB 载荷）拆成多个子批顺序发送，单批内存有界；同时 [include/mprpc_channel.h](../include/mprpc_channel.h) 直连模式支持会话内复用一条连接（`MprpcChannel(ip, port, /*sessionReuse=*/true)`，客户端主动 close），连接建立次数从块数降到节点数。
+**大文件为什么能到 1GB**（[filestore/common/common.h](../filestore/common/common.h) 分块 4MB + [filestore/caller/fs_client.cc](../filestore/caller/fs_client.cc) 拆批 + 会话复用）：框架层有 64MB 请求/响应上限，若「每节点一个巨型批量请求」则大文件封顶在 ~192MB。故分块取 4MB（1GB=256 块），并把每节点的块按 `MAX_BATCH_CHUNKS=15`（60MB 载荷）拆成多个子批顺序发送，单批内存有界；同时 [include/mprpc_channel.h](../include/mprpc_channel.h) 直连模式支持会话内复用一条连接（`MprpcChannel(ip, port, /*sessionReuse=*/true)`，客户端主动 close），连接建立次数从块数降到节点数。
 
 **为什么规模测试降到 3 节点**：本测试运行在 **2GB 内存 VM** 上，10 个 `storage_callee`（每个 4 个 muduo I/O 线程）+ meta + ZooKeeper（JVM）+ MySQL + 桌面/编辑器进程并发会内存耗尽，导致 ZooKeeper 先被 GC/swap 冻结、连接超时（`zk retcode=-7`）而崩溃——这是测试环境封顶，非存储系统容量上限。故把「10 节点」与「规模压测」解耦：10 节点只做短暂的发现验证，持续压测（循环上传 / 大文件）用 3 节点。
 
@@ -174,7 +174,7 @@ UPLOAD_SEQ_OVERRIDE="3 5" BIGFILE_SEQ_MB_OVERRIDE="4 8" bash test/integration/ru
    - 现象：`PutChunksBatch` 批量上传 493KB 请求被 muduo 拆成多次 `onMessage` 回调，旧实现用 `retrieveAllAsString()` 一次性取走并假设已收全，导致 args 截断、`ParseFromString` 失败，触发客户端重试后回滚。
    - 修复：改为「peek 判断 `header_size + header + args` 是否收全 → 收全才 retrieve」的循环分帧，并增加 headerSize/argsSize 上限校验。小请求（单块 PutChunk）此前未暴露该问题，批量上传才触发。
 
-2. **旧库缺新列导致提交失败**（[filestore/callee/meta_service.cc](../filestore/callee/meta_service.cc)）
+2. **旧库缺新列导致提交失败**（[filestore/callee/meta/meta_service.cc](../filestore/callee/meta/meta_service.cc)）
    - 现象：`CREATE TABLE IF NOT EXISTS` 不会给已存在的旧 `file_chunk` 表补列，`CommitUpload` 写 `offset/size` 时报 `Unknown column 'offset'`。
    - 修复：启动时用 `information_schema.COLUMNS` 检测并 `ALTER TABLE ... ADD COLUMN` 幂等补齐 `checksum/offset/size` 三列。
 
