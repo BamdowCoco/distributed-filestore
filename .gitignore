@@ -32,7 +32,7 @@ test/integration/tmp/
 
 # 其他
 .claude/
+# docs/ 全部不入库：其中含个人求职材料（简历、申请表等）与项目设计文档，
+# 设计文档的公开版以仓库根 README.md 为准
 docs/*
-!docs/filestore/
-!docs/filestore/**
 CLAUDE.md

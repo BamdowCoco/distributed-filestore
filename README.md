@@ -232,8 +232,6 @@ CFG="-i config/filestore_meta.cnf"      # 客户端连元数据服务
 
 token 存 `~/.fscli/token`、当前目录存 `~/.fscli/cwd`——都是本地状态，异常时先 `logout` 清掉。
 
-更完整的启动、配置与端到端验证清单见 [docs/filestore/startup.md](docs/filestore/startup.md)。
-
 ## 通信与安全
 
 ### RPC 帧格式
@@ -288,8 +286,7 @@ filestore/          — 分布式文件存储系统
   tools/            — ticket_keygen（Ed25519 密钥对）
 config/             — 配置模板（mprpc.cnf、filestore_*.cnf；keys/ 已 gitignore）
 diagrams/           — 架构图、时序图、流程图、协议图（PNG）
-docs/filestore/     — 设计文档、启动流程、问题清单、测试报告、drawio 图源
-test/               — 离线单元测试与集成测试脚本
+test/               — 离线单元测试、集成测试脚本与实测报告（test/README.md、test/test-report.md）
 thirdparty/         — 单头文件第三方库
 ```
 

@@ -31,7 +31,7 @@ BIN="$ROOT/bin"
 CONFIG="$ROOT/config"
 TMP_DIR="$ROOT/test/integration/tmp"
 LOG_DIR="$ROOT/test/integration/log"
-REPORT="$ROOT/docs/filestore/test/test-report.md"
+REPORT="$ROOT/test/test-report.md"
 CALLEE_LOG="$LOG_DIR/callee.log"
 META_LOG="$LOG_DIR/meta.log"
 
